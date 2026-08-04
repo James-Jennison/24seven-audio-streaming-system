@@ -10,7 +10,11 @@ A Linux-first, web-administered audio automation and streaming platform for the 
 
 ## Status
 
-M1 is an in-progress, local-only control-plane implementation. PostgreSQL is the required runtime persistence target; Compose binds it only to loopback. Audio runtime, media import, output services, and public listeners remain deliberately unavailable.
+M1 is formally complete as a local-only programming-control-plane milestone.
+PostgreSQL is the sole live persistence design; Compose binds its future
+staging database boundary only to loopback. M2 is the next milestone, and its
+staging work remains independently approval-gated. Audio runtime, media import,
+output services, and public listeners remain deliberately unavailable.
 
 The current UI makes this explicit: every station reports that the audio runtime is not implemented. No mocked audio path is presented as working.
 
@@ -18,9 +22,18 @@ The current UI makes this explicit: every station reports that the audio runtime
 
 The project separates a durable control plane from a supervised audio runtime. The control plane owns configuration, scheduling, permissions, and audit history. A future Liquidsoap-based runtime will own real-time playout, transitions, encoding, and runtime-originated health/playback observations; FFmpeg is planned for media analysis and fallback jobs. See [the architecture](docs/ARCHITECTURE.md) and [ADR 0001](docs/ADRs/0001-control-plane-and-audio-runtime.md).
 
-## Local run
+## Historical local-development example — not current staging authorization
 
-Requires Node 22.5–22.x and Docker Compose for PostgreSQL integration.
+The following is historical/local development guidance for the M1 Compose and
+migration boundary. It is **not** authorization to connect to staging, start
+Docker or Compose, run a migration, or operate any service. Before any future
+staging use, follow the approval-gated M2 plans for [staging
+activation](docs/M2.1_STAGING_ACTIVATION_PLAN.md), [migration
+execution](docs/M2.2_STAGING_MIGRATION_PREFLIGHT_AND_RUN_PLAN.md), [topology
+validation](docs/M2.3_STAGING_TOPOLOGY_VALIDATION_PLAN.md), and
+[backup/restore rehearsal](docs/M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md).
+
+It requires Node 22.5–22.x and Docker Compose when separately authorized.
 
 ```bash
 npm install

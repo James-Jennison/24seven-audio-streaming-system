@@ -1,15 +1,19 @@
 # Architecture
 
-## M0 boundary
+## Historical M0 boundary
 
-M0 contains only a local control-plane scaffold. It has no real-time audio process, no media library, no network output adapter, and no public listener. The HTTP server binds to loopback by default.
+This section records the superseded M0 scaffold for historical context only. It
+has no authority over the live persistence or operational model. M0 contained
+only a local control-plane scaffold, with no real-time audio process, media
+library, network output adapter, or public listener. The HTTP server bound to
+loopback by default.
 
 ## Layered design
 
 ```text
 Browser admin UI
        │ local HTTP / future authenticated API
-Control plane ─── PostgreSQL (production) / SQLite (M0 development)
+Control plane ─── PostgreSQL (sole live persistence store)
        │ versioned commands and observations
 Supervised audio runtime (future Liquidsoap process)
        ├── FFmpeg analysis/fallback jobs (future)
@@ -33,7 +37,11 @@ All station-scoped records have `stationId`; repositories and APIs must require 
 
 ### Persistence decision
 
-M0 uses SQLite through Node's built-in `node:sqlite` API to keep local setup small and make its SQL migration boundary tangible. Production is planned to use PostgreSQL: repository interfaces avoid SQLite-specific types, migrations are SQL assets, and no SQLite path or behavior is part of the public API contract. Before M1, choose a production migration runner and validate concurrent writer/locking semantics.
+PostgreSQL is the sole live persistence store. The live application composition
+uses PostgreSQL repositories and rejects SQLite fallback. Historical M0 tests
+used Node's built-in `node:sqlite`; that test-only history is not a live-path
+dependency, persistence option, or operational fallback. PostgreSQL migrations
+remain approval-gated and have not been applied during M1.
 
 ### Security posture
 

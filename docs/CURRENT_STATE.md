@@ -29,7 +29,8 @@ decisions, but does not authorize a staging connection, migration, or
 operational activity. M2.3 staging topology-validation planning documentation
 is accepted and pushed as `be6a242`; it likewise authorizes no operational
 action. M2.4 backup, restore, and DR-rehearsal planning documentation is
-drafted locally for review and authorizes no operational action.
+published as `c8d5904`; it remains planning-only and authorizes no backup,
+restore, DR rehearsal, or other operational action.
 
 ## Deliberately not implemented
 
