@@ -22,7 +22,13 @@ import {
 } from "./db/staging-backup.js";
 
 interface BackupManifest extends VerifiedBackupSet {
+  archiveValidation: "pass";
+  authorityClass: "backup";
+  checksumValidation: "pass";
+  evidenceReference: string;
   format: "postgresql_custom";
+  pruned: number;
+  retention: "pass";
   scope: "staging_postgresql_logical";
   sha256: string;
   status: "verified";
@@ -229,6 +235,7 @@ async function pruneVerifiedSets(destination: string): Promise<number> {
 async function run(): Promise<{
   artifactId: string;
   backupDay: string;
+  evidenceReference: string;
   pruned: number;
 }> {
   const connection = parseConnection(required("DATABASE_BACKUP_URL"));
@@ -239,6 +246,9 @@ async function run(): Promise<{
     throw new StagingBackupError("backup_retention");
   }
   const artifactId = `${backupDay}-${randomBytes(10).toString("hex")}`;
+  const evidenceReference = `m2-backup-${new Date()
+    .toISOString()
+    .replaceAll(/[-:.]/g, "")}-${randomBytes(8).toString("hex")}`;
   const archive = join(destination, `backup-${artifactId}.dump`);
   const checksumFile = join(destination, `backup-${artifactId}.sha256`);
   const manifestFile = join(destination, `backup-${artifactId}.manifest.json`);
@@ -276,8 +286,14 @@ async function run(): Promise<{
     const digest = await sha256(archive);
     const manifest: BackupManifest = {
       artifactId,
+      archiveValidation: "pass",
+      authorityClass: "backup",
       backupDay,
+      checksumValidation: "pass",
+      evidenceReference,
       format: "postgresql_custom",
+      pruned: 0,
+      retention: "pass",
       scope: "staging_postgresql_logical",
       sha256: digest,
       status: "verified",
@@ -298,8 +314,13 @@ async function run(): Promise<{
       throw new StagingBackupError("backup_manifest");
     }
     const pruned = await pruneVerifiedSets(destination);
+    await writeFile(
+      manifestFile,
+      `${JSON.stringify({ ...manifest, pruned })}\n`,
+      { flag: "w", mode: 0o600 },
+    );
     verified = true;
-    return { artifactId, backupDay, pruned };
+    return { artifactId, backupDay, evidenceReference, pruned };
   } catch (error) {
     output.destroy();
     if (error instanceof StagingBackupError) throw error;
@@ -322,6 +343,7 @@ try {
       event: "m2.staging_backup_verified",
       artifactId: result.artifactId,
       backupDay: result.backupDay,
+      evidenceReference: result.evidenceReference,
       pruned: result.pruned,
     }),
   );
