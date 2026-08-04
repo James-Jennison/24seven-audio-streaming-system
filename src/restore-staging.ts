@@ -337,17 +337,23 @@ async function validate(
     const scoped = new Set(
       columns.rows.map((row: { table_name: string }) => row.table_name),
     );
+    if (extension.rowCount !== 1)
+      throw new StagingRestoreError("recovery_extension");
+    if (ledger.rowCount !== 1) throw new StagingRestoreError("recovery_ledger");
     if (
-      extension.rowCount !== 1 ||
-      ledger.rowCount !== 1 ||
       actual.length !== expected.length ||
-      actual.some((id, index) => id !== expected[index]) ||
-      stationScopedTables.some((table) => !scoped.has(table)) ||
+      actual.some((id, index) => id !== expected[index])
+    )
+      throw new StagingRestoreError("recovery_stations");
+    if (stationScopedTables.some((table) => !scoped.has(table)))
+      throw new StagingRestoreError("recovery_station_isolation");
+    if (
       authority.rowCount !== 1 ||
       Object.values(authority.rows[0] as Record<string, boolean>).some(Boolean)
     )
-      throw new Error();
-  } catch {
+      throw new StagingRestoreError("recovery_authority");
+  } catch (error) {
+    if (error instanceof StagingRestoreError) throw error;
     throw new StagingRestoreError("recovery_validation");
   } finally {
     await pool.end();
