@@ -23,9 +23,11 @@ milestone. M2.1 documentation planning is explicitly approved; M2 remains
 operationally unstarted, and any M2 connection, migration, service, VM, backup,
 or restore activity requires a separate explicit approval.
 
-M2.2 staging migration preflight/run-plan documentation is drafted locally for
-review. It records future execution safeguards and unresolved owner decisions;
-it does not authorize a staging connection, migration, or operational activity.
+M2.2 staging migration preflight/run-plan documentation is accepted and pushed
+as `2cd85c3`; it records future execution safeguards and unresolved owner
+decisions, but does not authorize a staging connection, migration, or
+operational activity. M2.3 staging topology-validation planning documentation
+is drafted locally for review and likewise authorizes no operational action.
 
 ## Deliberately not implemented
 
