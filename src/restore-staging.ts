@@ -424,11 +424,19 @@ async function run(): Promise<{ evidenceReference: string }> {
     )
   )
     throw new StagingRestoreError("rpo_window");
-  await mkdir(dataDirectory, { mode: 0o700, recursive: false });
-  await chmod(dataDirectory, 0o700);
+  try {
+    await mkdir(dataDirectory, { mode: 0o700, recursive: false });
+    await chmod(dataDirectory, 0o700);
+  } catch {
+    throw new StagingRestoreError("recovery_target_configuration");
+  }
   let startedTarget = false;
   try {
-    await compose(["up", "-d", service], process.env);
+    try {
+      await compose(["up", "-d", service], process.env);
+    } catch {
+      throw new StagingRestoreError("recovery_target_start");
+    }
     startedTarget = true;
     await waitForTarget(platform);
     const platformPool = new Pool({
