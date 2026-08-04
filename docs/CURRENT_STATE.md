@@ -34,9 +34,11 @@ and separate backup-authority artifact are versioned. One approved staging
 backup completed archive parsing, SHA-256/manifest verification, and retention
 validation with content-free evidence `m2-backup-20260804T202301068Z-8a1a86fc408de506`.
 The isolated recovery-target/restore contract is locally implemented and
-uncommitted; no restore, recovery target, application, runtime, or listener
-action has occurred. Restore rehearsal and DR acceptance remain independently
-gated.
+published. On 2026-08-04 UTC, its one approved disposable-target restore
+rehearsal passed archive attribution, recovery validation, station isolation,
+least-privilege, RPO, RTO, and cleanup checks with content-free evidence
+`m2-restore-20260804T211341391Z-33b489dab2be47b7`. M2 acceptance remains
+independently gated; no application, runtime, or listener action has occurred.
 
 M2.5 **Operational-Authorization Decision Packet** planning is complete and
 published as `b07814d`. It supplied the separated M2 execution decisions; it

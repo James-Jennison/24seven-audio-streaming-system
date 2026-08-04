@@ -79,8 +79,8 @@ topology-validation gate, have completed with content-free staging evidence.
 M2.4 now has a versioned logical custom-archive backup contract and a separate
 backup-authority artifact. Its approved staging backup/archive-parse/SHA-256/
 retention evidence is `m2-backup-20260804T202301068Z-8a1a86fc408de506`; restore
-rehearsal now has a locally implemented, uncommitted isolated-target contract;
-M2 acceptance remains distinct. No application or audio/listener
+rehearsal passed on an isolated disposable target with content-free evidence
+`m2-restore-20260804T211341391Z-33b489dab2be47b7`; M2 acceptance remains distinct. No application or audio/listener
 service is authorized by these records.
 
 | Area                  | Current Worktree Status                                                                                                   | State                               |
@@ -123,16 +123,15 @@ service is authorized by these records.
 - **Status:** M2.1–M2.5 plans are complete and published. M2.2 migration/seed
   and post-migration grant validation, and M2.3 topology validation, are
   complete under their separate approvals. M2.4 backup creation and integrity
-  verification are complete; an isolated restore-rehearsal contract is locally
-  implemented and awaiting review/publishing; rehearsal and M2 acceptance remain
-  distinct gates.
+  verification and isolated restore rehearsal are complete with bounded
+  content-free evidence; M2 acceptance remains a distinct gate.
 - **Objective:** Validate PostgreSQL migrations and disaster recovery in an isolated, non-public staging environment.
 - **Key Tasks:** Apply `002_m1_control_plane.sql` via dedicated migration role; verify least-privilege runtime access; establish backup/restore drills and recovery runbooks.
 - **M2.1 Staging Activation Plan:** [Staging activation and migration-rehearsal plan](M2.1_STAGING_ACTIVATION_PLAN.md) is complete and published as `b7a51cd`; it authorizes no operational activity.
 - **M2.2 Migration Execution Plan:** [Staging migration preflight and run plan](M2.2_STAGING_MIGRATION_PREFLIGHT_AND_RUN_PLAN.md) is complete and published as `2cd85c3`. The approved migration, idempotent five-station seed, and post-migration least-privilege validation completed with content-free evidence; application activation remains separately gated.
 - **M2.2 Least-Privilege Role-and-Grant Artifact:** [Role-and-grant artifact](M2.2_STAGING_ROLE_AND_GRANT_ARTIFACT.sql) defines platform/bootstrap, migrator, runtime, backup, restore, and evidence-review boundaries and was applied only in approved M2.2 phases. It creates no runtime/audio authority.
 - **M2.3 Topology Validation Plan:** [Staging topology validation plan](M2.3_STAGING_TOPOLOGY_VALIDATION_PLAN.md) is complete and published as `be6a242`; the approved topology observation validated the non-public PostgreSQL-only staging boundary without starting an application or runtime service.
-- **M2.4 Backup, Restore, and DR Plan:** [Staging backup, restore, and DR rehearsal plan](M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md) is published as `c8d5904`. The versioned [logical-backup authority artifact](M2.4_STAGING_BACKUP_AUTHORITY.sql) and repository backup command made the approved custom-archive, integrity, manifest, and 14-successful-day retention contract executable. Backup creation and verification completed with content-free evidence `m2-backup-20260804T202301068Z-8a1a86fc408de506`; the isolated recovery-target contract and separate restore authority are locally implemented and uncommitted. Restore rehearsal and DR acceptance remain unstarted.
+- **M2.4 Backup, Restore, and DR Plan:** [Staging backup, restore, and DR rehearsal plan](M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md) is published as `c8d5904`. The versioned [logical-backup authority artifact](M2.4_STAGING_BACKUP_AUTHORITY.sql) and repository backup command made the approved custom-archive, integrity, manifest, and 14-successful-day retention contract executable. Backup creation and verification completed with content-free evidence `m2-backup-20260804T202301068Z-8a1a86fc408de506`; the isolated recovery-target rehearsal passed with `m2-restore-20260804T211341391Z-33b489dab2be47b7`. M2 acceptance remains unstarted.
 - **M2.5 Operational-Authorization Decision Packet:** [Operational-authorization decision packet](M2.5_OPERATIONAL_AUTHORIZATION_DECISION_PACKET.md) is complete and published as `b07814d`. It captures owner decisions required for the execution gates and M2 acceptance; it authorizes no connection, migration, topology validation, backup, restore, rehearsal, or acceptance. **Next approval gate: owner completion of its decisions before any separately scoped M2.2 Migration Execution Gate authorization.**
 
 ### Phase 3: M3 — Media Ingestion, Metadata & Asset Lifecycle
