@@ -113,12 +113,14 @@ async function safeDirectory(
   }
 }
 
-function containerEnvironment(password: string): NodeJS.ProcessEnv {
+function containerEnvironment(connection: Connection): NodeJS.ProcessEnv {
   return {
     ...process.env,
+    PGDATABASE: connection.database,
     PGHOST: "127.0.0.1",
-    PGPASSWORD: password,
+    PGPASSWORD: connection.password,
     PGPORT: "5432",
+    PGUSER: connection.user,
   };
 }
 
@@ -222,7 +224,7 @@ async function waitForTarget(connection: Connection): Promise<void> {
     try {
       await compose(
         ["exec", "-T", service, "pg_isready"],
-        containerEnvironment(connection.password),
+        containerEnvironment(connection),
       );
       return;
     } catch {
@@ -392,7 +394,7 @@ async function run(): Promise<{ evidenceReference: string }> {
         "m2_restore_authority_phase=provision",
       ],
       {
-        ...containerEnvironment(platform.password),
+        ...containerEnvironment(platform),
         M2_RESTORE_AUTHORITY_PASSWORD: restore.password,
       },
       createReadStream("docs/M2.4_STAGING_RESTORE_AUTHORITY.sql"),
@@ -425,7 +427,7 @@ async function run(): Promise<{ evidenceReference: string }> {
         "-d",
         restore.database,
       ],
-      containerEnvironment(restore.password),
+      containerEnvironment(restore),
       createReadStream(selected.archive),
     ).catch(() => {
       throw new StagingRestoreError("archive_restore");
