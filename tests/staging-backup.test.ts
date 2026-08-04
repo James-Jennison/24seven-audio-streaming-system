@@ -53,6 +53,7 @@ test("backup authority artifact passes the protected input through transaction s
     artifact,
     /current_setting\('m2\.backup_authority_password', true\)/,
   );
+  assert.match(artifact, /\('provision', 'rotate'\)/);
   assert.doesNotMatch(
     artifact,
     /DO \$\$[\s\S]*:'m2_backup_authority_password'/,

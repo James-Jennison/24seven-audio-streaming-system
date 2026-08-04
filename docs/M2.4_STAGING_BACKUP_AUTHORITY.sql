@@ -8,7 +8,7 @@
 --
 -- Invoke only with both variables supplied from protected operator inputs:
 --   psql -X -v ON_ERROR_STOP=1 \
---     -v m2_backup_authority_phase=provision \
+--     -v m2_backup_authority_phase=provision-or-rotate \
 --     -v m2_backup_authority_password=... \
 --     -f docs/M2.4_STAGING_BACKUP_AUTHORITY.sql
 --
@@ -46,7 +46,7 @@ DECLARE
   backup_password TEXT := current_setting('m2.backup_authority_password', true);
   conflicting_group TEXT;
 BEGIN
-  IF current_setting('m2.backup_authority_phase', true) <> 'provision' THEN
+  IF current_setting('m2.backup_authority_phase', true) NOT IN ('provision', 'rotate') THEN
     RAISE EXCEPTION 'm2 backup authority phase is not approved';
   END IF;
 
@@ -58,16 +58,28 @@ BEGIN
     RAISE EXCEPTION 'backup authority password is absent';
   END IF;
 
-  IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = backup_login) THEN
-    RAISE EXCEPTION 'backup export login already exists; rotation requires a separate approval';
+  IF current_setting('m2.backup_authority_phase', true) = 'provision' THEN
+    IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = backup_login) THEN
+      RAISE EXCEPTION 'backup export login already exists; use separately approved rotation';
+    END IF;
+    EXECUTE format(
+      'CREATE ROLE %I LOGIN INHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS CONNECTION LIMIT 1 PASSWORD %L',
+      backup_login,
+      backup_password
+    );
+  ELSIF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = backup_login) THEN
+    RAISE EXCEPTION 'backup export login is absent; use separately approved provisioning';
+  ELSE
+    EXECUTE format(
+      'ALTER ROLE %I LOGIN INHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS CONNECTION LIMIT 1 PASSWORD %L',
+      backup_login,
+      backup_password
+    );
   END IF;
 
-  EXECUTE format(
-    'CREATE ROLE %I LOGIN INHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS CONNECTION LIMIT 1 PASSWORD %L',
-    backup_login,
-    backup_password
-  );
-  EXECUTE format('GRANT %I TO %I', backup_group, backup_login);
+  IF NOT pg_has_role(backup_login, backup_group, 'member') THEN
+    EXECUTE format('GRANT %I TO %I', backup_group, backup_login);
+  END IF;
 
   FOREACH conflicting_group IN ARRAY ARRAY[
     'twentyfourseven_staging_migrator',
@@ -75,7 +87,9 @@ BEGIN
     'twentyfourseven_staging_restore',
     'twentyfourseven_staging_evidence_review'
   ] LOOP
-    EXECUTE format('REVOKE %I FROM %I', conflicting_group, backup_login);
+    IF pg_has_role(backup_login, conflicting_group, 'member') THEN
+      EXECUTE format('REVOKE %I FROM %I', conflicting_group, backup_login);
+    END IF;
   END LOOP;
 END;
 $$;
