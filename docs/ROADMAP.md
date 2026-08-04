@@ -158,10 +158,10 @@ approved sub-goal.
 
 ## Completion ledger and forecast calendar
 
-The ledger records completed work done on **2026-08-03** separately from
-planning-only documentation. Forecast windows are rolling calendar ranges and
-must be replaced with actual completion dates and evidence when each boundary
-is accepted.
+The ledger records completed work separately from planning-only documentation.
+The forecast calendar contains only uncompleted, approval-gated work. When a
+sub-goal is accepted, remove it from the forecast and record its actual UTC
+completion date and evidence in the ledger.
 
 ### Completed work
 
@@ -178,8 +178,6 @@ is accepted.
 
 | Sub-goal                                                | Forecast completion window  | Status / completion-record trigger                                       |
 | ------------------------------------------------------- | --------------------------- | ------------------------------------------------------------------------ |
-| M1.3 — Role-aware operator UI                           | Completed 2026-08-03        | Complete; committed and pushed as `9772b69`.                             |
-| M1.4 — Local-only M1 acceptance decision                | Completed 2026-08-04 UTC    | Complete; M1 completion recorded. M2 remains separately approval-gated.  |
 | M2.1 — Staging activation plan and rehearsal design     | November–December 2026      | Approval-gated; replace after owner-approved plan.                       |
 | M2.2 — Staging PostgreSQL migration verification        | December 2026–January 2027  | Approval-gated; replace after approved staging migration evidence.       |
 | M2.3 — Separately deployable staging topology           | January–February 2027       | Approval-gated; replace after topology-boundary validation.              |
@@ -326,8 +324,9 @@ operational approval must state:
 > the approved development environment, validate backup/restore, and keep all
 > services non-public.”
 
-Planning estimate: M1.3/M1.4 is summarized in the remaining-work table and
-must be recalibrated after the M1.3 approval boundary.
+M1 completion dates and evidence are retained in the completion ledger. The
+next forecast begins at M2 and must be recalibrated only after a separately
+approved M2 boundary.
 
 ## Phase 2 — M2: Persistence Activation, Staging Infrastructure, and DR
 
@@ -1189,8 +1188,7 @@ observation/rollback, with an indicative completion range of **June 2031–March
 ## Dependency and critical path
 
 ```text
-M1.3 role-aware operator UI
-  → M1.4 local-only M1 acceptance recommendation
+M1 complete (M1.1–M1.4)
   → M2 staging activation, migration, topology, and DR proof
   → M3 immutable rights-aware asset lifecycle
   → M4 deterministic compilation and published-artifact acceptance
@@ -1201,18 +1199,19 @@ M1.3 role-aware operator UI
   → M9 guarded cutover, rollback observation, and separately approved retirement
 ```
 
-This is a planning forecast, not a launch date. M1.3/M1.4 must complete before
-M2 operational work can begin. M2 depends on staging PostgreSQL readiness,
-controlled migration execution, backup/restore exercises, and DR evidence. M3
-must establish immutable assets before M4 publishes runtime-consumable handles;
-M4 artifact acceptance precedes M5 runtime consumption. M5 is governed by
-measurable runtime/fault/DSP evidence and subjective listening approval, which
-can widen its elapsed range. M6 can propose only safe M4 future-publication
-changes, never direct runtime queue control. M7 depends on the approved runtime
-and PCM-bus boundary and needs controlled infrastructure testing; M8 needs a
-meaningful shadow-observation period and operator listening signoff, not code
-completion alone. M9 requires deliberate observation/rollback windows,
-compliance evidence, and explicit cutover and retirement approvals.
+This is a planning forecast, not a launch date. M1 is complete, but M2
+operational work cannot begin without separate explicit approval. M2 depends
+on staging PostgreSQL readiness, controlled migration execution,
+backup/restore exercises, and DR evidence. M3 must establish immutable assets
+before M4 publishes runtime-consumable handles; M4 artifact acceptance precedes
+M5 runtime consumption. M5 is governed by measurable runtime/fault/DSP
+evidence and subjective listening approval, which can widen its elapsed range.
+M6 can propose only safe M4 future-publication changes, never direct runtime
+queue control. M7 depends on the approved runtime and PCM-bus boundary and
+needs controlled infrastructure testing; M8 needs a meaningful
+shadow-observation period and operator listening signoff, not code completion
+alone. M9 requires deliberate observation/rollback windows, compliance
+evidence, and explicit cutover and retirement approvals.
 
 Some design, fixture, and documentation work can be prepared before later
 gates, but it must not activate a service, create media, use credentials, or
