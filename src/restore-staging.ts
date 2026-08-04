@@ -30,7 +30,6 @@ const migration = "002_m1_control_plane.sql";
 const stationScopedTables = [
   "media_assets",
   "playlists",
-  "playlist_items",
   "separation_rules",
   "rotation_rules",
   "clocks",
@@ -316,22 +315,30 @@ async function validate(
 ): Promise<void> {
   const pool = new Pool({ connectionString: platformUrl, max: 1 });
   try {
-    const [extension, ledger, stations, columns, authority] = await Promise.all(
-      [
-        pool.query("SELECT 1 FROM pg_extension WHERE extname = 'pgcrypto'"),
-        pool.query("SELECT 1 FROM schema_migrations WHERE name = $1", [
-          migration,
-        ]),
-        pool.query("SELECT id FROM stations ORDER BY id"),
-        pool.query(
-          "SELECT table_name FROM information_schema.columns WHERE table_schema = 'public' AND column_name = 'station_id'",
-        ),
-        pool.query(
-          "SELECT rolsuper, rolcreaterole, rolcreatedb, rolreplication, rolbypassrls FROM pg_roles WHERE rolname = $1",
-          [restoreUser],
-        ),
-      ],
-    );
+    const [
+      extension,
+      ledger,
+      stations,
+      columns,
+      playlistItemReference,
+      authority,
+    ] = await Promise.all([
+      pool.query("SELECT 1 FROM pg_extension WHERE extname = 'pgcrypto'"),
+      pool.query("SELECT 1 FROM schema_migrations WHERE name = $1", [
+        migration,
+      ]),
+      pool.query("SELECT id FROM stations ORDER BY id"),
+      pool.query(
+        "SELECT table_name FROM information_schema.columns WHERE table_schema = 'public' AND column_name = 'station_id'",
+      ),
+      pool.query(
+        "SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'playlist_items' AND column_name = 'playlist_id'",
+      ),
+      pool.query(
+        "SELECT rolsuper, rolcreaterole, rolcreatedb, rolreplication, rolbypassrls FROM pg_roles WHERE rolname = $1",
+        [restoreUser],
+      ),
+    ]);
     const expected = seededStations.map(({ id }) => id).sort();
     const actual = stations.rows.map((row: { id: string }) => row.id).sort();
     const scoped = new Set(
@@ -345,7 +352,10 @@ async function validate(
       actual.some((id, index) => id !== expected[index])
     )
       throw new StagingRestoreError("recovery_stations");
-    if (stationScopedTables.some((table) => !scoped.has(table)))
+    if (
+      stationScopedTables.some((table) => !scoped.has(table)) ||
+      playlistItemReference.rowCount !== 1
+    )
       throw new StagingRestoreError("recovery_station_isolation");
     if (
       authority.rowCount !== 1 ||
