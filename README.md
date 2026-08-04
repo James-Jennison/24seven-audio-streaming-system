@@ -14,13 +14,14 @@ M1 is formally complete as a local-only programming-control-plane milestone.
 M2 is formally accepted for isolated staging persistence and disaster-recovery
 readiness. PostgreSQL is the sole live persistence store; active staging is
 non-public and loopback-only. The finalized M2.5 decision-only packet creates
-no standing authorization for future staging work. Audio runtime, media import,
-output services, and public listeners remain deliberately unavailable.
+no standing authorization for future staging work. The M3 local-only
+control-plane foundation is implemented pending commit/acceptance, but audio
+runtime, media import, output services, and public listeners remain deliberately
+unavailable.
 
 Any future staging connection, Compose/service action, migration, validation,
-backup, restore, topology change, opaque-reference use, or deployment requires
-a new, separately scoped explicit owner authorization. M3.1 planning remains
-separately approval-gated.
+backup, restore, topology change, opaque-reference use, worker activation, or
+deployment requires a new, separately scoped explicit owner authorization.
 
 The current UI makes this explicit: every station reports that the audio runtime is not implemented. No mocked audio path is presented as working.
 

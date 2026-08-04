@@ -60,7 +60,10 @@ export class PostgresPersistence implements StationRepository {
         "CREATE TABLE IF NOT EXISTS schema_migrations (name TEXT PRIMARY KEY, applied_at TIMESTAMPTZ NOT NULL)",
       ),
     );
-    for (const name of ["002_m1_control_plane.sql"]) {
+    for (const name of [
+      "002_m1_control_plane.sql",
+      "003_m3_asset_lifecycle.sql",
+    ]) {
       const existing = await this.guarded("migration_ledger_lookup", () =>
         this.pool.query("SELECT 1 FROM schema_migrations WHERE name = $1", [
           name,

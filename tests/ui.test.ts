@@ -14,8 +14,14 @@ test("operator shell preserves the configured stations and makes the control-pla
   assert.match(html, /Proposed \/ Preview/);
   assert.match(html, /Published \(Versioned\)/);
   assert.match(html, /Executed \(Runtime\)/);
-  assert.match(html, /No approval action is exposed by the current M1 API/);
-  assert.match(html, /Runtime controls are unavailable and not rendered here/);
+  assert.match(
+    html,
+    /M3 approval only permits a future sandbox boundary; it starts no worker/,
+  );
+  assert.match(
+    html,
+    /M5 runtime controls are unavailable and not rendered here/,
+  );
   assert.match(html, /aria-live="polite"/);
   assert.match(html, /Station context/);
   assert.match(html, /x-csrf-token/);
@@ -34,6 +40,7 @@ test("operator shell preserves the configured stations and makes the control-pla
     "Clocks",
     "Program blocks",
     "Scheduled events",
+    "M3 media import requests",
   ])
     assert.match(html, new RegExp(label));
   for (const station of seededStations)

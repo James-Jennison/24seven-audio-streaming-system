@@ -139,7 +139,7 @@ test("operator root exposes only the programming-control UI shell", async (conte
     assert.match(html, /Deterministic dry-run preview/);
     assert.match(
       html,
-      /Runtime controls are unavailable and not rendered here/,
+      /M5 runtime controls are unavailable and not rendered here/,
     );
     assert.doesNotMatch(html, /Icecast|SHOUTcast|Liquidsoap|FFmpeg/);
   });

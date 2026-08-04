@@ -78,7 +78,7 @@ test("PostgreSQL migration paths classify every repository-supported query failu
   );
 
   const seedFailure = new PostgresPersistence("postgresql://test", {
-    pool: new FakePool(7) as unknown as Pool,
+    pool: new FakePool(13) as unknown as Pool,
     readMigration: () => "safe migration fixture",
   });
   await seedFailure.migrate();

@@ -1,5 +1,39 @@
 # Current State
 
+## M3 local-only foundation — implemented, pending commit/acceptance
+
+M3 is implemented only in this local worktree under the explicit M3 approval.
+It adds a station-scoped, non-executing control-plane foundation for opaque
+import requests/jobs; immutable asset revisions, provenance, analysis,
+metadata-candidate, resolution, and failure records; deterministic EBU R128
+and cue/fade contracts; and a provider-neutral, MusicBrainz-compatible
+metadata boundary. The lifecycle is bounded:
+
+`proposed → validated → approved_for_processing → processing → analyzed → metadata_pending → ready_for_schedule_use`
+
+with `rejected`, `quarantined`, `failed`, and `superseded` branches. Readiness
+does not publish a schedule, make an asset runtime-available, or authorize M4
+or M5. The M3 UI/API can preview opaque request validation, show lifecycle,
+and record validation/approval/rejection; approval starts no worker.
+
+`003_m3_asset_lifecycle.sql` is an additive PostgreSQL migration registered in
+the existing ordered migration runner but has **not** been executed. It uses
+same-station composite foreign keys, lifecycle triggers, idempotency keys, and
+append-only revision/result/candidate/resolution records. The only processing
+implementation is an injectable deterministic fixture boundary: it has no
+filesystem, subprocess, network, media-tool, schedule, runtime, encoder,
+relay, or Icecast capability. No media/title/artist/path/tag/payload/provider
+data is logged or audited.
+
+No migration, database connection, container, application process, worker,
+media ingestion, external provider call, playout, encoder, relay, stream, or
+deployment was performed for M3. Staging activation of the M3 schema or any
+future worker requires a new explicit owner approval and evidence for reviewed
+commit/migration identity, least-privilege role scope, station isolation,
+empty/non-production input boundary, sandbox limits, inactive runtime/encoder/
+Icecast planes, rollback/stop conditions, and content-free verification. See
+[the M3 implementation and authorization record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md).
+
 ## M1 complete — 2026-08-04 UTC
 
 - Node 22 / TypeScript control-plane scaffold with strict type checking.
@@ -40,14 +74,16 @@ least-privilege, RPO, RTO, and cleanup checks with content-free evidence
 `m2-restore-20260804T211341391Z-33b489dab2be47b7`. M2 is formally accepted
 as of 2026-08-04 UTC for staging persistence and DR readiness; the bounded
 decision record is [M2 acceptance and staging-readiness decision](M2_ACCEPTANCE_AND_STAGING_READINESS_DECISION.md).
-No application, runtime, listener-facing, production, or M3 action has
-occurred or is authorized.
+No application, runtime, listener-facing, or production action occurred under
+M2. The subsequent M3 local-only implementation is separately authorized and
+does not alter the accepted M2 staging posture.
 
 M2.5 **Operational-Authorization Decision Packet** is finalized as a
 decision-only governance record. It records the accepted M2 posture and the
 future owner gates for any separately scoped staging action; it creates no
-standing authorization and performed no staging operation. M3.1 planning
-remains separately approval-gated.
+standing authorization and performed no staging operation. The subsequent M3
+local implementation does not create standing authorization for any staging or
+operational action.
 
 The M2.2 least-privilege [role-and-grant artifact](M2.2_STAGING_ROLE_AND_GRANT_ARTIFACT.sql)
 was applied in the approved phases required for migration and runtime-boundary
@@ -60,13 +96,14 @@ authorize application activation.
 
 M2 acceptance records only the non-public staging persistence and DR outcome.
 It does not claim application activation, browser validation, runtime work, or
-listener-facing readiness. The next permissible work is M3.1 planning only,
-after separate explicit approval.
+listener-facing readiness. M3 local implementation was later separately
+approved; any staging activation remains independently approval-gated.
 
 ## Deliberately not implemented
 
-- Media files, import/download tooling, media scanning, credentials, public/browser exposure, production infrastructure, and any production media migration.
-- Liquidsoap/FFmpeg execution, playout, transitions, audio processing, encoders, Icecast/SHOUTcast, live-DJ audio, telemetry, listeners, relays, or current-system integration.
+- Media files, upload/download tooling, media scanning, credentials, public exposure, production infrastructure, and any production media migration.
+- Worker/container/subprocess launch; FFmpeg or other media-tool execution; external provider calls; playout, transitions, applied DSP, encoders, Icecast/SHOUTcast, live-DJ audio, telemetry, listeners, relays, or current-system integration.
+- M4 schedule publication/versioning, M5 runtime/DSP execution, and M7 source-encoder or listener-facing work.
 
 ## Approved future architecture gates (roadmap only)
 
@@ -75,7 +112,8 @@ artifacts, runtime/fault and automation-sandbox contracts, DSP ownership,
 epoch-aware metadata failover, and evidence-based shadow acceptance. Its
 sequential M1–M9 approval-gate policy and range-based calendar forecast are
 planning tools only: they are not implemented capabilities and do not authorize
-M3–M9 work or operational activity.
+M4–M9 work or operational activity. M3 is limited to the local-only foundation
+recorded above and remains non-operational.
 
 ## M1.4 local-only acceptance record
 

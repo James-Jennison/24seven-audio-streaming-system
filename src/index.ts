@@ -5,6 +5,7 @@ import {
   PostgresM1Repositories,
   type SqlExecutor,
 } from "./db/m1-repositories.js";
+import { PostgresM3Repositories } from "./db/m3-repositories.js";
 
 const host = process.env.HOST ?? "127.0.0.1";
 if (host !== "127.0.0.1" && host !== "::1") {
@@ -24,6 +25,9 @@ if (!databaseUrl) {
 }
 const persistence = new PostgresPersistence(databaseUrl);
 const m1 = new PostgresM1Repositories(
+  persistence.pool as unknown as SqlExecutor,
+);
+const m3 = new PostgresM3Repositories(
   persistence.pool as unknown as SqlExecutor,
 );
 
@@ -57,6 +61,16 @@ const controlPlane = createControlPlaneServer(
       m1.update(kind, actor, stationId, id, body),
     auditRejection: (actor, stationId, kind, id) =>
       m1.auditRejection(actor, stationId, kind, id),
+  },
+  {
+    listImportRequests: (stationId) => m3.listImportRequests(stationId),
+    readImportRequest: (stationId, id) => m3.readImportRequest(stationId, id),
+    createImportRequest: (actor, stationId, input) =>
+      m3.createImportRequest(actor, stationId, input),
+    transitionImportRequest: (actor, stationId, id, next) =>
+      m3.transitionImportRequest(actor, stationId, id, next),
+    auditRejection: (actor, stationId, id) =>
+      m3.auditRejection(actor, stationId, id),
   },
 );
 controlPlane.server.listen(port, host, () => {

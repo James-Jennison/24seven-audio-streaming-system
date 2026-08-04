@@ -13,22 +13,28 @@ function source(relativePath: string): string {
   );
 }
 
-test("M1 operator UI stops at the proposed preview boundary", () => {
+test("operator UI exposes the bounded M3 asset approval boundary without publication or execution", () => {
   const html = renderDashboard(seededStations, {
     version: "acceptance-test",
     buildId: "acceptance-test",
   });
 
   assert.match(html, /Proposed \/ Preview/);
-  assert.match(html, /No approval action is exposed by the current M1 API/);
+  assert.match(
+    html,
+    /M3 approval only permits a future sandbox boundary; it starts no worker/,
+  );
   assert.match(html, /no published version is available/);
-  assert.match(html, /Runtime controls are unavailable and not rendered here/);
+  assert.match(
+    html,
+    /M5 runtime controls are unavailable and not rendered here/,
+  );
   assert.match(html, /This read-only preview produces proposals only/);
   assert.match(html, /window\.confirm\(/);
   assert.doesNotMatch(html, /<input[^>]+type="file"/i);
   assert.doesNotMatch(
     html,
-    /\/api\/v1\/[^"']*\/(?:approve|publish|execute|playout|encoder|relay|stream)/i,
+    /\/api\/v1\/[^"']*\/(?:publish|execute|playout|encoder|relay|stream)/i,
   );
   assert.doesNotMatch(
     html,
@@ -39,6 +45,7 @@ test("M1 operator UI stops at the proposed preview boundary", () => {
 test("M1 live composition is PostgreSQL-only and has no runtime bridge", () => {
   const entrypoint = source("../src/index.js");
   const routes = source("../src/api/m1-programming-routes.js");
+  const m3Routes = source("../src/api/m3-asset-routes.js");
   const packageJson = source("../../package.json");
 
   assert.match(entrypoint, /new PostgresPersistence\(databaseUrl\)/);
@@ -48,5 +55,6 @@ test("M1 live composition is PostgreSQL-only and has no runtime bridge", () => {
     `${entrypoint}\n${routes}`,
     /child_process|spawn\(|exec\(|Liquidsoap|FFmpeg|Icecast|SHOUTcast|playout|encoder|relay/i,
   );
+  assert.doesNotMatch(m3Routes, /child_process|spawn\(|exec\(|fetch\(/i);
   assert.doesNotMatch(packageJson, /"check"[^\n]*\bmigrate\b/);
 });

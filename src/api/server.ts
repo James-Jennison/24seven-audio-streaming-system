@@ -14,6 +14,7 @@ import {
   handleProgramming,
   type ProgrammingPersistence,
 } from "./m1-programming-routes.js";
+import { handleM3Assets, type M3AssetPersistence } from "./m3-asset-routes.js";
 
 export interface StationReader {
   list():
@@ -32,6 +33,7 @@ export function createControlPlaneServer(
   auth?: AuthPersistence,
   sessions?: SessionLookup,
   programming?: ProgrammingPersistence,
+  m3Assets?: M3AssetPersistence,
 ): ControlPlaneServer {
   let ready = false;
 
@@ -45,6 +47,7 @@ export function createControlPlaneServer(
       auth,
       sessions,
       programming,
+      m3Assets,
     ).catch(() => sendJson(response, 500, { error: "internal_error" }));
   });
   ready = true;
@@ -60,6 +63,7 @@ async function handleRequest(
   auth?: AuthPersistence,
   sessions?: SessionLookup,
   programming?: ProgrammingPersistence,
+  m3Assets?: M3AssetPersistence,
 ): Promise<void> {
   const method = request.method ?? "GET";
   const url = new URL(request.url ?? "/", "http://localhost");
@@ -68,6 +72,12 @@ async function handleRequest(
     sessions &&
     programming &&
     (await handleProgramming(request, response, sessions, programming))
+  )
+    return;
+  if (
+    sessions &&
+    m3Assets &&
+    (await handleM3Assets(request, response, sessions, m3Assets))
   )
     return;
   if (sessions && method === "GET" && url.pathname === "/api/v1/session") {

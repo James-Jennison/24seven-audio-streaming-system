@@ -48,7 +48,8 @@ Replace legacy **SAM Pro / SAM Broadcaster** and **SHOUTcast 1.9.8** with a Linu
 - M2 is formally accepted as of 2026-08-04 UTC. Its finalized M2.5
   decision-only packet requires a new, separately scoped owner authorization
   before any future staging action; it creates no standing operational
-  approval. M3.1 planning is the next project approval-gated sub-goal.
+  approval. The later M3 local-only implementation remains pending
+  commit/acceptance and creates no operational authority.
 
 ### M2 naming convention
 
@@ -84,34 +85,36 @@ rehearsal passed on an isolated disposable target with content-free evidence
 `m2-restore-20260804T211341391Z-33b489dab2be47b7`. **M2 is formally
 accepted** for staging persistence and DR readiness; see the
 [M2 acceptance and staging-readiness decision](M2_ACCEPTANCE_AND_STAGING_READINESS_DECISION.md).
-No application, audio/listener, production, or M3 work is authorized by these
-records.
+These M2 records authorize no application, audio/listener, or production work.
+The later M3 local-only implementation is separately authorized and does not
+alter the M2 staging boundary.
 
-| Area                  | Current Worktree Status                                                                                                   | State                          |
-| :-------------------- | :------------------------------------------------------------------------------------------------------------------------ | :----------------------------- |
-| **Live Persistence**  | `PostgresPersistence`, `PostgresM1Repositories`, dual runtime/migrator URLs, loopback Compose, `002_m1_control_plane.sql` | M2 Accepted (isolated staging) |
-| **Identity & Auth**   | scrypt hashing, server sessions, station-scoped grants, bootstrap/login adapters, CSRF protection                         | M1.1 / M1.2 Complete           |
-| **Programming Model** | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, scheduled events                    | M1.1 / M1.2 Complete           |
-| **API Boundary**      | Protected programming adapter, safe error mapping, authenticated dry-run route                                            | M1.2 Complete                  |
-| **Update Validation** | Scoped load/merge/validate/persist paths across all 7 entity families                                                     | M1.2 Complete                  |
-| **Operator UI**       | Station-scoped UI connected to protected APIs; explicit unavailable runtime status                                        | M1.3 Complete (`9772b69`)      |
-| **Validation**        | `npm run check` passes (build, lint, typecheck, test, dependency audit)                                                   | M1 Complete                    |
+| Area                   | Current Worktree Status                                                                                                           | State                          |
+| :--------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :----------------------------- |
+| **Live Persistence**   | `PostgresPersistence`, `PostgresM1Repositories`, dual runtime/migrator URLs, loopback Compose, `002_m1_control_plane.sql`         | M2 Accepted (isolated staging) |
+| **Identity & Auth**    | scrypt hashing, server sessions, station-scoped grants, bootstrap/login adapters, CSRF protection                                 | M1.1 / M1.2 Complete           |
+| **Programming Model**  | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, scheduled events                            | M1.1 / M1.2 Complete           |
+| **M3 Asset Lifecycle** | Opaque import/job lifecycle, append-only provenance/analysis contracts, deterministic fixture boundary, protected status controls | Local-only; activation gated   |
+| **API Boundary**       | Protected programming adapter, safe error mapping, authenticated dry-run route                                                    | M1.2 Complete                  |
+| **Update Validation**  | Scoped load/merge/validate/persist paths across all 7 entity families                                                             | M1.2 Complete                  |
+| **Operator UI**        | Station-scoped UI connected to protected APIs; explicit unavailable runtime status                                                | M1.3 Complete (`9772b69`)      |
+| **Validation**         | `npm run check` passes (build, lint, typecheck, test, dependency audit)                                                           | M1 Complete                    |
 
 ---
 
 ## 4. Master Milestone Timeline
 
-| Milestone | Focus Area                  | Focused Effort | Elapsed Duration |    Indicative Window     | Key Gate / Dependency                |
-| :-------: | :-------------------------- | :------------: | :--------------: | :----------------------: | :----------------------------------- |
-|  **M1**   | Control Plane & Security    |    Complete    |     Complete     | **Completed 2026-08-04** | Formal M1 Local Acceptance           |
-|  **M2**   | Staging, Migration & DR     |    Complete    |     Complete     | **Completed 2026-08-04** | M2 Acceptance Decision               |
-|  **M3**   | Ingestion & Asset Lifecycle |    8–14 wks    |    14–28 wks     |   Apr 2027 – Oct 2027    | Rights Manifest & Sandbox Policy     |
-|  **M4**   | Advanced Scheduling         |    7–12 wks    |    10–20 wks     |   Jul 2027 – Mar 2028    | Immutable Asset Handles              |
-|  **M5**   | Playout Runtime & DSP       |   16–28 wks    |    28–52 wks     |   Feb 2028 – May 2029    | Published Schedule Artifacts         |
-|  **M6**   | Requests & Moderation       |    5–9 wks     |     8–18 wks     |   May 2029 – Oct 2029    | Public Threat Model Approval         |
-|  **M7**   | Encoders & Icecast          |   10–18 wks    |    18–36 wks     |   Oct 2029 – Jul 2030    | Private Infrastructure Approval      |
-|  **M8**   | Shadow Testing & Parity     |    8–14 wks    |    16–32 wks     |   Aug 2030 – May 2031    | Parallel Listening & Failover Drills |
-|  **M9**   | Cutover & Decommissioning   |    6–12 wks    |    12–28 wks     |   Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off   |
+| Milestone | Focus Area                  |                 Focused Effort                 |     Elapsed Duration      |    Indicative Window     | Key Gate / Dependency                 |
+| :-------: | :-------------------------- | :--------------------------------------------: | :-----------------------: | :----------------------: | :------------------------------------ |
+|  **M1**   | Control Plane & Security    |                    Complete                    |         Complete          | **Completed 2026-08-04** | Formal M1 Local Acceptance            |
+|  **M2**   | Staging, Migration & DR     |                    Complete                    |         Complete          | **Completed 2026-08-04** | M2 Acceptance Decision                |
+|  **M3**   | Ingestion & Asset Lifecycle | Local foundation implemented; activation gated | Not started operationally |    Pending acceptance    | Explicit staging/worker authorization |
+|  **M4**   | Advanced Scheduling         |                    7–12 wks                    |         10–20 wks         |   Jul 2027 – Mar 2028    | Immutable Asset Handles               |
+|  **M5**   | Playout Runtime & DSP       |                   16–28 wks                    |         28–52 wks         |   Feb 2028 – May 2029    | Published Schedule Artifacts          |
+|  **M6**   | Requests & Moderation       |                    5–9 wks                     |         8–18 wks          |   May 2029 – Oct 2029    | Public Threat Model Approval          |
+|  **M7**   | Encoders & Icecast          |                   10–18 wks                    |         18–36 wks         |   Oct 2029 – Jul 2030    | Private Infrastructure Approval       |
+|  **M8**   | Shadow Testing & Parity     |                    8–14 wks                    |         16–32 wks         |   Aug 2030 – May 2031    | Parallel Listening & Failover Drills  |
+|  **M9**   | Cutover & Decommissioning   |                    6–12 wks                    |         12–28 wks         |   Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off    |
 
 ---
 
@@ -130,7 +133,8 @@ records.
   M2.4 backup/integrity/restore rehearsal completed under independent,
   bounded approvals. The [M2 acceptance decision](M2_ACCEPTANCE_AND_STAGING_READINESS_DECISION.md)
   does not authorize application activation, runtime work, listener-facing
-  work, production activity, or M3.
+  work or production activity. The later M3 local-only implementation is
+  separately authorized and remains non-operational.
 - **Objective:** Validate PostgreSQL migrations and disaster recovery in an isolated, non-public staging environment.
 - **Key Tasks:** Apply `002_m1_control_plane.sql` via dedicated migration role; verify least-privilege runtime access; establish backup/restore drills and recovery runbooks.
 - **M2.1 Staging Activation Plan:** [Staging activation and migration-rehearsal plan](M2.1_STAGING_ACTIVATION_PLAN.md) is complete and published as `b7a51cd`; it authorizes no operational activity.
@@ -138,12 +142,27 @@ records.
 - **M2.2 Least-Privilege Role-and-Grant Artifact:** [Role-and-grant artifact](M2.2_STAGING_ROLE_AND_GRANT_ARTIFACT.sql) defines platform/bootstrap, migrator, runtime, backup, restore, and evidence-review boundaries and was applied only in approved M2.2 phases. It creates no runtime/audio authority.
 - **M2.3 Topology Validation Plan:** [Staging topology validation plan](M2.3_STAGING_TOPOLOGY_VALIDATION_PLAN.md) is complete and published as `be6a242`; the approved topology observation validated the non-public PostgreSQL-only staging boundary without starting an application or runtime service.
 - **M2.4 Backup, Restore, and DR Plan:** [Staging backup, restore, and DR rehearsal plan](M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md) is published as `c8d5904`. The versioned [logical-backup authority artifact](M2.4_STAGING_BACKUP_AUTHORITY.sql) and repository backup command made the approved custom-archive, integrity, manifest, and 14-successful-day retention contract executable. Backup creation and verification completed with content-free evidence `m2-backup-20260804T202301068Z-8a1a86fc408de506`; the isolated recovery-target rehearsal passed with `m2-restore-20260804T211341391Z-33b489dab2be47b7` and cleanup passed.
-- **M2.5 Operational-Authorization Decision Packet:** [Operational-authorization decision packet](M2.5_OPERATIONAL_AUTHORIZATION_DECISION_PACKET.md) is finalized as a decision-only record. It records the accepted M2 posture and the exact future owner gates for any Compose/service, migration, runtime, backup/restore, topology, opaque-reference, or promotion action. It creates no standing approval and performed no operation. **Next project approval gate: M3.1 media-intake and immutable asset-lifecycle contract planning only; any executable staging action separately requires an explicit owner authorization.**
+- **M2.5 Operational-Authorization Decision Packet:** [Operational-authorization decision packet](M2.5_OPERATIONAL_AUTHORIZATION_DECISION_PACKET.md) is finalized as a decision-only record. It records the accepted M2 posture and the exact future owner gates for any Compose/service, migration, runtime, backup/restore, topology, opaque-reference, or promotion action. It creates no standing approval and performed no operation. The later M3 local-only implementation does not authorize an executable staging action; that still requires an explicit owner authorization.
 
 ### Phase 3: M3 — Media Ingestion, Metadata & Asset Lifecycle
 
-- **Objective:** Establish a rights-cleared, sandboxed media intake pipeline operating on an empty-library baseline.
-- **Key Tasks:** Curate 50 CC0/Public-Domain tracks per station (250 total); build an asynchronous worker for FFmpeg-based EBU R128 loudness measurement, true peak, and silence/fade candidates.
+- **Status:** Local-only foundation implemented, pending commit/acceptance; no
+  operational activation has started. See [the M3 implementation and
+  authorization record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md).
+- **Delivered locally:** Station-scoped opaque import request/job lifecycle,
+  append-only asset revision/provenance and analysis/metadata/failure schema,
+  PostgreSQL migration contract, deterministic EBU R128 and cue/fade
+  validation, provider-neutral metadata candidates, content-free audit,
+  read-only preview, and explicit validation/approval/rejection controls.
+- **Not delivered or authorized:** No media upload/import, file access,
+  FFmpeg/parser/DSP operation, worker/container/subprocess, network/provider
+  call, schedule publication, runtime action, encoder/relay/Icecast action, or
+  deployment. `ready_for_schedule_use` is an M3 asset state only; it is not M4
+  publication or M5 execution.
+- **Activation evidence gate:** A later owner approval must bound a reviewed
+  commit/migration identity, purpose-limited authority, station isolation,
+  empty/non-production input source, sandbox resource limits, no-network
+  provider posture, inactive downstream planes, and content-free results.
 
 ### Phase 4: M4 — Advanced Scheduling & Versioned Publication
 
