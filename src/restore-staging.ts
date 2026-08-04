@@ -494,8 +494,7 @@ async function run(): Promise<{ evidenceReference: string }> {
     ).catch(() => {
       throw new StagingRestoreError("restore_authority_configuration");
     });
-    await command(
-      "docker",
+    await restoreCommand(
       [
         "compose",
         "-p",
