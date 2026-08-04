@@ -45,19 +45,21 @@ Replace legacy **SAM Pro / SAM Broadcaster** and **SHOUTcast 1.9.8** with a Linu
 - Completed work is recorded with bounded evidence and an actual UTC completion
   date. Forecasts apply only to uncompleted, approval-gated work and are
   recalibrated at each approved boundary.
-- M2 is the next milestone. M2.1–M2.4 planning documentation is published;
-  every M2 operational action requires separate explicit approval.
+- M2 is the next milestone. M2.1–M2.5 planning and
+  operational-authorization preparation is complete and published; every M2
+  operational action requires separate explicit approval.
 
 ---
 
 ## 3. Current Implementation State
 
 The published baseline is **M0 (`2fa02a1`)**. **M1** was completed on
-**2026-08-04 UTC**. M2.1–M2.4 planning documentation is published. M2.5
-operational-authorization decision-packet planning is drafted locally,
-uncommitted, and non-operational. M2 operational work remains unstarted and
-pending formal approval; the next approval gate is review and commit of the
-M2.5 documentation only.
+**2026-08-04 UTC**. M2.1–M2.5 planning and operational-authorization
+preparation is complete and published through **`b07814d47668e85256dcbe03ac5f67d5c84b9d70`**;
+`main...origin/main` is aligned at that commit. M2 operational execution and
+acceptance remain unstarted and non-operational. The next approval gate is
+owner review and approval of the M2.5 decision-packet decisions before any
+separately scoped M2.2 migration-execution authorization.
 
 | Area                  | Current Worktree Status                                                                                                   | State                               |
 | :-------------------- | :------------------------------------------------------------------------------------------------------------------------ | :---------------------------------- |
@@ -96,16 +98,16 @@ M2.5 documentation only.
 
 ### Phase 2: M2 — Persistence Activation, Staging & DR
 
-- **Status:** M2.1–M2.4 planning artifacts are published. M2.5
-  operational-authorization decision-packet planning is drafted locally,
-  uncommitted, and non-operational; no M2 operational action is authorized.
+- **Status:** M2.1–M2.5 planning and operational-authorization preparation is
+  complete and published. M2 operational execution and acceptance are
+  incomplete and unstarted; no M2 operational action is authorized.
 - **Objective:** Validate PostgreSQL migrations and disaster recovery in an isolated, non-public staging environment.
 - **Key Tasks:** Apply `002_m1_control_plane.sql` via dedicated migration role; verify least-privilege runtime access; establish backup/restore drills and recovery runbooks.
-- **M2.1 plan:** [Staging activation and migration-rehearsal plan](M2.1_STAGING_ACTIVATION_PLAN.md). M2.2 migration execution, M2.3 topology validation, and M2.4 backup/restore rehearsal remain separately approval-gated.
-- **M2.2 plan:** [Staging migration preflight and run plan](M2.2_STAGING_MIGRATION_PREFLIGHT_AND_RUN_PLAN.md) is accepted; it does not authorize a staging connection or migration execution.
-- **M2.3 plan:** [Staging topology validation plan](M2.3_STAGING_TOPOLOGY_VALIDATION_PLAN.md) is accepted; it does not authorize a topology-validation action.
-- **M2.4 plan:** [Staging backup, restore, and DR rehearsal plan](M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md) is published as `c8d5904`; it remains planning-only and does not authorize backup, restore, DR rehearsal, or any other operational activity.
-- **M2.5 decision packet:** [Operational-authorization decision packet](M2.5_OPERATIONAL_AUTHORIZATION_DECISION_PACKET.md) is drafted locally, uncommitted, and non-operational. It captures required owner decisions for M2.2–M2.4 and M2 acceptance; it authorizes no connection, migration, topology validation, backup, restore, rehearsal, or acceptance. **Next approval gate: review and commit this documentation only.**
+- **M2.1 plan:** [Staging activation and migration-rehearsal plan](M2.1_STAGING_ACTIVATION_PLAN.md) is complete and published as `b7a51cd`; it authorizes no operational activity.
+- **M2.2 plan:** [Staging migration preflight and run plan](M2.2_STAGING_MIGRATION_PREFLIGHT_AND_RUN_PLAN.md) is complete and published as `2cd85c3`; it does not authorize a staging connection or migration execution.
+- **M2.3 plan:** [Staging topology validation plan](M2.3_STAGING_TOPOLOGY_VALIDATION_PLAN.md) is complete and published as `be6a242`; it does not authorize a topology-validation action.
+- **M2.4 plan:** [Staging backup, restore, and DR rehearsal plan](M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md) is complete and published as `c8d5904`; it does not authorize backup, restore, DR rehearsal, or any other operational activity.
+- **M2.5 decision packet:** [Operational-authorization decision packet](M2.5_OPERATIONAL_AUTHORIZATION_DECISION_PACKET.md) is complete and published as `b07814d`. It captures the owner decisions required for M2.2–M2.4 and M2 acceptance; it authorizes no connection, migration, topology validation, backup, restore, rehearsal, or acceptance. **Next approval gate: owner review and approval of its decisions before any separately scoped M2.2 migration-execution authorization.**
 
 ### Phase 3: M3 — Media Ingestion, Metadata & Asset Lifecycle
 

@@ -16,10 +16,10 @@ staging database boundary only to loopback. M2 is the next milestone, and its
 staging work remains independently approval-gated. Audio runtime, media import,
 output services, and public listeners remain deliberately unavailable.
 
-M2.1–M2.4 planning documentation is published. M2.5 operational-authorization
-decision-packet planning is drafted locally, uncommitted, and non-operational;
-it does not authorize any staging connection, migration, service, validation,
-backup, restore, or deployment.
+M2.1–M2.5 planning and operational-authorization preparation is complete and
+published. M2 operational execution and acceptance remain unstarted and
+separately approval-gated; this status does not authorize any staging
+connection, migration, service, validation, backup, restore, or deployment.
 
 The current UI makes this explicit: every station reports that the audio runtime is not implemented. No mocked audio path is presented as working.
 
