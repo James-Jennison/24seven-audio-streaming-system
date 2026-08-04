@@ -15,9 +15,10 @@
 
 M1.1 (foundations/persistence/security contract) and M1.2 (protected backend)
 were completed, committed, and pushed on 2026-08-03. M1.3, the role-aware
-operator UI, is the next unstarted local-only sub-goal. Its completion, M1
-completion, M2 activation, and every operational action each require separate
-explicit approval.
+operator UI, is implemented and committed locally pending owner acceptance and
+push approval. It is limited to the protected programming-control interface
+and does not authorize M1 completion, M1.4, M2 activation, or any operational
+action. Each requires separate explicit approval.
 
 ## Deliberately not implemented
 

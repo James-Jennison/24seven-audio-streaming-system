@@ -104,20 +104,20 @@ schedule pressure, or feature scope.
 The published baseline is M0 at `2fa02a1`, followed by roadmap commit
 `8fea092`. M1.1/M1.2 implementation evidence is committed and pushed in
 `1f84acc`, with the accompanying architecture-gate documentation in `832810f`.
-M1.3 is the next unstarted local-only implementation sub-goal. No migration,
+M1.3 is implemented and committed locally pending owner acceptance and push approval. No migration,
 Docker/Compose invocation, service startup, deployment, runtime/stream action,
 or production-system action is authorized by this roadmap.
 
-| Area                       | Evidence in the current worktree                                                                                                        | State                                                  |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| Live persistence direction | `PostgresPersistence`, `PostgresM1Repositories`, separate runtime/migrator URLs, loopback Compose asset, and `002_m1_control_plane.sql` | M1.1 complete; migration remains unapplied             |
-| Identity and authorization | scrypt hashing, server-session primitives, roles/station grants, bootstrap/login/logout adapters, and CSRF/session helpers              | M1.1/M1.2 complete locally and pushed                  |
-| Programming model          | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, and scheduled events                              | M1.1/M1.2 complete locally and pushed                  |
-| API boundary               | Protected programming adapter, safe error mapping, authenticated dry-run route, and negative-path coverage                              | M1.2 complete and pushed                               |
-| Update validation          | All seven entity families use scoped load/merge/validate/persist paths; retained and replacement references are SQL-scoped              | M1.2 complete and pushed                               |
-| UI                         | M1 state-rendering primitives exist; active browser UI remains the M0 status dashboard                                                  | M1.3 next, unstarted                                   |
-| Validation                 | `npm run check` builds, lints, typechecks, runs 29 tests, audits dependencies, and runs hygiene                                         | M1.2 local evidence passed; M1.3/M1.4 evidence remains |
-| Automation                 | No `.github` workflow is present                                                                                                        | Planned; local check remains the current gate          |
+| Area                       | Evidence in the current worktree                                                                                                        | State                                                            |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Live persistence direction | `PostgresPersistence`, `PostgresM1Repositories`, separate runtime/migrator URLs, loopback Compose asset, and `002_m1_control_plane.sql` | M1.1 complete; migration remains unapplied                       |
+| Identity and authorization | scrypt hashing, server-session primitives, roles/station grants, bootstrap/login/logout adapters, and CSRF/session helpers              | M1.1/M1.2 complete locally and pushed                            |
+| Programming model          | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, and scheduled events                              | M1.1/M1.2 complete locally and pushed                            |
+| API boundary               | Protected programming adapter, safe error mapping, authenticated dry-run route, and negative-path coverage                              | M1.2 complete and pushed                                         |
+| Update validation          | All seven entity families use scoped load/merge/validate/persist paths; retained and replacement references are SQL-scoped              | M1.2 complete and pushed                                         |
+| UI                         | M1.3 local operator UI implementation is complete; server-authoritative protected APIs remain the only mutation boundary                | Local commit; M1.3 acceptance and push approval remain           |
+| Validation                 | `npm run check` builds, lints, typechecks, runs tests, audits dependencies, and runs hygiene                                            | M1.3 local evidence passed; M1.3 acceptance/M1.4 evidence remain |
+| Automation                 | No `.github` workflow is present                                                                                                        | Planned; local check remains the current gate                    |
 
 `m1-store` is a test double only and must never enter the live application
 path. The test runner no longer requires Node's experimental SQLite flag, and
@@ -126,7 +126,7 @@ SQLite remains absent from the live M1 application path.
 ### Active M1 completion scope
 
 M1.1 foundations/persistence/security and M1.2 protected backend are complete
-and pushed. M1.3 is next: replace the status-only browser surface with the
+and pushed. M1.3 is implemented locally: the status-only browser surface is replaced by the
 authorized operator UI—bootstrap/login/logout, protected station context,
 library/programming views, clear proposed-preview semantics, and explicit
 loading, empty, forbidden, read-only, validation-error, and unavailable states.
@@ -173,7 +173,7 @@ is accepted.
 
 | Sub-goal                                                | Forecast completion window  | Status / completion-record trigger                                                                      |
 | ------------------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------- |
-| M1.3 — Role-aware operator UI                           | September–October 2026      | Next, unstarted; replace with actual date after local UI evidence and owner acceptance.                 |
+| M1.3 — Role-aware operator UI                           | September–October 2026      | Implemented and committed locally; replace with actual date after owner acceptance and push approval.   |
 | M1.4 — Local-only M1 acceptance decision                | October–November 2026       | Approval-gated; replace with actual date only after complete M1 evidence and completion recommendation. |
 | M2.1 — Staging activation plan and rehearsal design     | November–December 2026      | Approval-gated; replace after owner-approved plan.                                                      |
 | M2.2 — Staging PostgreSQL migration verification        | December 2026–January 2027  | Approval-gated; replace after approved staging migration evidence.                                      |
@@ -257,7 +257,7 @@ or media action. Evidence: committed route/repository coverage and local
 `npm run check`. Completed **2026-08-03**; evidence `1f84acc`. Completion did
 not authorize M1.3.
 
-**M1.3 — Role-aware operator UI — Next, unstarted.** Objective: connect
+**M1.3 — Role-aware operator UI — Implemented and committed locally, pending owner acceptance and push approval.** Objective: connect
 proposal, dry-run preview, approval, published-state, and safe-status views to
 the protected API, enforcing role capability and station isolation in every
 screen/action. Boundary: no hidden mutation or execution control; no media

@@ -67,3 +67,19 @@ test("station API lists all seeded stations and explicit unavailable runtime", a
     );
   });
 });
+
+test("operator root exposes only the programming-control UI shell", async () => {
+  await withServer(async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/`);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, /id="operator-shell"/);
+    assert.match(html, /Programming control plane/);
+    assert.match(html, /Deterministic dry-run preview/);
+    assert.match(
+      html,
+      /Runtime controls are unavailable and not rendered here/,
+    );
+    assert.doesNotMatch(html, /Icecast|SHOUTcast|Liquidsoap|FFmpeg/);
+  });
+});
