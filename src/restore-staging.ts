@@ -443,20 +443,6 @@ async function run(): Promise<{ evidenceReference: string }> {
     }
     startedTarget = true;
     await waitForTarget(platform);
-    const platformPool = new Pool({
-      connectionString: required(
-        "M2_RECOVERY_PLATFORM_URL",
-        "recovery_target_configuration",
-      ),
-      max: 1,
-    });
-    try {
-      await platformPool.query("CREATE EXTENSION IF NOT EXISTS pgcrypto");
-    } catch {
-      throw new StagingRestoreError("restore_authority_configuration");
-    } finally {
-      await platformPool.end();
-    }
     await restoreCommand(
       [
         "compose",

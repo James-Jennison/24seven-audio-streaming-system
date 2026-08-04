@@ -5,7 +5,9 @@
 -- changes active staging and never grants source-database access.
 --
 -- The provision phase creates one temporary restore login with only CONNECT
--- plus USAGE/CREATE on the recovery target's public schema. The target is
+-- plus CREATE on the recovery target database and USAGE/CREATE on its public
+-- schema. Database CREATE is required only so the custom archive can create
+-- and own its trusted pgcrypto extension. The target is
 -- destroyed after successful validation, which destroys this authority too.
 -- Password input is protected operator material and must never be logged.
 
@@ -55,7 +57,7 @@ BEGIN
     restore_login,
     restore_password
   );
-  EXECUTE format('GRANT CONNECT ON DATABASE %I TO %I', database_name, restore_login);
+  EXECUTE format('GRANT CONNECT, CREATE ON DATABASE %I TO %I', database_name, restore_login);
   EXECUTE format('GRANT USAGE, CREATE ON SCHEMA public TO %I', restore_login);
 END;
 $$;
@@ -64,5 +66,6 @@ COMMIT;
 
 -- Content-free verification contract: the restore login is distinct from all
 -- active-staging authority classes; it has no superuser, role-management,
--- database-creation, replication, bypass-row-security, source-database, or
--- application/runtime authority. It is scoped solely to this disposable target.
+-- cluster/database-creation, replication, bypass-row-security, source-database,
+-- or application/runtime authority. Its target-database CREATE capability is
+-- confined to the disposable target and exists only for archive-owned pgcrypto.

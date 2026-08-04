@@ -58,4 +58,5 @@ test("restore contract is isolated, loopback-only, and cleanup-bound", async () 
     authority,
     /NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS/,
   );
+  assert.match(authority, /GRANT CONNECT, CREATE ON DATABASE/);
 });
