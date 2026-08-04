@@ -1,9 +1,9 @@
 # 24Seven.FM Audio Streaming System roadmap
 
-Updated August 3, 2026 after reconciling the published M0 baseline, the active
-uncommitted M1 worktree, architecture and ADRs, package scripts, migration
-assets, and current tests. This is the authoritative implementation sequence;
-it is a planning document, not authorization to execute an operational step.
+Updated August 3, 2026 after reconciling the published M0 baseline, committed
+M1.1/M1.2 evidence, architecture and ADRs, package scripts, migration assets,
+and current tests. This is the authoritative implementation sequence; it is a
+planning document, not authorization to execute an operational step.
 
 ## Purpose and success criteria
 
@@ -18,31 +18,44 @@ reporting, documented operator handoffs, and a reversible listener cutover.
 The final system must demonstrate usable audio and metadata parity in a
 parallel period before it is allowed to replace the legacy listener path.
 
-## State vocabulary and forecast model
+## State vocabulary, sub-goals, and planning estimates
 
 - **Complete** — committed, validated evidence reached the stated acceptance
   gate. A later regression creates new work; it does not rewrite history.
-- **In progress** — authorized local work is underway but not yet complete or
-  approved for release.
+- **In progress** — explicitly authorized work is underway but not yet complete
+  or approved for release.
 - **Approval-gated** — a human decision, credential, operational plan, or
   isolated environment is required before work may begin.
 - **Planned** — dependency-ordered work that has not yet reached its gate.
 - **Deferred** — deliberately outside the cutover path unless separately
   authorized.
 
-All dates below are **estimates contingent on approvals, infrastructure
-readiness, rights decisions, and validation outcomes**. Active effort is the
-focused implementation/review time likely required from the owner and Codex;
-calendar windows also allow for handoffs, debugging, listening tests,
-infrastructure waits, and corrective work. The date model starts Monday,
-August 3, 2026, assumes prompt gate responses (normally within five business
-days), roughly four effective engineering days per week, and no material
-rights or provider delay. Every delayed gate shifts its dependent milestones.
+### Sub-goal convention
 
-Under those assumptions, the earliest credible listener cutover is **April
-2028**. The prudent planning range is **July through September 2028**. This is
-not a commitment: a failed parallel-audio, recovery, or compliance acceptance
-test must delay M9 rather than reduce its evidence threshold.
+Sub-goals are sequential internal work packages under a milestone, named
+`M1.1`, `M1.2`, and so on. Each states its objective, strict boundary/non-goals,
+required acceptance evidence, and the explicit approval required before the
+next sub-goal. Completion of a sub-goal does **not** authorize the next
+sub-goal, the next milestone, deployment, infrastructure activity, runtime
+execution, or production changes. M1–M9 remain the authoritative milestone
+sequence and primary approval gates; completed evidence is not renumbered or
+invalidated.
+
+### Planning estimates
+
+The estimates below are planning ranges, not deadlines or authorization. They
+assume one primary owner/developer assisted by Codex for coding, test writing,
+documentation, and review preparation. **Focused engineering effort** excludes
+approval waits; **elapsed duration** begins only after the named sub-goal is
+explicitly approved and includes review, debugging, infrastructure coordination,
+listening evaluation, and required safe observation windows. Human approvals,
+credentials, rights decisions, staging readiness, provider/network decisions,
+and hands-on audio/listening acceptance are external dependencies, not assumed
+engineering capacity. Recalibrate estimates at every approved sub-goal boundary.
+No estimate authorizes implementation, deployment, infrastructure changes, or
+progression without explicit approval. Individual sub-goal effort/elapsed
+ranges roll up into their milestone's calendar window below; the calendar is a
+forecast of sequential approval outcomes, not permission to overlap milestones.
 
 ## Governing constraints
 
@@ -77,21 +90,23 @@ schedule pressure, or feature scope.
 
 ## Where we are now
 
-The published baseline is M0 at `2fa02a1`, followed by the published roadmap
-commit `8fea092`. M1 exists only as local, uncommitted work. No migration,
+The published baseline is M0 at `2fa02a1`, followed by roadmap commit
+`8fea092`. M1.1/M1.2 implementation evidence is committed and pushed in
+`1f84acc`, with the accompanying architecture-gate documentation in `832810f`.
+M1.3 is the next unstarted local-only implementation sub-goal. No migration,
 Docker/Compose invocation, service startup, deployment, runtime/stream action,
 or production-system action is authorized by this roadmap.
 
-| Area                       | Evidence in the current worktree                                                                                                                               | State                                                        |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| Live persistence direction | `PostgresPersistence`, `PostgresM1Repositories`, separate runtime/migrator URLs, loopback Compose asset, and `002_m1_control_plane.sql`                        | In progress; no migration has run                            |
-| Identity and authorization | scrypt hashing, server-session primitives, owner/administrator/programmer/operator/observer helpers, bootstrap/login/logout adapters, and CSRF/session helpers | In progress; needs live-flow and adversarial coverage        |
-| Programming model          | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, and scheduled events are represented in schema/repositories              | In progress                                                  |
-| API boundary               | Injected protected programming adapter, safe error mapping, authenticated dry-run route, and route-level negative-path coverage exist                          | Backend pass complete; UI integration remains                |
-| Update validation          | All seven entity families use scoped load/merge/validate/persist paths; retained and replacement references are SQL-scoped                                     | Backend pass complete                                        |
-| UI                         | M1 state-rendering primitives exist, but the active browser UI is still the M0 status dashboard                                                                | Open M1 completion work                                      |
-| Validation                 | `npm run check` currently builds, lints, typechecks, runs 29 tests, audits dependencies, and runs hygiene                                                      | Passing locally; UI and approved integration evidence remain |
-| Automation                 | No `.github` workflow is present                                                                                                                               | Planned; local check remains the current gate                |
+| Area                       | Evidence in the current worktree                                                                                                        | State                                                  |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
+| Live persistence direction | `PostgresPersistence`, `PostgresM1Repositories`, separate runtime/migrator URLs, loopback Compose asset, and `002_m1_control_plane.sql` | M1.1 complete; migration remains unapplied             |
+| Identity and authorization | scrypt hashing, server-session primitives, roles/station grants, bootstrap/login/logout adapters, and CSRF/session helpers              | M1.1/M1.2 complete locally and pushed                  |
+| Programming model          | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, and scheduled events                              | M1.1/M1.2 complete locally and pushed                  |
+| API boundary               | Protected programming adapter, safe error mapping, authenticated dry-run route, and negative-path coverage                              | M1.2 complete and pushed                               |
+| Update validation          | All seven entity families use scoped load/merge/validate/persist paths; retained and replacement references are SQL-scoped              | M1.2 complete and pushed                               |
+| UI                         | M1 state-rendering primitives exist; active browser UI remains the M0 status dashboard                                                  | M1.3 next, unstarted                                   |
+| Validation                 | `npm run check` builds, lints, typechecks, runs 29 tests, audits dependencies, and runs hygiene                                         | M1.2 local evidence passed; M1.3/M1.4 evidence remains |
+| Automation                 | No `.github` workflow is present                                                                                                        | Planned; local check remains the current gate          |
 
 `m1-store` is a test double only and must never enter the live application
 path. The test runner no longer requires Node's experimental SQLite flag, and
@@ -99,50 +114,33 @@ SQLite remains absent from the live M1 application path.
 
 ### Active M1 completion scope
 
-M1 must finish the following before its gate:
+M1.1 foundations/persistence/security and M1.2 protected backend are complete
+and pushed. M1.3 is next: replace the status-only browser surface with the
+authorized operator UI—bootstrap/login/logout, protected station context,
+library/programming views, clear proposed-preview semantics, and explicit
+loading, empty, forbidden, read-only, validation-error, and unavailable states.
+It must not add an execution control. M1.4 is the later local-only acceptance
+and completion recommendation; it cannot start without approval after M1.3.
 
-1. Complete-state updates to playlists, separation rules, rotations, clocks,
-   and scheduled events are complete locally:
-   `load by id + station_id → merge permitted fields → validate full state →
-validate same-station foreign keys in SQL → persist valid complete state`.
-2. Protected-API and adapter coverage for CRUD, CSRF using
-   `x-csrf-token`, RBAC/session handling, `not_found` isolation, content-free
-   auditing, and deterministic dry runs.
-3. The read-only proposal endpoint remains validated:
-   `GET /api/v1/stations/:stationId/dry-run?separationMinutes=N`. It must be
-   deterministic, station-scoped, and never change queue, schedule, runtime,
-   or media state.
-4. Replace the status-only browser surface with the authorized operator UI:
-   bootstrap/login/logout, protected station context, library/programming
-   views, clear proposed-preview semantics, and explicit loading, empty,
-   forbidden, read-only, validation-error, and unavailable states. It must not
-   add an execution control.
+## Remaining-work estimate table
 
-## Milestone forecast
+This is a range-based planning forecast, not a launch date. Calendar windows
+assume the next approval arrives promptly after the preceding acceptance; a
+late gate shifts every dependent window. Elapsed ranges are sequential unless a
+later gate explicitly permits otherwise; revise the critical path after each
+approved sub-goal.
 
-The earliest-start column is an optimistic dependency boundary, not permission
-to begin work. No milestone starts until its explicit gate is granted.
-
-| Milestone                                                   | Status                  | Scope                                                                               | Estimated active effort       | Earliest start | Target completion range     | Explicit gate                                                                               |
-| ----------------------------------------------------------- | ----------------------- | ----------------------------------------------------------------------------------- | ----------------------------- | -------------- | --------------------------- | ------------------------------------------------------------------------------------------- |
-| M1 — Programming Control Plane and Security Baseline        | In progress, local only | Complete protected PostgreSQL control-plane behavior and operator UI; no operations | 4–6 weeks remaining           | Aug. 3, 2026   | Sep. 18–Oct. 16, 2026       | Approve M1 commit/push, then separately approve an M2 staging-execution plan                |
-| M2 — Persistence Activation, Staging Infrastructure, and DR | Approval-gated          | Staging migration, role separation, Compose validation, backup/restore              | 3–5 weeks                     | Sep. 21, 2026  | Oct. 16–Nov. 20, 2026       | Approve the named staging migration, backup/restore, and no-public-exposure plan            |
-| M3 — Media Ingestion, Metadata, and Asset Lifecycle         | Planned after M2        | Rights-controlled test assets and sandboxed metadata/import lifecycle               | 6–10 weeks                    | Oct. 19, 2026  | Dec. 4, 2026–Jan. 29, 2027  | Approve source rights manifest, authorized paths, sandbox, and retention policy             |
-| M4 — Advanced Scheduling and Versioned Publication          | Planned after M3        | Deterministic schedule generation and versioned publication/rollback                | 6–9 weeks                     | Dec. 7, 2026   | Jan. 29–Mar. 12, 2027       | Approve publication semantics and schedule-version operational model                        |
-| M5 — Playout Runtime, DSP, and Sandboxed Automation         | Planned after M4        | Isolated runtime feasibility, supervised playout, DSP, handoff, automation sandbox  | 12–18 weeks                   | Feb. 1, 2027   | May 21–Aug. 13, 2027        | Approve runtime technology decision and isolated audio-test plan                            |
-| M6 — Listener Requests and Moderation                       | Planned after M5        | Eligibility, moderation, rate limiting, and proposed schedule insertion             | 4–7 weeks                     | May 24, 2027   | Jul. 16–Sep. 10, 2027       | Approve request threat model and any public-interface plan                                  |
-| M7 — Source Encoding, Icecast, and Dynamic Metadata         | Planned after M6        | Encoder layer, private Icecast validation, failover, metadata synchronization       | 8–12 weeks                    | Jul. 19, 2027  | Oct. 15, 2027–Jan. 14, 2028 | Approve private output test, network/secrets design, and later public exposure separately   |
-| M8 — Parallel Operations, Shadow Testing, and Parity        | Planned after M7        | Read-only legacy comparison, manual listening, failure drills, cutover readiness    | 10–16 weeks plus observation  | Oct. 18, 2027  | Jan. 14–Apr. 30, 2028       | Approve read-only shadow plan, comparison inputs, and operational test calendar             |
-| M9 — Listener Cutover and Legacy Decommissioning            | Planned after M8        | Controlled cutover, rollback window, compliance export, legacy retirement           | 6–10 weeks plus stabilization | Jan. 17, 2028  | Apr. 2–Sep. 30, 2028        | Approve the exact cutover and rollback runbook; approve retirement only after stabilization |
-
-The later dates in the table are deliberately longer than the initial
-August-2026 forecast because this is a strictly sequential plan: each early
-estimate is conditional on every preceding gate closing at its earliest date.
-The overall calendar therefore has two useful interpretations: an optimistic
-technical-path cutover after the M8 earliest boundary, and a prudent
-approval/listening/recovery-aware target through late 2028. A new forecast
-should be recorded after each milestone acceptance rather than compressing
-future work to preserve a date.
+| Milestone | Focused engineering effort    | Expected elapsed duration             | Indicative completion window | Confidence | Key dependency / approval gate                                                 |
+| --------- | ----------------------------- | ------------------------------------- | ---------------------------- | ---------- | ------------------------------------------------------------------------------ |
+| M1.3–M1.4 | 3–6 weeks                     | 5–10 weeks                            | September–November 2026      | Medium     | Local UI approval, then M1 completion decision                                 |
+| M2        | 4–8 weeks                     | 8–16 weeks                            | December 2026–March 2027     | Low        | Formal M1 acceptance; staging, credentials, migration and DR approval          |
+| M3        | 8–14 weeks                    | 14–28 weeks                           | April–October 2027           | Low        | M2 evidence; rights manifest, approved paths, sandbox policy                   |
+| M4        | 7–12 weeks                    | 10–20 weeks                           | July 2027–March 2028         | Medium     | M3 immutable asset handles; publication semantics approval                     |
+| M5        | 16–28 weeks                   | 28–52 weeks                           | February 2028–March 2029     | Low        | M4 published artifact; isolated runtime/audio plan and listening evidence      |
+| M6        | 5–9 weeks                     | 8–18 weeks                            | April–July 2029              | Medium     | M5 acceptance, M4 publication boundary, and public-input threat-model approval |
+| M7        | 10–18 weeks                   | 18–36 weeks                           | August 2029–April 2030       | Low        | Approved runtime/PCM bus; private infrastructure and failover test approval    |
+| M8        | 8–14 weeks plus observation   | 16–32 weeks plus observation          | December 2029–December 2030  | Low        | M7 private outputs; shadow plan and operator listening windows                 |
+| M9        | 6–12 weeks plus stabilization | 12–28 weeks plus observation/rollback | March 2030–July 2031         | Low        | M8 evidence; cutover, compliance, DNS, and retirement approvals                |
 
 ## Phase 1 — M1: Programming Control Plane and Security Baseline
 
@@ -166,12 +164,46 @@ programming-control plane with no capability to execute audio work.
   error contracts.
 - Build the role-aware, station-scoped operator UI with no hidden execution
   affordance and explicit unavailable-runtime status.
-- Replace/retire the residual SQLite test-runner path or constrain it as an
-  explicitly non-runtime historical fixture; add migration-safe PostgreSQL
-  adapter tests and no-migration HTTP/UI tests.
+- Preserve the completed retirement of SQLite from the live application path;
+  add migration-safe PostgreSQL adapter tests and no-migration HTTP/UI tests.
 - Document the API, bootstrap procedure, local-only operation, and the
   unexecuted-migration boundary. Add CI only under a separate publication/
   workflow authorization.
+
+### Sub-goals and approval sequence
+
+**M1.1 — Foundations and persistence/security contract — Complete.** Objective:
+establish PostgreSQL-only composition, station-scoped contracts, identity,
+sessions, and audit boundaries. Boundary: no migration or operational service.
+Evidence: committed schema, repositories, Compose boundary, and local checks.
+Completion did not authorize M1.2 or operational activity.
+
+**M1.2 — Protected backend — Complete.** Objective: secure scoped CRUD,
+complete-state SQL validation, safe errors, content-free audits, and
+deterministic dry-run behavior. Boundary: no operator UI, migration, runtime,
+or media action. Evidence: committed route/repository coverage and local
+`npm run check`. Completion did not authorize M1.3.
+
+**M1.3 — Role-aware operator UI — Next, unstarted.** Objective: connect
+proposal, dry-run preview, approval, published-state, and safe-status views to
+the protected API, enforcing role capability and station isolation in every
+screen/action. Boundary: no hidden mutation or execution control; no media
+ingestion, playout, encoder, stream, relay, or runtime control. Evidence:
+local UI/API integration, authorization/CSRF/error-path coverage,
+accessibility/usability review, and content-free audit verification. Gate:
+explicit approval of M1.3 local-only implementation. Estimate: **2–4 weeks**
+focused effort, **3–7 weeks** elapsed, **medium** confidence; depends on stable
+M1.2 API contracts and owner UI review.
+
+**M1.4 — Local-only M1 end-to-end acceptance and completion decision — Future,
+approval-gated.** Objective: re-run complete local functional/security evidence
+and verify the `Proposed → Approved → Published` boundary without runtime
+execution. Boundary: no migration, deployment, runtime, or automatic advance
+to M2. Evidence: full local validation, role/station/CSRF/audit evidence,
+manual operator-path review, and an M1 completion recommendation. Gate:
+separate approval after M1.3; advancing to M2 needs a further explicit M2
+approval. Estimate: **1–2 weeks** focused effort, **2–3 weeks** elapsed,
+**high** confidence; depends on accepted M1.3 evidence.
 
 ### Out of scope
 
@@ -202,16 +234,15 @@ public access, or any production/VM action.
 
 ### Required human action and next gate
 
-The owner reviews the M1 evidence and explicitly authorizes the M1 commit and
-push. After that, a separate approval must state:
+The owner must explicitly approve M1.3 before implementation. After M1.4 is
+accepted, a separate approval must state:
 
 > “Approve the M2 staging plan to execute the named PostgreSQL migration on
 > the approved development environment, validate backup/restore, and keep all
 > services non-public.”
 
-Estimated remaining active effort: **4–6 weeks**. Estimated completion:
-**September 18–October 16, 2026**, assuming no scope expansion and prompt
-review.
+Planning estimate: M1.3/M1.4 is summarized in the remaining-work table and
+must be recalibrated after the M1.3 approval boundary.
 
 ## Phase 2 — M2: Persistence Activation, Staging Infrastructure, and DR
 
@@ -233,6 +264,42 @@ runtime work.
   environment facts.
 - Add integration tests that use the staging database only when explicitly
   authorized; retain fast local fakes for ordinary tests.
+
+### Sub-goals and approval sequence
+
+**M2.1 — Staging activation plan and rehearsal design — Future,
+approval-gated.** Objective: define the named staging plan, secrets and
+migrator/runtime role boundary, abort conditions, and migration rehearsal.
+Boundary: no connection, migration, or service start. Evidence: owner-reviewed
+plan, non-sensitive role/secret handling, backup and rollback design. Gate:
+formal M1 acceptance plus explicit M2.1 approval. Estimate: **1–2 weeks**
+focused effort, **2–4 weeks** elapsed, **medium** confidence; depends on
+staging readiness and owner decisions.
+
+**M2.2 — Staging PostgreSQL migration execution and verification — Future,
+approval-gated.** Objective: execute the approved migration once in isolated
+staging and verify roles, seed, schema, and application behavior. Boundary: no
+production database or public service. Evidence: migration ledger, least-
+privilege verification, five-station and auth/programming integrity checks.
+Gate: explicit named migration-execution approval after M2.1. Estimate:
+**1–2 weeks** focused effort, **2–5 weeks** elapsed, **low** confidence;
+depends on canonical access, credentials, extension privileges, and abort plan.
+
+**M2.3 — Separately deployable staging topology — Future, approval-gated.**
+Objective: validate the Compose topology and control-plane/database boundary.
+Boundary: non-public staging only; no audio, stream, or production action.
+Evidence: repeatable bounded topology, loopback/network checks, service-role
+separation, and recovery-safe failure tests. Gate: explicit topology-validation
+approval after M2.2. Estimate: **1–2 weeks** focused effort, **2–4 weeks**
+elapsed, **medium** confidence; depends on staging capacity and M2.2 evidence.
+
+**M2.4 — Backup, restore, and DR evidence — Future, approval-gated.**
+Objective: automate backup/restore evidence and produce recovery-time/recovery-
+point and DR signoff recommendation. Boundary: isolated staging data only.
+Evidence: timed restore drill, integrity checks, documented retention/rollback,
+and owner-reviewed recommendation. Gate: explicit DR-drill approval after
+M2.3. Estimate: **1–3 weeks** focused effort, **2–6 weeks** elapsed, **low**
+confidence; depends on storage/backup tooling and restore observations.
 
 ### Out of scope
 
@@ -262,8 +329,8 @@ The owner must explicitly approve the M3 asset plan:
 > “Approve the fixed rights manifest, authorized media locations, sandboxed
 > import design, and retention/deletion policy for isolated M3 test assets.”
 
-Estimated active effort: **3–5 weeks**. Estimated completion:
-**October 16–November 20, 2026**.
+Planning estimate: M2 ranges appear in the remaining-work table and are
+recalibrated after each approved staging/DR sub-goal.
 
 ## Phase 3 — M3: Media Ingestion, Metadata, and Asset Lifecycle
 
@@ -288,6 +355,42 @@ library by default and never touches the existing Windows production library.
   cue/fade candidates, and bounded metadata enrichment such as MusicBrainz
   where licensing/API terms permit it. Results are proposed metadata pending
   review, not hidden programming changes.
+
+### Sub-goals and approval sequence
+
+**M3.1 — Media intake and immutable asset lifecycle — Future, approval-gated.**
+Objective: define station-scoped intake, immutable handles, provenance, and
+quarantine/lifecycle rules. Boundary: no production-library access or arbitrary
+source paths in programming payloads. Evidence: reviewed lifecycle/rights
+contract and station/quarantine test corpus. Gate: explicit M3.1 approval after
+M2. Estimate: **1–2 weeks** focused effort, **2–4 weeks** elapsed, **medium**
+confidence; depends on approved paths and rights policy.
+
+**M3.2 — Sandboxed asynchronous ingestion worker — Future, approval-gated.**
+Objective: create an idempotent processing-worker boundary with no programming
+or runtime authority. Boundary: no playout execution or automatic programming
+change. Evidence: job/idempotency, failure, duplicate, sandbox, and quarantine
+tests. Gate: explicit worker-implementation approval after M3.1. Estimate:
+**2–4 weeks** focused effort, **4–8 weeks** elapsed, **medium** confidence;
+depends on M3.1 and approved isolated paths.
+
+**M3.3 — Offline analysis pipeline — Future, approval-gated.** Objective:
+measure EBU R128 integrated loudness/loudness range, true peak, silence,
+cue/fade candidates, and recommended gain. Boundary: analysis is offline and
+does not execute playout or alter programming. Evidence: repeatable fixture
+measurements, bounded failure behavior, and listening-reviewed candidates.
+Gate: explicit analysis approval after M3.2. Estimate: **2–4 weeks** focused
+effort, **4–8 weeks** elapsed, **medium** confidence; depends on approved
+assets and tooling evaluation.
+
+**M3.4 — Metadata, artwork, retry/quarantine, and lifecycle acceptance —
+Future, approval-gated.** Objective: complete enrichment and asset-handling
+behavior with safe retry/quarantine evidence. Boundary: no broad archive search
+or implicit media publication. Evidence: provenance/attribution review,
+failure/retry tests, and owner-reviewed representatives for every format. Gate:
+explicit M3 acceptance approval after M3.3. Estimate: **3–5 weeks** focused
+effort, **4–10 weeks** elapsed, **low** confidence; rights and curation are
+external critical dependencies.
 
 ### Out of scope
 
@@ -317,8 +420,9 @@ Next gate:
 > “Approve M4 publication semantics: approved programming may create a
 > versioned schedule artifact, but publication must not execute it.”
 
-Estimated active effort: **6–10 weeks**. Estimated completion:
-**December 4, 2026–January 29, 2027**.
+Planning estimate: M3 is **8–14 weeks** focused effort and **14–28 weeks**
+elapsed, with an indicative completion range of **April–October 2027** if its
+preceding approval gates close promptly. Recalibrate after each sub-goal.
 
 ## Phase 4 — M4: Advanced Scheduling and Versioned Publication
 
@@ -340,6 +444,41 @@ artifacts without signalling a runtime.
   records.
 - Simulation/property tests across all stations, DST boundaries, empty and
   constrained libraries, malformed programming, repeatability, and rollback.
+
+### Sub-goals and approval sequence
+
+**M4.1 — Deterministic scheduling, clock, and separation contract — Future,
+approval-gated.** Objective: define deterministic rules and a regression/property
+test corpus for clocks, rotations, and separation. Boundary: no schedule
+execution or runtime command. Evidence: station-isolated deterministic fixtures
+and documented policy decisions. Gate: explicit M4.1 approval after M3. Estimate:
+**1–3 weeks** focused effort, **2–5 weeks** elapsed, **medium** confidence;
+depends on M3 handles and editorial policy.
+
+**M4.2 — Station-scoped 24-hour compilation — Future, approval-gated.**
+Objective: compile bounded daily schedules with conflict, gap, and explanation
+behavior. Boundary: proposals only; no queue or playout mutation. Evidence:
+repeatable 24-hour plans across DST, empty/constrained libraries, and safe
+failure cases. Gate: explicit compilation approval after M4.1. Estimate:
+**2–4 weeks** focused effort, **3–7 weeks** elapsed, **medium** confidence;
+depends on validated M4.1 rules.
+
+**M4.3 — Published schedule artifact contract — Future, approval-gated.**
+Objective: fulfill the already-approved versioning, compatibility, integrity,
+immutable-handle, atomic activation/rollback, and offline-runtime contract.
+Boundary: publish artifacts only; no runtime activation or playout control.
+Evidence: deterministic schema, integrity, compatibility, rollback, and
+control-plane-unavailable tests. Gate: explicit publication-semantics approval
+after M4.2. Estimate: **2–3 weeks** focused effort, **3–6 weeks** elapsed,
+**medium** confidence; depends on immutable M3 media handles.
+
+**M4.4 — Publication/rollback evidence and operator recommendation — Future,
+approval-gated.** Objective: prove approval/publication/rollback workflows and
+prepare the M5 acceptance recommendation. Boundary: no `Published → Executed`
+transition. Evidence: operator review, version-history/audit evidence, and
+safe failure/rollback tests. Gate: explicit M5 feasibility approval after
+M4.4. Estimate: **1–2 weeks** focused effort, **2–4 weeks** elapsed, **high**
+confidence; depends on M4.3 evidence.
 
 ### Published schedule artifact contract (approval-gated design deliverable)
 
@@ -388,8 +527,9 @@ Next gate:
 > “Approve the M5 runtime feasibility decision and an isolated audio-test
 > plan. No public output, production media, or listener traffic is included.”
 
-Estimated active effort: **6–9 weeks**. Estimated completion:
-**January 29–March 12, 2027**.
+Planning estimate: M4 is **7–12 weeks** focused effort and **10–20 weeks**
+elapsed, with an indicative completion range of **July 2027–March 2028**.
+Publication-artifact acceptance must precede all M5 runtime consumption.
 
 ## Phase 5 — M5: Playout Runtime, DSP, and Sandboxed Automation
 
@@ -478,6 +618,60 @@ action(s) → runtime validation of allowlisted result`. The sandbox may not
   allocated capacity, and structured listening-test acceptance rather than a
   feature-list comparison.
 
+### Sub-goals and approval sequence
+
+**M5.1 — Runtime architecture and fault-model design gate — Future,
+approval-gated.** Objective: close the approved four-deck, IPC,
+supervisor/worker, recovery, benchmark, and fault-model design gate. Boundary:
+no runtime implementation or audio process. Evidence: ADR/design review,
+measurable benchmark/fault plan, and owner approval of the isolated test plan.
+Gate: explicit M5.1 approval after M4. Estimate: **2–4 weeks** focused effort,
+**4–8 weeks** elapsed, **low** confidence; depends on M4 artifacts and target
+test environment decisions.
+
+**M5.2 — Controlled shadow-runtime foundation — Future, approval-gated.**
+Objective: implement the approved Rust-supervisor and unprivileged,
+replaceable Liquidsoap-worker baseline. Boundary: narrow local contract only;
+worker has no PostgreSQL, control-plane, approval, or publication authority.
+Evidence: isolated supervisor/worker lifecycle, watchdog, health, and recovery
+tests. Gate: explicit M5.2 approval after M5.1. Estimate: **4–7 weeks** focused
+effort, **6–12 weeks** elapsed, **low** confidence; depends on approved tooling
+and isolated assets.
+
+**M5.3 — Transition, deck, cue/preview, failure, and rollback validation —
+Future, approval-gated.** Objective: validate overlap/crossfade, voice-tracking,
+interruption, silence, corrupt-media, and artifact-rollback behavior. Boundary:
+offline shadow operation only. Evidence: fault drills, deck/transition metrics,
+and recovery evidence. Gate: explicit M5.3 approval after M5.2. Estimate:
+**3–6 weeks** focused effort, **6–12 weeks** elapsed, **low** confidence;
+depends on realistic fixtures and hands-on evaluation.
+
+**M5.4 — DSP evaluation and acceptance — Future, approval-gated.** Objective:
+apply per-track gain/transition handling and evaluate one final shared station
+processor before codec fan-out. Boundary: no automatic component choice or
+per-codec re-mastering. Evidence: capacity below the documented load target,
+BOM/license review, structured listening results, and measured true-peak
+behavior. Gate: explicit DSP choice approval after M5.3. Estimate: **3–6 weeks**
+focused effort, **6–14 weeks** elapsed, **low** confidence; subjective audio
+approval may extend observation time.
+
+**M5.5 — WASM-first automation sandbox — Future, approval-gated.** Objective:
+implement the approved no-WASI, bounded-host-call, fuel/watchdog, memory, and
+audit-safe sandbox contract. Boundary: no arbitrary JavaScript compatibility
+path or direct runtime authority. Evidence: trap/timeout/limit/security corpus
+and deterministic allowed-action validation. Gate: explicit sandbox approval
+after baseline runtime safety. Estimate: **3–5 weeks** focused effort, **5–10
+weeks** elapsed, **low** confidence; depends on M5.1 contract and security
+review.
+
+**M5.6 — M5 acceptance decision — Future, approval-gated.** Objective: assemble
+measurable runtime, recovery, safety, quality, and capacity evidence. Boundary:
+no listener-facing service or automatic advance to M6. Evidence: owner-signed
+listening/fault/capacity review and accepted known limitations. Gate: separate
+M6 approval after M5.6. Estimate: **1–2 weeks** focused effort, **2–6 weeks**
+elapsed, **low** confidence; depends on successful subjective and measured
+acceptance.
+
 ### Out of scope
 
 Public listener delivery, Icecast listener service, production source media,
@@ -509,8 +703,10 @@ Next gate:
 > “Approve M6 request intake/moderation design and, if requested, the limited
 > public-interface threat model. A public listener remains out of scope.”
 
-Estimated active effort: **12–18 weeks**. Estimated completion:
-**May 21–August 13, 2027**.
+Planning estimate: M5 is **16–28 weeks** focused effort and **28–52 weeks**
+elapsed, with an indicative completion range of **February 2028–March 2029**.
+Audio quality, capacity, and recovery evidence—not code completion—control the
+range.
 
 ## Phase 6 — M6: Listener Requests and Moderation
 
@@ -530,6 +726,47 @@ not direct playback actions.
 - A public-interface design only if separately approved: threat model, abuse
   response, privacy/retention policy, accessibility, monitoring, and safe
   unavailable/error states.
+
+### Sub-goals and approval sequence
+
+**M6.1 — Request/listener-message contract and abuse model — Future,
+approval-gated.** Objective: define public request and dedication/shout-out
+handling, privacy/content boundaries, rate limits, and abuse response. Boundary:
+no public exposure or runtime queue action. Evidence: threat/privacy review,
+station-scope contract, and abuse/retention test plan. Gate: explicit M6.1
+approval after M5. Estimate: **1–2 weeks** focused effort, **2–4 weeks**
+elapsed, **medium** confidence; depends on owner policy decisions.
+
+**M6.2 — Approved intake and eligibility controls — Future, approval-gated.**
+Objective: implement the approved authenticated/anonymous intake, cooldown,
+eligibility, idempotency, and anti-spam rules. Boundary: no privileged
+anonymous mutation or direct scheduling/runtime signal. Evidence: rate-limit,
+abuse, and station-isolation tests. Gate: explicit M6.2 approval after M6.1.
+Estimate: **1–3 weeks** focused effort, **2–5 weeks** elapsed, **medium**
+confidence; depends on approved threat model.
+
+**M6.3 — Operator moderation and presentation — Future, approval-gated.**
+Objective: provide station-scoped moderation, approval/denial, and safe
+dedication/shout-out presentation. Boundary: moderation does not publish or
+execute programming alone. Evidence: role/audit/privacy/operator workflow
+tests. Gate: explicit M6.3 approval after M6.2. Estimate: **1–2 weeks** focused
+effort, **2–4 weeks** elapsed, **medium** confidence; depends on M1 UI and M6.2.
+
+**M6.4 — Safe future-slot proposal insertion — Future, approval-gated.**
+Objective: propose insertion only into eligible future published schedule slots
+with separation-rule protection. Boundary: no direct runtime queue mutation.
+Evidence: publication-state, separation, and no-runtime-side-effect tests.
+Gate: explicit M6.4 approval after M6.3. Estimate: **1–2 weeks** focused
+effort, **2–4 weeks** elapsed, **medium** confidence; depends on M4 publication
+boundary.
+
+**M6.5 — Security/load/abuse and operator acceptance — Future,
+approval-gated.** Objective: validate abuse resistance, load limits, safe
+failures, and operator workflow. Boundary: no public launch unless separately
+approved. Evidence: security/load findings, privacy review, and owner acceptance
+recommendation. Gate: explicit M7 approval after M6.5. Estimate: **1–2 weeks**
+focused effort, **2–5 weeks** elapsed, **medium** confidence; depends on
+controlled testing and owner review.
 
 ### Out of scope
 
@@ -557,8 +794,9 @@ Next gate:
 > network boundaries, secret handling, certificates, and rollback. Any public
 > listener exposure requires a separate explicit approval.”
 
-Estimated active effort: **4–7 weeks**. Estimated completion:
-**July 16–September 10, 2027**.
+Planning estimate: M6 is **5–9 weeks** focused effort and **8–18 weeks**
+elapsed, with an indicative completion range of **April–July 2029**. M6 depends
+on M4 publication and never becomes runtime queue control.
 
 ## Phase 7 — M7: Source Encoding, Icecast, and Dynamic Metadata
 
@@ -582,6 +820,49 @@ recoverable services, starting with private test outputs only.
 - Failure drills for source loss, encoder crash, Icecast node loss, metadata
   lag, DNS/cache behavior, and recovery. The sub-500 ms failover objective is a
   measurement target to validate, not an assumption or automatic acceptance.
+
+### Sub-goals and approval sequence
+
+**M7.1 — Source encoder/PCM-bus and profile design — Future, approval-gated.**
+Objective: define source-encoder boundaries, processed PCM ownership, codec
+profiles, and output health contracts. Boundary: no source/stream process or
+listener exposure. Evidence: reviewed interface, profile rationale, and
+capacity/failure test plan. Gate: explicit M7.1 approval after M5/M6 acceptance.
+Estimate: **1–3 weeks** focused effort, **2–5 weeks** elapsed, **medium**
+confidence; depends on the approved M5 bus.
+
+**M7.2 — Icecast topology and deployability validation plan — Future,
+approval-gated.** Objective: design primary/secondary Icecast and separately
+deployable source/relay boundaries. Boundary: private, approved testing only;
+no public DNS/firewall changes. Evidence: network, secret, certificate,
+rollback, and failover plan. Gate: explicit M7.2 infrastructure-test approval
+after M7.1. Estimate: **1–3 weeks** focused effort, **3–7 weeks** elapsed,
+**low** confidence; depends on provider/network decisions.
+
+**M7.3 — Processed PCM fan-out and codec variants — Future, approval-gated.**
+Objective: create AAC-LC/MP3 fan-out from the shared already-processed PCM bus.
+Boundary: no independent codec re-mastering. Evidence: profile, CPU, output
+quality, and reconnect tests. Gate: explicit private-output approval after
+M7.2. Estimate: **2–4 weeks** focused effort, **4–8 weeks** elapsed, **low**
+confidence; depends on private test infrastructure and M5 DSP evidence.
+
+**M7.4 — Epoch-aware metadata distribution — Future, approval-gated.**
+Objective: implement the approved runtime-owned event/distributor contract:
+WebSocket/SSE authority, Icecast adapters, idempotency, stale-event rejection,
+synchronizing state, and failover reconciliation. Boundary: no claim of
+frame-perfect listener metadata. Evidence: epoch/failover tests and separate
+latency measures. Gate: explicit M7.4 approval after M7.3. Estimate: **2–4
+weeks** focused effort, **4–8 weeks** elapsed, **low** confidence; depends on
+runtime event contract and controlled mounts.
+
+**M7.5 — Source/failover and listener-facing evidence — Future,
+approval-gated.** Objective: measure source loss, reconnect, mount convergence,
+audio continuity, metadata correctness, and private listener behavior.
+Boundary: no public listener launch. Evidence: measured drills, listener
+validation, safe degraded states, and owner recommendation. Gate: explicit M8
+shadow-test approval after M7.5. Estimate: **3–5 weeks** focused effort,
+**5–12 weeks** elapsed, **low** confidence; infrastructure and listening
+windows dominate.
 
 ### Epoch-aware metadata and failover contract (approval-gated deliverable)
 
@@ -631,8 +912,10 @@ Next gate:
 > “Approve M8 read-only parallel shadow testing against the legacy system,
 > including comparison inputs, manual listening windows, and failure drills.”
 
-Estimated active effort: **8–12 weeks**. Estimated completion:
-**October 15, 2027–January 14, 2028**.
+Planning estimate: M7 is **10–18 weeks** focused effort and **18–36 weeks**
+elapsed, with an indicative completion range of **August 2029–April 2030**.
+Sub-second internal metadata propagation remains a target; listener-perceived
+alignment is measured, not universally guaranteed.
 
 ## Phase 8 — M8: Parallel Operations, Shadow Testing, and Parity
 
@@ -654,6 +937,40 @@ operational drills; do not treat a working private stream as listener-ready.
   restore rehearsal, rollback rehearsal, and incident runbooks.
 - Cutover readiness review covering capacity, security, rights, support,
   observability, alerting, operating ownership, and the exact abort threshold.
+
+### Sub-goals and approval sequence
+
+**M8.1 — Shadow-operation plan and parity definition — Future,
+approval-gated.** Objective: define read-only observation boundaries, approved
+comparison inputs, intended parity, and intentional differences. Boundary: no
+legacy control/copying or listener cutover. Evidence: owner-approved plan,
+metrics, and abort criteria. Gate: explicit M8.1 approval after M7. Estimate:
+**1–2 weeks** focused effort, **2–5 weeks** elapsed, **medium** confidence;
+depends on legacy-observation availability.
+
+**M8.2 — Measurement collection — Future, approval-gated.** Objective: collect
+schedule, transition, audio-quality, metadata, and intentional-difference
+evidence. Boundary: read-only shadow operation only. Evidence: time-correlated
+measurement set and reproducible comparison method. Gate: explicit M8.2
+approval after M8.1. Estimate: **2–4 weeks** focused effort, **6–12 weeks**
+elapsed, **low** confidence; observation windows and owner listening govern.
+
+**M8.3 — Controlled failure drills — Future, approval-gated.** Objective:
+exercise worker restart, decoder/media failure, silence, rollback, CPU
+saturation, source failover, and stale-metadata rejection. Boundary: drills use
+approved isolated/shadow scope only. Evidence: timed outcomes, recovery proof,
+and incident/runbook updates. Gate: explicit M8.3 approval after M8.2.
+Estimate: **2–4 weeks** focused effort, **4–10 weeks** elapsed, **low**
+confidence; depends on M7 capability and operational windows.
+
+**M8.4 — Operator listening, parity evidence, and cutover recommendation —
+Future, approval-gated.** Objective: obtain documented listening evaluation,
+capacity evidence, SAM parity findings, and cutover-readiness recommendation.
+Boundary: continuous connectivity alone is never acceptance evidence, and no
+cutover occurs. Evidence: signed evidence pack, accepted differences, and M9
+runbook recommendation. Gate: explicit M9 cutover-plan approval after M8.4.
+Estimate: **3–4 weeks** focused effort, **6–16 weeks** elapsed, **low**
+confidence; operator signoff and sufficient failure observation are mandatory.
 
 ### Out of scope
 
@@ -689,8 +1006,10 @@ Next gate:
 > “Approve the date-specific M9 listener cutover and rollback plan, including
 > DNS, compliance, support, monitoring, and authority to abort.”
 
-Estimated active effort: **10–16 weeks plus observation windows**. Estimated
-completion: **January 14–April 30, 2028**.
+Planning estimate: M8 is **8–14 weeks** focused effort plus observation and
+**16–32 weeks** elapsed plus observation, with an indicative completion range
+of **December 2029–December 2030**. Continuous connectivity alone is never
+acceptance evidence.
 
 ## Phase 9 — M9: Listener Cutover and Legacy Decommissioning
 
@@ -714,6 +1033,49 @@ retire SAM Pro/SHOUTcast 1.9.8 only after the stabilization criteria are met.
   credential revocation, service shutdown, asset disposition, and retirement
   record. No irreversible deletion occurs before explicit authorization.
 
+### Sub-goals and approval sequence
+
+**M9.1 — Guarded cutover and rollback plan — Future, approval-gated.**
+Objective: prepare the production change, communication, authority, abort, and
+rollback plan. Boundary: no DNS/listener change or legacy action. Evidence:
+named decision makers, rehearsed rollback, communications, and owner-approved
+go/no-go criteria. Gate: explicit M9.1 plan approval after M8. Estimate:
+**1–2 weeks** focused effort, **3–6 weeks** elapsed, **low** confidence;
+depends on M8 evidence and provider coordination.
+
+**M9.2 — Compliance export and operational-readiness validation — Future,
+approval-gated.** Objective: validate royalty/compliance exports and readiness
+evidence. Boundary: no claim of legal compliance without owner/legal review.
+Evidence: reconciliation samples, retention/correction procedure, support and
+monitoring readiness. Gate: explicit M9.2 approval after M9.1. Estimate:
+**1–3 weeks** focused effort, **3–8 weeks** elapsed, **low** confidence;
+depends on owner/legal/accounting decisions.
+
+**M9.3 — Phased DNS/listener cutover — Future, approval-gated.** Objective:
+execute an explicitly approved phased Icecast cutover with observation and
+rollback windows. Boundary: no automatic or irreversible transition. Evidence:
+change record, observed availability/audio/metadata, and rollback decision.
+Gate: exact cutover authorization immediately before action. Estimate: **1–2
+weeks** focused effort, **2–6 weeks** elapsed, **low** confidence; depends on
+M9.1/M9.2, DNS/provider authority, and real listener observation.
+
+**M9.4 — Post-cutover stability, metadata, and compliance verification —
+Future, approval-gated.** Objective: verify stability during the defined
+observation/rollback period. Boundary: legacy remains recoverable; no
+decommission. Evidence: all-station quality/availability/metadata evidence,
+incident review, and compliance reconciliation. Gate: separate stability
+acceptance approval after M9.3. Estimate: **2–3 weeks** focused effort,
+**4–12 weeks** elapsed, **low** confidence; depends on real operating data.
+
+**M9.5 — Approved legacy decommissioning and closeout — Future,
+approval-gated.** Objective: retire SAM Pro and SHOUTcast 1.9.8 gracefully,
+preserve required evidence, and recommend project closeout. Boundary: no
+decommission until M9.4 evidence and a separate owner approval. Evidence:
+retirement record, credential/access disposition, evidence preservation, and
+final owner signoff. Gate: explicit legacy-decommission approval after M9.4.
+Estimate: **1–2 weeks** focused effort, **2–6 weeks** elapsed, **low**
+confidence; depends on completed rollback window and owner decision.
+
 ### Out of scope
 
 Unapproved DNS/Cloudflare/provider changes, automatic decommission, deletion
@@ -734,30 +1096,43 @@ review and verified reporting evidence.
 ### Required human action
 
 The owner must approve the cutover runbook immediately before execution and
-must separately approve legacy retirement. Estimated active effort: **6–10
-weeks plus a 4–12 week stabilization window**. Estimated completion:
-**April 2–September 30, 2028**.
+must separately approve legacy retirement. Planning estimate: M9 is **6–12
+weeks** focused effort plus stabilization and **12–28 weeks** elapsed plus
+observation/rollback, with an indicative completion range of **March 2030–July
+2031**. Every M9 date is contingent on cutover evidence, not a commitment.
 
 ## Dependency and critical path
 
 ```text
-M1 secure programming/API/UI
-  → M2 applied PostgreSQL + recovery proof
-  → M3 rights-cleared asset lifecycle
-  → M4 approved, versioned schedules
-  → M5 supervised offline runtime + listening acceptance
-  → M6 moderated request proposals
-  → M7 private encoder + Icecast resilience
-  → M8 parallel evidence and cutover rehearsal
-  → M9 staged listener cutover, stabilization, retirement
+M1.3 role-aware operator UI
+  → M1.4 local-only M1 acceptance recommendation
+  → M2 staging activation, migration, topology, and DR proof
+  → M3 immutable rights-aware asset lifecycle
+  → M4 deterministic compilation and published-artifact acceptance
+  → M5 supervised runtime, fault/DSP/sandbox and listening acceptance
+  → M6 moderated future-schedule proposals
+  → M7 private PCM/encoder/Icecast/failover and metadata evidence
+  → M8 shadow observation, failure drills, and operator parity signoff
+  → M9 guarded cutover, rollback observation, and separately approved retirement
 ```
+
+This is a planning forecast, not a launch date. M1.3/M1.4 must complete before
+M2 operational work can begin. M2 depends on staging PostgreSQL readiness,
+controlled migration execution, backup/restore exercises, and DR evidence. M3
+must establish immutable assets before M4 publishes runtime-consumable handles;
+M4 artifact acceptance precedes M5 runtime consumption. M5 is governed by
+measurable runtime/fault/DSP evidence and subjective listening approval, which
+can widen its elapsed range. M6 can propose only safe M4 future-publication
+changes, never direct runtime queue control. M7 depends on the approved runtime
+and PCM-bus boundary and needs controlled infrastructure testing; M8 needs a
+meaningful shadow-observation period and operator listening signoff, not code
+completion alone. M9 requires deliberate observation/rollback windows,
+compliance evidence, and explicit cutover and retirement approvals.
 
 Some design, fixture, and documentation work can be prepared before later
 gates, but it must not activate a service, create media, use credentials, or
-perform an operational action early. The critical path is dominated by M1
-security correctness, M2 recovery proof, M3 rights/manual curation, M5 audio
-listening and failure behavior, M7 network/output validation, and M8's
-observation time.
+perform an operational action early. Reforecast this calendar path after every
+approved sub-goal rather than compressing evidence to preserve a target date.
 
 ## Capability-replacement matrix
 
