@@ -1,0 +1,34 @@
+# Dependencies and generated build output
+node_modules/
+dist/
+coverage/
+
+# Environment and credentials (the placeholder example is intentionally tracked)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# Local databases, media, recordings, and operational artifacts
+data/
+*.sqlite
+*.sqlite3
+*.db
+media/
+recordings/
+uploads/
+*.mp3
+*.flac
+*.wav
+*.aac
+*.ogg
+
+# Editor and operating-system files
+.DS_Store
+.idea/
+.vscode/
+*.swp

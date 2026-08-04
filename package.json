@@ -1,0 +1,29 @@
+{
+  "name": "24seven-audio-streaming-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local-only M0 control-plane foundation for 24Seven.FM audio automation and streaming.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5.0 <23"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && cp -R migrations dist/migrations",
+    "start": "node --experimental-sqlite dist/src/index.js",
+    "dev": "npm run build && npm run start",
+    "test": "npm run build && node --experimental-sqlite --test dist/tests/*.test.js",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "format:check": "prettier --check .",
+    "audit": "npm audit --audit-level=high",
+    "hygiene": "node scripts/public-repository-hygiene.mjs",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run audit && npm run hygiene"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.3",
+    "eslint": "9.39.5",
+    "prettier": "3.5.3",
+    "typescript": "5.8.3",
+    "typescript-eslint": "8.30.1"
+  }
+}
