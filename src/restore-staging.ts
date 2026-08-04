@@ -168,7 +168,7 @@ function restoreCommand(
       stdio: ["pipe", "ignore", "pipe"],
     });
     let detail = "";
-    child.stderr.on("data", (chunk: string | Buffer) => {
+    child.stderr?.on("data", (chunk: string | Buffer) => {
       detail = `${detail}${chunk.toString()}`.slice(-8_192);
     });
     child.once("error", () =>
