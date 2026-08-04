@@ -18,34 +18,31 @@
 M1.1 (foundations/persistence/security contract), M1.2 (protected backend),
 and M1.3 (role-aware operator UI) were completed, committed, and pushed on
 2026-08-03; M1.3 evidence is `9772b69`. M1.4 local-only acceptance evidence
-passed and M1 is formally complete as of 2026-08-04 UTC. M2 is the next
-milestone. M2.1 documentation planning is explicitly approved; M2 remains
-operationally unstarted, and any M2 connection, migration, service, VM, backup,
-or restore activity requires a separate explicit approval.
+passed and M1 is formally complete as of 2026-08-04 UTC. M2.1 planning is
+complete. M2.2 migration/seed, post-migration least-privilege validation, and
+M2.3 read-only topology validation completed under separately approved staging
+gates. PostgreSQL remains the sole loopback-only running staging service; no
+application, runtime, media, or listener-facing service has been activated.
 
-M2.2 **Migration Execution Plan** documentation is accepted and pushed as
-`2cd85c3`; its corresponding **Migration Execution Gate** has not started and
-does not authorize a staging connection, migration, or operational activity.
-M2.3 **Topology Validation Plan** documentation is accepted and pushed as
-`be6a242`; its corresponding **Topology Validation Gate** has not started and
-does not authorize an operational action. M2.4 **Backup, Restore, and DR Plan**
-documentation is published as `c8d5904`; its corresponding backup-creation,
-restore-rehearsal, and DR gates remain planning-only and unstarted.
+M2.2 **Migration Execution Plan** documentation is published as `2cd85c3`;
+the approved migration and idempotent five-station seed completed with
+content-free evidence. M2.3 **Topology Validation Plan** documentation is
+published as `be6a242`; its approved topology validation completed with
+content-free evidence. M2.4 **Backup, Restore, and DR Plan** documentation is
+published as `c8d5904`; its executable logical custom-archive backup contract
+and separate backup-authority artifact are versioned, while backup creation,
+restore rehearsal, and DR acceptance remain independently gated.
 
 M2.5 **Operational-Authorization Decision Packet** planning is complete and
-published as `b07814d`. It consolidates owner decisions required for the M2.2
-Migration Execution Gate, M2.3 Topology Validation Gate, M2.4 backup/restore
-gates, and M2 Acceptance Gate; it authorizes none of them. The current M2.2
-prerequisite is owner review of the locally drafted least-privilege role-and-
-grant artifact; a later, separately scoped platform-boundary approval is needed
-to apply it and remains distinct from migration-execution authorization.
+published as `b07814d`. It supplied the separated M2 execution decisions; it
+does not authorize a restore rehearsal, DR acceptance, or any M3 work.
 
-The M2.2 least-privilege [role-and-grant review artifact](M2.2_STAGING_ROLE_AND_GRANT_ARTIFACT.sql)
-is locally reviewed and unapproved. It separates platform/bootstrap, migrator,
-runtime, backup, restore, and evidence-review authority classes; it is not a
-migration and authorizes no connection, service, or execution. The remaining
-platform gate is explicit owner approval to apply the reviewed artifact through
-the designated platform authority before any M2.2 migration-execution approval.
+The M2.2 least-privilege [role-and-grant artifact](M2.2_STAGING_ROLE_AND_GRANT_ARTIFACT.sql)
+was applied in the approved phases required for migration and runtime-boundary
+validation. M2.4 adds a separate, fail-closed
+[backup-authority artifact](M2.4_STAGING_BACKUP_AUTHORITY.sql) for the
+logical-export identity only. It creates no restore capability and does not
+authorize application activation.
 
 ## Deliberately not implemented
 
