@@ -97,6 +97,7 @@ work remains unstarted and pending formal approval.
 - **Objective:** Validate PostgreSQL migrations and disaster recovery in an isolated, non-public staging environment.
 - **Key Tasks:** Apply `002_m1_control_plane.sql` via dedicated migration role; verify least-privilege runtime access; establish backup/restore drills and recovery runbooks.
 - **M2.1 plan:** [Staging activation and migration-rehearsal plan](M2.1_STAGING_ACTIVATION_PLAN.md). M2.2 migration execution, M2.3 topology validation, and M2.4 backup/restore rehearsal remain separately approval-gated.
+- **M2.2 draft:** [Staging migration preflight and run plan](M2.2_STAGING_MIGRATION_PREFLIGHT_AND_RUN_PLAN.md) is local-only and does not authorize a staging connection or migration execution.
 
 ### Phase 3: M3 — Media Ingestion, Metadata & Asset Lifecycle
 
