@@ -32,6 +32,12 @@ action. M2.4 backup, restore, and DR-rehearsal planning documentation is
 published as `c8d5904`; it remains planning-only and authorizes no backup,
 restore, DR rehearsal, or other operational action.
 
+M2.5 operational-authorization decision-packet planning is drafted locally,
+uncommitted, and non-operational. It consolidates owner decisions required for
+the independently approved M2.2 migration, M2.3 topology, backup,
+restore-rehearsal, and M2-acceptance gates; it authorizes none of them. The
+next approval gate is review and commit of that documentation only.
+
 ## Deliberately not implemented
 
 - Media files, import/download tooling, media scanning, credentials, public/browser exposure, production infrastructure, and any production media migration.
