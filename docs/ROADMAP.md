@@ -41,6 +41,17 @@ execution, or production changes. M1–M9 remain the authoritative milestone
 sequence and primary approval gates; completed evidence is not renumbered or
 invalidated.
 
+### Completion-record convention
+
+Every open sub-goal and milestone has a forecast completion window. Once it is
+accepted, replace that forecast with an actual UTC completion date in
+`YYYY-MM-DD` form and cite the bounded evidence record (commit(s), validation,
+and owner acceptance where required). Update the associated milestone roll-up,
+critical-path forecast, and `docs/CURRENT_STATE.md` in the same documentation
+change. A documentation commit alone never marks implementation complete;
+completion requires the sub-goal's stated evidence and approval. Historical
+actual dates remain in the ledger rather than being overwritten by a reforecast.
+
 ### Planning estimates
 
 The estimates below are planning ranges, not deadlines or authorization. They
@@ -130,17 +141,77 @@ late gate shifts every dependent window. Elapsed ranges are sequential unless a
 later gate explicitly permits otherwise; revise the critical path after each
 approved sub-goal.
 
-| Milestone | Focused engineering effort    | Expected elapsed duration             | Indicative completion window | Confidence | Key dependency / approval gate                                                 |
-| --------- | ----------------------------- | ------------------------------------- | ---------------------------- | ---------- | ------------------------------------------------------------------------------ |
-| M1.3–M1.4 | 3–6 weeks                     | 5–10 weeks                            | September–November 2026      | Medium     | Local UI approval, then M1 completion decision                                 |
-| M2        | 4–8 weeks                     | 8–16 weeks                            | December 2026–March 2027     | Low        | Formal M1 acceptance; staging, credentials, migration and DR approval          |
-| M3        | 8–14 weeks                    | 14–28 weeks                           | April–October 2027           | Low        | M2 evidence; rights manifest, approved paths, sandbox policy                   |
-| M4        | 7–12 weeks                    | 10–20 weeks                           | July 2027–March 2028         | Medium     | M3 immutable asset handles; publication semantics approval                     |
-| M5        | 16–28 weeks                   | 28–52 weeks                           | February 2028–March 2029     | Low        | M4 published artifact; isolated runtime/audio plan and listening evidence      |
-| M6        | 5–9 weeks                     | 8–18 weeks                            | April–July 2029              | Medium     | M5 acceptance, M4 publication boundary, and public-input threat-model approval |
-| M7        | 10–18 weeks                   | 18–36 weeks                           | August 2029–April 2030       | Low        | Approved runtime/PCM bus; private infrastructure and failover test approval    |
-| M8        | 8–14 weeks plus observation   | 16–32 weeks plus observation          | December 2029–December 2030  | Low        | M7 private outputs; shadow plan and operator listening windows                 |
-| M9        | 6–12 weeks plus stabilization | 12–28 weeks plus observation/rollback | March 2030–July 2031         | Low        | M8 evidence; cutover, compliance, DNS, and retirement approvals                |
+| Milestone      | Focused engineering effort    | Expected elapsed duration             | Indicative completion window | Confidence | Key dependency / approval gate                                                 |
+| -------------- | ----------------------------- | ------------------------------------- | ---------------------------- | ---------- | ------------------------------------------------------------------------------ |
+| M1 (M1.1–M1.4) | 3–6 weeks remaining           | 5–10 weeks remaining                  | September–November 2026      | Medium     | M1.3 UI approval, then M1 completion decision                                  |
+| M2             | 4–8 weeks                     | 8–16 weeks                            | December 2026–March 2027     | Low        | Formal M1 acceptance; staging, credentials, migration and DR approval          |
+| M3             | 8–14 weeks                    | 14–28 weeks                           | April–October 2027           | Low        | M2 evidence; rights manifest, approved paths, sandbox policy                   |
+| M4             | 7–12 weeks                    | 10–20 weeks                           | July 2027–March 2028         | Medium     | M3 immutable asset handles; publication semantics approval                     |
+| M5             | 16–28 weeks                   | 28–52 weeks                           | February 2028–May 2029       | Low        | M4 published artifact; isolated runtime/audio plan and listening evidence      |
+| M6             | 5–9 weeks                     | 8–18 weeks                            | May–October 2029             | Medium     | M5 acceptance, M4 publication boundary, and public-input threat-model approval |
+| M7             | 10–18 weeks                   | 18–36 weeks                           | October 2029–July 2030       | Low        | Approved runtime/PCM bus; private infrastructure and failover test approval    |
+| M8             | 8–14 weeks plus observation   | 16–32 weeks plus observation          | August 2030–May 2031         | Low        | M7 private outputs; shadow plan and operator listening windows                 |
+| M9             | 6–12 weeks plus stabilization | 12–28 weeks plus observation/rollback | June 2031–March 2032         | Low        | M8 evidence; cutover, compliance, DNS, and retirement approvals                |
+
+## Completion ledger and forecast calendar
+
+The ledger records completed work done on **2026-08-03** separately from
+planning-only documentation. Forecast windows are rolling calendar ranges and
+must be replaced with actual completion dates and evidence when each boundary
+is accepted.
+
+### Completed work
+
+| Sub-goal                                             | Actual completion date | Evidence                                                        | Result                                                                                                                                       |
+| ---------------------------------------------------- | ---------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| M1.1 — Foundations and persistence/security contract | 2026-08-03             | `1f84acc`; local validation recorded in `docs/CURRENT_STATE.md` | Complete and pushed; PostgreSQL-only foundation, station scope, identity/session, audit, and migration boundary established.                 |
+| M1.2 — Protected backend                             | 2026-08-03             | `1f84acc`; 29 passing local tests and hygiene/audit evidence    | Complete and pushed; protected CRUD, complete-state SQL validation, safe errors, content-free audits, and deterministic dry run established. |
+| Approved architecture-gate documentation             | 2026-08-03             | `832810f`                                                       | Roadmap-only M4–M8 design gates recorded; no runtime authorization.                                                                          |
+| Sub-goal and estimate planning update                | 2026-08-03             | `7c56f50`                                                       | Roadmap-only convention and estimates recorded; no implementation authorization.                                                             |
+
+### Forecast completion calendar
+
+| Sub-goal                                                | Forecast completion window  | Status / completion-record trigger                                                                      |
+| ------------------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------- |
+| M1.3 — Role-aware operator UI                           | September–October 2026      | Next, unstarted; replace with actual date after local UI evidence and owner acceptance.                 |
+| M1.4 — Local-only M1 acceptance decision                | October–November 2026       | Approval-gated; replace with actual date only after complete M1 evidence and completion recommendation. |
+| M2.1 — Staging activation plan and rehearsal design     | November–December 2026      | Approval-gated; replace after owner-approved plan.                                                      |
+| M2.2 — Staging PostgreSQL migration verification        | December 2026–January 2027  | Approval-gated; replace after approved staging migration evidence.                                      |
+| M2.3 — Separately deployable staging topology           | January–February 2027       | Approval-gated; replace after topology-boundary validation.                                             |
+| M2.4 — Backup, restore, and DR evidence                 | February–March 2027         | Approval-gated; replace after DR signoff recommendation.                                                |
+| M3.1 — Media intake and immutable asset lifecycle       | April–May 2027              | Approval-gated; replace after lifecycle/rights acceptance.                                              |
+| M3.2 — Sandboxed asynchronous ingestion worker          | May–June 2027               | Approval-gated; replace after worker-boundary evidence.                                                 |
+| M3.3 — Offline analysis pipeline                        | June–August 2027            | Approval-gated; replace after repeatable analysis and listening review.                                 |
+| M3.4 — Metadata/artwork/retry/quarantine acceptance     | August–October 2027         | Approval-gated; replace after provenance and lifecycle acceptance.                                      |
+| M4.1 — Deterministic scheduling contract                | July–November 2027          | Approval-gated; replace after rules/test-corpus evidence.                                               |
+| M4.2 — Station-scoped 24-hour compilation               | September 2027–January 2028 | Approval-gated; replace after deterministic compilation evidence.                                       |
+| M4.3 — Published schedule artifact contract             | November 2027–February 2028 | Approval-gated; replace after artifact integrity/rollback evidence.                                     |
+| M4.4 — Publication/rollback recommendation              | January–March 2028          | Approval-gated; replace after operator acceptance recommendation.                                       |
+| M5.1 — Runtime architecture and fault-model gate        | February–April 2028         | Approval-gated; replace after owner-approved design/benchmark plan.                                     |
+| M5.2 — Controlled shadow-runtime foundation             | May–August 2028             | Approval-gated; replace after supervisor/worker recovery evidence.                                      |
+| M5.3 — Transition/deck/failure/rollback validation      | August–November 2028        | Approval-gated; replace after measured fault and transition evidence.                                   |
+| M5.4 — DSP evaluation and acceptance                    | November 2028–February 2029 | Approval-gated; replace after capacity, license, and listening evidence.                                |
+| M5.5 — WASM-first automation sandbox                    | February–April 2029         | Approval-gated; replace after security/regression evidence.                                             |
+| M5.6 — M5 acceptance decision                           | April–May 2029              | Approval-gated; replace after owner runtime/listening signoff.                                          |
+| M6.1 — Request/listener-message contract                | May–June 2029               | Approval-gated; replace after threat/privacy acceptance.                                                |
+| M6.2 — Approved intake and eligibility controls         | June–July 2029              | Approval-gated; replace after abuse/rate-limit evidence.                                                |
+| M6.3 — Operator moderation and presentation             | July–August 2029            | Approval-gated; replace after role/audit/operator evidence.                                             |
+| M6.4 — Safe future-slot proposal insertion              | August–September 2029       | Approval-gated; replace after publication/separation proof.                                             |
+| M6.5 — Security/load/abuse acceptance                   | September–October 2029      | Approval-gated; replace after owner acceptance recommendation.                                          |
+| M7.1 — Source encoder/PCM-bus design                    | October–November 2029       | Approval-gated; replace after boundary/profile approval.                                                |
+| M7.2 — Icecast topology validation plan                 | November 2029–January 2030  | Approval-gated; replace after private infrastructure plan approval.                                     |
+| M7.3 — Processed PCM fan-out and codecs                 | January–March 2030          | Approval-gated; replace after private codec/output evidence.                                            |
+| M7.4 — Epoch-aware metadata distribution                | March–May 2030              | Approval-gated; replace after epoch/failover evidence.                                                  |
+| M7.5 — Source/failover listener evidence                | May–July 2030               | Approval-gated; replace after measured private listener validation.                                     |
+| M8.1 — Shadow-operation plan and parity definition      | August–September 2030       | Approval-gated; replace after owner-approved observation plan.                                          |
+| M8.2 — Measurement collection                           | September–November 2030     | Approval-gated; replace after reproducible comparison evidence.                                         |
+| M8.3 — Controlled failure drills                        | December 2030–February 2031 | Approval-gated; replace after timed drill/recovery evidence.                                            |
+| M8.4 — Operator listening/parity/cutover recommendation | February–May 2031           | Approval-gated; replace after signed evidence pack.                                                     |
+| M9.1 — Guarded cutover and rollback plan                | June–July 2031              | Approval-gated; replace after plan/rehearsal approval.                                                  |
+| M9.2 — Compliance and operational-readiness validation  | July–August 2031            | Approval-gated; replace after reconciliation/readiness evidence.                                        |
+| M9.3 — Phased DNS/listener cutover                      | September–October 2031      | Approval-gated; replace only after the authorized cutover window closes.                                |
+| M9.4 — Post-cutover stability/compliance verification   | October–December 2031       | Approval-gated; replace after observation/rollback period acceptance.                                   |
+| M9.5 — Legacy decommissioning and closeout              | January–March 2032          | Approval-gated; replace only after separate retirement approval.                                        |
 
 ## Phase 1 — M1: Programming Control Plane and Security Baseline
 
@@ -176,13 +247,15 @@ programming-control plane with no capability to execute audio work.
 establish PostgreSQL-only composition, station-scoped contracts, identity,
 sessions, and audit boundaries. Boundary: no migration or operational service.
 Evidence: committed schema, repositories, Compose boundary, and local checks.
-Completion did not authorize M1.2 or operational activity.
+Completed **2026-08-03**; evidence `1f84acc`. Completion did not authorize
+M1.2 or operational activity.
 
 **M1.2 — Protected backend — Complete.** Objective: secure scoped CRUD,
 complete-state SQL validation, safe errors, content-free audits, and
 deterministic dry-run behavior. Boundary: no operator UI, migration, runtime,
 or media action. Evidence: committed route/repository coverage and local
-`npm run check`. Completion did not authorize M1.3.
+`npm run check`. Completed **2026-08-03**; evidence `1f84acc`. Completion did
+not authorize M1.3.
 
 **M1.3 — Role-aware operator UI — Next, unstarted.** Objective: connect
 proposal, dry-run preview, approval, published-state, and safe-status views to
@@ -704,7 +777,7 @@ Next gate:
 > public-interface threat model. A public listener remains out of scope.”
 
 Planning estimate: M5 is **16–28 weeks** focused effort and **28–52 weeks**
-elapsed, with an indicative completion range of **February 2028–March 2029**.
+elapsed, with an indicative completion range of **February 2028–May 2029**.
 Audio quality, capacity, and recovery evidence—not code completion—control the
 range.
 
@@ -795,7 +868,7 @@ Next gate:
 > listener exposure requires a separate explicit approval.”
 
 Planning estimate: M6 is **5–9 weeks** focused effort and **8–18 weeks**
-elapsed, with an indicative completion range of **April–July 2029**. M6 depends
+elapsed, with an indicative completion range of **May–October 2029**. M6 depends
 on M4 publication and never becomes runtime queue control.
 
 ## Phase 7 — M7: Source Encoding, Icecast, and Dynamic Metadata
@@ -913,7 +986,7 @@ Next gate:
 > including comparison inputs, manual listening windows, and failure drills.”
 
 Planning estimate: M7 is **10–18 weeks** focused effort and **18–36 weeks**
-elapsed, with an indicative completion range of **August 2029–April 2030**.
+elapsed, with an indicative completion range of **October 2029–July 2030**.
 Sub-second internal metadata propagation remains a target; listener-perceived
 alignment is measured, not universally guaranteed.
 
@@ -1008,7 +1081,7 @@ Next gate:
 
 Planning estimate: M8 is **8–14 weeks** focused effort plus observation and
 **16–32 weeks** elapsed plus observation, with an indicative completion range
-of **December 2029–December 2030**. Continuous connectivity alone is never
+of **August 2030–May 2031**. Continuous connectivity alone is never
 acceptance evidence.
 
 ## Phase 9 — M9: Listener Cutover and Legacy Decommissioning
@@ -1098,8 +1171,8 @@ review and verified reporting evidence.
 The owner must approve the cutover runbook immediately before execution and
 must separately approve legacy retirement. Planning estimate: M9 is **6–12
 weeks** focused effort plus stabilization and **12–28 weeks** elapsed plus
-observation/rollback, with an indicative completion range of **March 2030–July
-2031**. Every M9 date is contingent on cutover evidence, not a commitment.
+observation/rollback, with an indicative completion range of **June 2031–March
+2032**. Every M9 date is contingent on cutover evidence, not a commitment.
 
 ## Dependency and critical path
 

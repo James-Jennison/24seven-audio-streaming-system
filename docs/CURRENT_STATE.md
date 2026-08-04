@@ -14,9 +14,10 @@
 - Repository hygiene, dependency audit, formatting, lint, type, domain, API, and UI checks.
 
 M1.1 (foundations/persistence/security contract) and M1.2 (protected backend)
-are committed and pushed. M1.3, the role-aware operator UI, is the next
-unstarted local-only sub-goal. Its completion, M1 completion, M2 activation,
-and every operational action each require separate explicit approval.
+were completed, committed, and pushed on 2026-08-03. M1.3, the role-aware
+operator UI, is the next unstarted local-only sub-goal. Its completion, M1
+completion, M2 activation, and every operational action each require separate
+explicit approval.
 
 ## Deliberately not implemented
 
