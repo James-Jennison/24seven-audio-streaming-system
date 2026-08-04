@@ -19,8 +19,9 @@ M1.1 (foundations/persistence/security contract), M1.2 (protected backend),
 and M1.3 (role-aware operator UI) were completed, committed, and pushed on
 2026-08-03; M1.3 evidence is `9772b69`. M1.4 local-only acceptance evidence
 passed and M1 is formally complete as of 2026-08-04 UTC. M2 is the next
-milestone, remains unstarted, and requires separate explicit approval before
-any M2 planning or operational activity.
+milestone. M2.1 documentation planning is explicitly approved; M2 remains
+operationally unstarted, and any M2 connection, migration, service, VM, backup,
+or restore activity requires a separate explicit approval.
 
 ## Deliberately not implemented
 
@@ -32,9 +33,9 @@ any M2 planning or operational activity.
 `docs/ROADMAP.md` records approved M4–M8 design gates for published schedule
 artifacts, runtime/fault and automation-sandbox contracts, DSP ownership,
 epoch-aware metadata failover, and evidence-based shadow acceptance. Its
-sequential M1–M9 sub-goal convention and range-based calendar forecast are
+sequential M1–M9 approval-gate policy and range-based calendar forecast are
 planning tools only: they are not implemented capabilities and do not authorize
-M1.3, M2–M9 work, or operational activity.
+M2.2–M9 work or operational activity.
 
 ## M1.4 local-only acceptance record
 

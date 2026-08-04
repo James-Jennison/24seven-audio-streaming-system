@@ -45,14 +45,16 @@ Replace legacy **SAM Pro / SAM Broadcaster** and **SHOUTcast 1.9.8** with a Linu
 - Completed work is recorded with bounded evidence and an actual UTC completion
   date. Forecasts apply only to uncompleted, approval-gated work and are
   recalibrated at each approved boundary.
-- M2 is the next milestone, but it is unstarted. It requires separate explicit
-  approval before any M2 planning or operational activity.
+- M2 is the next milestone. M2.1 documentation planning is approved; every
+  later M2 operational action requires separate explicit approval.
 
 ---
 
 ## 3. Current Implementation State
 
-The published baseline is **M0 (`2fa02a1`)**. **M1** was completed on **2026-08-04 UTC**. **M2** is unstarted and pending formal approval.
+The published baseline is **M0 (`2fa02a1`)**. **M1** was completed on
+**2026-08-04 UTC**. M2.1 documentation planning is approved; M2 operational
+work remains unstarted and pending formal approval.
 
 | Area                  | Current Worktree Status                                                                                                   | State                               |
 | :-------------------- | :------------------------------------------------------------------------------------------------------------------------ | :---------------------------------- |
@@ -91,8 +93,10 @@ The published baseline is **M0 (`2fa02a1`)**. **M1** was completed on **2026-08-
 
 ### Phase 2: M2 — Persistence Activation, Staging & DR
 
+- **Status:** M2.1 planning approved; no M2 operational action is authorized.
 - **Objective:** Validate PostgreSQL migrations and disaster recovery in an isolated, non-public staging environment.
 - **Key Tasks:** Apply `002_m1_control_plane.sql` via dedicated migration role; verify least-privilege runtime access; establish backup/restore drills and recovery runbooks.
+- **M2.1 plan:** [Staging activation and migration-rehearsal plan](M2.1_STAGING_ACTIVATION_PLAN.md). M2.2 migration execution, M2.3 topology validation, and M2.4 backup/restore rehearsal remain separately approval-gated.
 
 ### Phase 3: M3 — Media Ingestion, Metadata & Asset Lifecycle
 
