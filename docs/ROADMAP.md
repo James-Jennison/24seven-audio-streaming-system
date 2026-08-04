@@ -104,20 +104,22 @@ schedule pressure, or feature scope.
 The published baseline is M0 at `2fa02a1`, followed by roadmap commit
 `8fea092`. M1.1/M1.2 implementation evidence is committed and pushed in
 `1f84acc`, with the accompanying architecture-gate documentation in `832810f`.
-M1.3 is implemented and committed locally pending owner acceptance and push approval. No migration,
+M1.3 is complete and pushed in `9772b69`. M1.4 local-only acceptance evidence
+passed, and M1 is formally complete as of **2026-08-04 UTC**. M2 is next but
+unstarted and needs separate explicit approval before any planning or action. No migration,
 Docker/Compose invocation, service startup, deployment, runtime/stream action,
 or production-system action is authorized by this roadmap.
 
-| Area                       | Evidence in the current worktree                                                                                                        | State                                                            |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| Live persistence direction | `PostgresPersistence`, `PostgresM1Repositories`, separate runtime/migrator URLs, loopback Compose asset, and `002_m1_control_plane.sql` | M1.1 complete; migration remains unapplied                       |
-| Identity and authorization | scrypt hashing, server-session primitives, roles/station grants, bootstrap/login/logout adapters, and CSRF/session helpers              | M1.1/M1.2 complete locally and pushed                            |
-| Programming model          | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, and scheduled events                              | M1.1/M1.2 complete locally and pushed                            |
-| API boundary               | Protected programming adapter, safe error mapping, authenticated dry-run route, and negative-path coverage                              | M1.2 complete and pushed                                         |
-| Update validation          | All seven entity families use scoped load/merge/validate/persist paths; retained and replacement references are SQL-scoped              | M1.2 complete and pushed                                         |
-| UI                         | M1.3 local operator UI implementation is complete; server-authoritative protected APIs remain the only mutation boundary                | Local commit; M1.3 acceptance and push approval remain           |
-| Validation                 | `npm run check` builds, lints, typechecks, runs tests, audits dependencies, and runs hygiene                                            | M1.3 local evidence passed; M1.3 acceptance/M1.4 evidence remain |
-| Automation                 | No `.github` workflow is present                                                                                                        | Planned; local check remains the current gate                    |
+| Area                       | Evidence in the current worktree                                                                                                        | State                                         |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| Live persistence direction | `PostgresPersistence`, `PostgresM1Repositories`, separate runtime/migrator URLs, loopback Compose asset, and `002_m1_control_plane.sql` | M1.1 complete; migration remains unapplied    |
+| Identity and authorization | scrypt hashing, server-session primitives, roles/station grants, bootstrap/login/logout adapters, and CSRF/session helpers              | M1.1/M1.2 complete locally and pushed         |
+| Programming model          | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, and scheduled events                              | M1.1/M1.2 complete locally and pushed         |
+| API boundary               | Protected programming adapter, safe error mapping, authenticated dry-run route, and negative-path coverage                              | M1.2 complete and pushed                      |
+| Update validation          | All seven entity families use scoped load/merge/validate/persist paths; retained and replacement references are SQL-scoped              | M1.2 complete and pushed                      |
+| UI                         | M1.3 local operator UI is complete and pushed; server-authoritative protected APIs remain the only mutation boundary                    | Complete; evidence `9772b69`                  |
+| Validation                 | `npm run check` builds, lints, typechecks, runs tests, audits dependencies, and runs hygiene                                            | M1 complete; M1.4 local evidence passed       |
+| Automation                 | No `.github` workflow is present                                                                                                        | Planned; local check remains the current gate |
 
 `m1-store` is a test double only and must never enter the live application
 path. The test runner no longer requires Node's experimental SQLite flag, and
@@ -126,12 +128,13 @@ SQLite remains absent from the live M1 application path.
 ### Active M1 completion scope
 
 M1.1 foundations/persistence/security and M1.2 protected backend are complete
-and pushed. M1.3 is implemented locally: the status-only browser surface is replaced by the
+and pushed. M1.3 is complete and pushed: the status-only browser surface is replaced by the
 authorized operator UI—bootstrap/login/logout, protected station context,
 library/programming views, clear proposed-preview semantics, and explicit
 loading, empty, forbidden, read-only, validation-error, and unavailable states.
-It must not add an execution control. M1.4 is the later local-only acceptance
-and completion recommendation; it cannot start without approval after M1.3.
+It must not add an execution control. M1.4 local-only acceptance evidence
+passed; M1 is complete as of **2026-08-04 UTC**. No M2 planning or work follows
+without a separate explicit M2 approval.
 
 ## Remaining-work estimate table
 
@@ -143,7 +146,7 @@ approved sub-goal.
 
 | Milestone      | Focused engineering effort    | Expected elapsed duration             | Indicative completion window | Confidence | Key dependency / approval gate                                                 |
 | -------------- | ----------------------------- | ------------------------------------- | ---------------------------- | ---------- | ------------------------------------------------------------------------------ |
-| M1 (M1.1–M1.4) | 3–6 weeks remaining           | 5–10 weeks remaining                  | September–November 2026      | Medium     | M1.3 UI approval, then M1 completion decision                                  |
+| M1 (M1.1–M1.4) | Complete                      | Completed 2026-08-04 UTC              | Completed 2026-08-04 UTC     | High       | M2 remains separately approval-gated                                           |
 | M2             | 4–8 weeks                     | 8–16 weeks                            | December 2026–March 2027     | Low        | Formal M1 acceptance; staging, credentials, migration and DR approval          |
 | M3             | 8–14 weeks                    | 14–28 weeks                           | April–October 2027           | Low        | M2 evidence; rights manifest, approved paths, sandbox policy                   |
 | M4             | 7–12 weeks                    | 10–20 weeks                           | July 2027–March 2028         | Medium     | M3 immutable asset handles; publication semantics approval                     |
@@ -166,52 +169,54 @@ is accepted.
 | ---------------------------------------------------- | ---------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | M1.1 — Foundations and persistence/security contract | 2026-08-03             | `1f84acc`; local validation recorded in `docs/CURRENT_STATE.md` | Complete and pushed; PostgreSQL-only foundation, station scope, identity/session, audit, and migration boundary established.                 |
 | M1.2 — Protected backend                             | 2026-08-03             | `1f84acc`; 29 passing local tests and hygiene/audit evidence    | Complete and pushed; protected CRUD, complete-state SQL validation, safe errors, content-free audits, and deterministic dry run established. |
+| M1.3 — Role-aware operator UI                        | 2026-08-03             | `9772b69`; local UI/API and safe-boundary evidence              | Complete and pushed; station-scoped operator UI with explicit unavailable runtime boundary.                                                  |
+| M1.4 — Local-only acceptance and completion decision | 2026-08-04             | This completion commit; 32 local tests and validation evidence  | Complete; M1 completion recorded without M2 authorization.                                                                                   |
 | Approved architecture-gate documentation             | 2026-08-03             | `832810f`                                                       | Roadmap-only M4–M8 design gates recorded; no runtime authorization.                                                                          |
 | Sub-goal and estimate planning update                | 2026-08-03             | `7c56f50`                                                       | Roadmap-only convention and estimates recorded; no implementation authorization.                                                             |
 
 ### Forecast completion calendar
 
-| Sub-goal                                                | Forecast completion window  | Status / completion-record trigger                                                                      |
-| ------------------------------------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------- |
-| M1.3 — Role-aware operator UI                           | September–October 2026      | Implemented and committed locally; replace with actual date after owner acceptance and push approval.   |
-| M1.4 — Local-only M1 acceptance decision                | October–November 2026       | Approval-gated; replace with actual date only after complete M1 evidence and completion recommendation. |
-| M2.1 — Staging activation plan and rehearsal design     | November–December 2026      | Approval-gated; replace after owner-approved plan.                                                      |
-| M2.2 — Staging PostgreSQL migration verification        | December 2026–January 2027  | Approval-gated; replace after approved staging migration evidence.                                      |
-| M2.3 — Separately deployable staging topology           | January–February 2027       | Approval-gated; replace after topology-boundary validation.                                             |
-| M2.4 — Backup, restore, and DR evidence                 | February–March 2027         | Approval-gated; replace after DR signoff recommendation.                                                |
-| M3.1 — Media intake and immutable asset lifecycle       | April–May 2027              | Approval-gated; replace after lifecycle/rights acceptance.                                              |
-| M3.2 — Sandboxed asynchronous ingestion worker          | May–June 2027               | Approval-gated; replace after worker-boundary evidence.                                                 |
-| M3.3 — Offline analysis pipeline                        | June–August 2027            | Approval-gated; replace after repeatable analysis and listening review.                                 |
-| M3.4 — Metadata/artwork/retry/quarantine acceptance     | August–October 2027         | Approval-gated; replace after provenance and lifecycle acceptance.                                      |
-| M4.1 — Deterministic scheduling contract                | July–November 2027          | Approval-gated; replace after rules/test-corpus evidence.                                               |
-| M4.2 — Station-scoped 24-hour compilation               | September 2027–January 2028 | Approval-gated; replace after deterministic compilation evidence.                                       |
-| M4.3 — Published schedule artifact contract             | November 2027–February 2028 | Approval-gated; replace after artifact integrity/rollback evidence.                                     |
-| M4.4 — Publication/rollback recommendation              | January–March 2028          | Approval-gated; replace after operator acceptance recommendation.                                       |
-| M5.1 — Runtime architecture and fault-model gate        | February–April 2028         | Approval-gated; replace after owner-approved design/benchmark plan.                                     |
-| M5.2 — Controlled shadow-runtime foundation             | May–August 2028             | Approval-gated; replace after supervisor/worker recovery evidence.                                      |
-| M5.3 — Transition/deck/failure/rollback validation      | August–November 2028        | Approval-gated; replace after measured fault and transition evidence.                                   |
-| M5.4 — DSP evaluation and acceptance                    | November 2028–February 2029 | Approval-gated; replace after capacity, license, and listening evidence.                                |
-| M5.5 — WASM-first automation sandbox                    | February–April 2029         | Approval-gated; replace after security/regression evidence.                                             |
-| M5.6 — M5 acceptance decision                           | April–May 2029              | Approval-gated; replace after owner runtime/listening signoff.                                          |
-| M6.1 — Request/listener-message contract                | May–June 2029               | Approval-gated; replace after threat/privacy acceptance.                                                |
-| M6.2 — Approved intake and eligibility controls         | June–July 2029              | Approval-gated; replace after abuse/rate-limit evidence.                                                |
-| M6.3 — Operator moderation and presentation             | July–August 2029            | Approval-gated; replace after role/audit/operator evidence.                                             |
-| M6.4 — Safe future-slot proposal insertion              | August–September 2029       | Approval-gated; replace after publication/separation proof.                                             |
-| M6.5 — Security/load/abuse acceptance                   | September–October 2029      | Approval-gated; replace after owner acceptance recommendation.                                          |
-| M7.1 — Source encoder/PCM-bus design                    | October–November 2029       | Approval-gated; replace after boundary/profile approval.                                                |
-| M7.2 — Icecast topology validation plan                 | November 2029–January 2030  | Approval-gated; replace after private infrastructure plan approval.                                     |
-| M7.3 — Processed PCM fan-out and codecs                 | January–March 2030          | Approval-gated; replace after private codec/output evidence.                                            |
-| M7.4 — Epoch-aware metadata distribution                | March–May 2030              | Approval-gated; replace after epoch/failover evidence.                                                  |
-| M7.5 — Source/failover listener evidence                | May–July 2030               | Approval-gated; replace after measured private listener validation.                                     |
-| M8.1 — Shadow-operation plan and parity definition      | August–September 2030       | Approval-gated; replace after owner-approved observation plan.                                          |
-| M8.2 — Measurement collection                           | September–November 2030     | Approval-gated; replace after reproducible comparison evidence.                                         |
-| M8.3 — Controlled failure drills                        | December 2030–February 2031 | Approval-gated; replace after timed drill/recovery evidence.                                            |
-| M8.4 — Operator listening/parity/cutover recommendation | February–May 2031           | Approval-gated; replace after signed evidence pack.                                                     |
-| M9.1 — Guarded cutover and rollback plan                | June–July 2031              | Approval-gated; replace after plan/rehearsal approval.                                                  |
-| M9.2 — Compliance and operational-readiness validation  | July–August 2031            | Approval-gated; replace after reconciliation/readiness evidence.                                        |
-| M9.3 — Phased DNS/listener cutover                      | September–October 2031      | Approval-gated; replace only after the authorized cutover window closes.                                |
-| M9.4 — Post-cutover stability/compliance verification   | October–December 2031       | Approval-gated; replace after observation/rollback period acceptance.                                   |
-| M9.5 — Legacy decommissioning and closeout              | January–March 2032          | Approval-gated; replace only after separate retirement approval.                                        |
+| Sub-goal                                                | Forecast completion window  | Status / completion-record trigger                                       |
+| ------------------------------------------------------- | --------------------------- | ------------------------------------------------------------------------ |
+| M1.3 — Role-aware operator UI                           | Completed 2026-08-03        | Complete; committed and pushed as `9772b69`.                             |
+| M1.4 — Local-only M1 acceptance decision                | Completed 2026-08-04 UTC    | Complete; M1 completion recorded. M2 remains separately approval-gated.  |
+| M2.1 — Staging activation plan and rehearsal design     | November–December 2026      | Approval-gated; replace after owner-approved plan.                       |
+| M2.2 — Staging PostgreSQL migration verification        | December 2026–January 2027  | Approval-gated; replace after approved staging migration evidence.       |
+| M2.3 — Separately deployable staging topology           | January–February 2027       | Approval-gated; replace after topology-boundary validation.              |
+| M2.4 — Backup, restore, and DR evidence                 | February–March 2027         | Approval-gated; replace after DR signoff recommendation.                 |
+| M3.1 — Media intake and immutable asset lifecycle       | April–May 2027              | Approval-gated; replace after lifecycle/rights acceptance.               |
+| M3.2 — Sandboxed asynchronous ingestion worker          | May–June 2027               | Approval-gated; replace after worker-boundary evidence.                  |
+| M3.3 — Offline analysis pipeline                        | June–August 2027            | Approval-gated; replace after repeatable analysis and listening review.  |
+| M3.4 — Metadata/artwork/retry/quarantine acceptance     | August–October 2027         | Approval-gated; replace after provenance and lifecycle acceptance.       |
+| M4.1 — Deterministic scheduling contract                | July–November 2027          | Approval-gated; replace after rules/test-corpus evidence.                |
+| M4.2 — Station-scoped 24-hour compilation               | September 2027–January 2028 | Approval-gated; replace after deterministic compilation evidence.        |
+| M4.3 — Published schedule artifact contract             | November 2027–February 2028 | Approval-gated; replace after artifact integrity/rollback evidence.      |
+| M4.4 — Publication/rollback recommendation              | January–March 2028          | Approval-gated; replace after operator acceptance recommendation.        |
+| M5.1 — Runtime architecture and fault-model gate        | February–April 2028         | Approval-gated; replace after owner-approved design/benchmark plan.      |
+| M5.2 — Controlled shadow-runtime foundation             | May–August 2028             | Approval-gated; replace after supervisor/worker recovery evidence.       |
+| M5.3 — Transition/deck/failure/rollback validation      | August–November 2028        | Approval-gated; replace after measured fault and transition evidence.    |
+| M5.4 — DSP evaluation and acceptance                    | November 2028–February 2029 | Approval-gated; replace after capacity, license, and listening evidence. |
+| M5.5 — WASM-first automation sandbox                    | February–April 2029         | Approval-gated; replace after security/regression evidence.              |
+| M5.6 — M5 acceptance decision                           | April–May 2029              | Approval-gated; replace after owner runtime/listening signoff.           |
+| M6.1 — Request/listener-message contract                | May–June 2029               | Approval-gated; replace after threat/privacy acceptance.                 |
+| M6.2 — Approved intake and eligibility controls         | June–July 2029              | Approval-gated; replace after abuse/rate-limit evidence.                 |
+| M6.3 — Operator moderation and presentation             | July–August 2029            | Approval-gated; replace after role/audit/operator evidence.              |
+| M6.4 — Safe future-slot proposal insertion              | August–September 2029       | Approval-gated; replace after publication/separation proof.              |
+| M6.5 — Security/load/abuse acceptance                   | September–October 2029      | Approval-gated; replace after owner acceptance recommendation.           |
+| M7.1 — Source encoder/PCM-bus design                    | October–November 2029       | Approval-gated; replace after boundary/profile approval.                 |
+| M7.2 — Icecast topology validation plan                 | November 2029–January 2030  | Approval-gated; replace after private infrastructure plan approval.      |
+| M7.3 — Processed PCM fan-out and codecs                 | January–March 2030          | Approval-gated; replace after private codec/output evidence.             |
+| M7.4 — Epoch-aware metadata distribution                | March–May 2030              | Approval-gated; replace after epoch/failover evidence.                   |
+| M7.5 — Source/failover listener evidence                | May–July 2030               | Approval-gated; replace after measured private listener validation.      |
+| M8.1 — Shadow-operation plan and parity definition      | August–September 2030       | Approval-gated; replace after owner-approved observation plan.           |
+| M8.2 — Measurement collection                           | September–November 2030     | Approval-gated; replace after reproducible comparison evidence.          |
+| M8.3 — Controlled failure drills                        | December 2030–February 2031 | Approval-gated; replace after timed drill/recovery evidence.             |
+| M8.4 — Operator listening/parity/cutover recommendation | February–May 2031           | Approval-gated; replace after signed evidence pack.                      |
+| M9.1 — Guarded cutover and rollback plan                | June–July 2031              | Approval-gated; replace after plan/rehearsal approval.                   |
+| M9.2 — Compliance and operational-readiness validation  | July–August 2031            | Approval-gated; replace after reconciliation/readiness evidence.         |
+| M9.3 — Phased DNS/listener cutover                      | September–October 2031      | Approval-gated; replace only after the authorized cutover window closes. |
+| M9.4 — Post-cutover stability/compliance verification   | October–December 2031       | Approval-gated; replace after observation/rollback period acceptance.    |
+| M9.5 — Legacy decommissioning and closeout              | January–March 2032          | Approval-gated; replace only after separate retirement approval.         |
 
 ## Phase 1 — M1: Programming Control Plane and Security Baseline
 
@@ -257,7 +262,7 @@ or media action. Evidence: committed route/repository coverage and local
 `npm run check`. Completed **2026-08-03**; evidence `1f84acc`. Completion did
 not authorize M1.3.
 
-**M1.3 — Role-aware operator UI — Implemented and committed locally, pending owner acceptance and push approval.** Objective: connect
+**M1.3 — Role-aware operator UI — Complete.** Objective: connect
 proposal, dry-run preview, approval, published-state, and safe-status views to
 the protected API, enforcing role capability and station isolation in every
 screen/action. Boundary: no hidden mutation or execution control; no media
@@ -265,16 +270,21 @@ ingestion, playout, encoder, stream, relay, or runtime control. Evidence:
 local UI/API integration, authorization/CSRF/error-path coverage,
 accessibility/usability review, and content-free audit verification. Gate:
 explicit approval of M1.3 local-only implementation. Estimate: **2–4 weeks**
-focused effort, **3–7 weeks** elapsed, **medium** confidence; depends on stable
-M1.2 API contracts and owner UI review.
+focused effort, **3–7 weeks** elapsed, **medium** confidence; completed
+**2026-08-03**; evidence `9772b69`.
 
-**M1.4 — Local-only M1 end-to-end acceptance and completion decision — Future,
-approval-gated.** Objective: re-run complete local functional/security evidence
+**M1.4 — Local-only M1 end-to-end acceptance and completion decision —
+Complete 2026-08-04 UTC.** Objective: re-run complete local functional/security evidence
 and verify the `Proposed → Approved → Published` boundary without runtime
 execution. Boundary: no migration, deployment, runtime, or automatic advance
 to M2. Evidence: full local validation, role/station/CSRF/audit evidence,
 manual operator-path review, and an M1 completion recommendation. Gate:
-separate approval after M1.3; advancing to M2 needs a further explicit M2
+M1 completion is recorded above; advancing to M2 still needs a separate
+explicit M2 approval. Local evidence: `npm run check`, 32 Node tests,
+scoped repository/API/UI acceptance assertions, and `git diff --check` pass
+without migration or service execution. Recommendation: **M1 ready for
+completion approval**. Verified limitation: browser-to-applied-PostgreSQL
+integration is deferred to M2 because it needs separate migration/service
 approval. Estimate: **1–2 weeks** focused effort, **2–3 weeks** elapsed,
 **high** confidence; depends on accepted M1.3 evidence.
 
@@ -291,8 +301,9 @@ public access, or any production/VM action.
 - Complete protected API and UI tests covering all roles, five-station
   boundaries, CSRF/session failures, safe error handling, complete-state
   validation, dry-run determinism, and content-free audits.
-- `npm run check`, `git diff --check`, migration-safe repository assertions,
-  and manual local UI review all pass. No test executes a migration.
+- `npm run check`, `git diff --check`, and migration-safe repository/UI
+  assertions pass. Browser-to-applied-PostgreSQL review is deliberately
+  deferred to M2; no test executes a migration.
 - Updated architecture, current-state, operator, API, and ADR material that
   does not claim an applied database or operating audio system.
 
@@ -307,8 +318,9 @@ public access, or any production/VM action.
 
 ### Required human action and next gate
 
-The owner must explicitly approve M1.3 before implementation. After M1.4 is
-accepted, a separate approval must state:
+M1 is complete. M2 remains unstarted; before any M2 planning or operational
+activity, the owner must separately approve the named M2 scope. Any later M2
+operational approval must state:
 
 > “Approve the M2 staging plan to execute the named PostgreSQL migration on
 > the approved development environment, validate backup/restore, and keep all

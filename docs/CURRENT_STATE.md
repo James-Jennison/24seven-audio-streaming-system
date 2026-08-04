@@ -1,6 +1,6 @@
 # Current State
 
-## Implemented and pushed through M1.2
+## M1 complete — 2026-08-04 UTC
 
 - Node 22 / TypeScript control-plane scaffold with strict type checking.
 - PostgreSQL Compose foundation, versioned M1 schema migration, and idempotent stable-ID station seed.
@@ -9,16 +9,18 @@
 - Protected, PostgreSQL-backed programming routes for all seven M1 entity families, with scoped CRUD dispatch, CSRF/RBAC checks, safe errors, and content-free rejection/mutation audits.
 - Complete-state update validation for media, playlists, separation rules, rotations, clocks, program blocks, and scheduled events; retained and replacement references are checked in PostgreSQL against the selected station.
 - Loopback-only HTTP server with liveness, readiness, version, and station-read endpoints.
-- Minimal browser dashboard showing all five stations, unimplemented audio-runtime state, and version/build metadata.
+- Role-aware browser operator UI with local bootstrap/login/logout, protected
+  station context, programming CRUD workflows, explicit safe UI states, and
+  deterministic read-only dry-run preview.
 - Versioned domain contracts and explicit writer ownership for configuration versus future runtime observations.
 - Repository hygiene, dependency audit, formatting, lint, type, domain, API, and UI checks.
 
-M1.1 (foundations/persistence/security contract) and M1.2 (protected backend)
-were completed, committed, and pushed on 2026-08-03. M1.3, the role-aware
-operator UI, is implemented and committed locally pending owner acceptance and
-push approval. It is limited to the protected programming-control interface
-and does not authorize M1 completion, M1.4, M2 activation, or any operational
-action. Each requires separate explicit approval.
+M1.1 (foundations/persistence/security contract), M1.2 (protected backend),
+and M1.3 (role-aware operator UI) were completed, committed, and pushed on
+2026-08-03; M1.3 evidence is `9772b69`. M1.4 local-only acceptance evidence
+passed and M1 is formally complete as of 2026-08-04 UTC. M2 is the next
+milestone, remains unstarted, and requires separate explicit approval before
+any M2 planning or operational activity.
 
 ## Deliberately not implemented
 
@@ -34,7 +36,34 @@ sequential M1–M9 sub-goal convention and range-based calendar forecast are
 planning tools only: they are not implemented capabilities and do not authorize
 M1.3, M2–M9 work, or operational activity.
 
-## Validation record
+## M1.4 local-only acceptance record
+
+The M1.4 acceptance pass ran locally on 2026-08-03 without a migration,
+container, service, VM, media, or runtime action. Evidence includes:
+
+- protected CRUD, role/station/CSRF/session, safe-error, and content-free audit
+  coverage for the seven station-scoped programming families;
+- deterministic, read-only dry-run coverage; and
+- acceptance assertions that the live composition is PostgreSQL-only, excludes
+  `m1-store`, and exposes no approval, publication, execution, media-ingestion,
+  runtime, encoder, relay, or listener-facing control.
+
+```bash
+npm run check
+git diff --check
+```
+
+Result: passed. Formatting, ESLint, strict TypeScript, 32 Node tests,
+dependency audit (0 high-or-higher findings), and public-repository hygiene
+passed. This evidence supports the formal M1 completion recorded above. M2
+remains separately approval-gated.
+
+Verified limitation, not an M1 defect: this pass uses injected route/repository
+fixtures and rendered-UI assertions. A browser walkthrough against an applied
+PostgreSQL database is deliberately deferred to M2 because M1.4 does not
+authorize migrations, services, or infrastructure validation.
+
+## Prior validation record
 
 The latest safe M1 backend validation ran locally on 2026-08-03:
 
