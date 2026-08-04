@@ -5,6 +5,8 @@ export const stagingRestoreFailureStages = [
   "rpo_window",
   "recovery_target_start",
   "restore_authority_configuration",
+  "archive_restore_privilege",
+  "archive_restore_extension",
   "archive_restore",
   "recovery_validation",
   "rto_window",

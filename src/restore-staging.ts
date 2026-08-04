@@ -144,6 +144,45 @@ function command(
   });
 }
 
+function restoreFailureStage(detail: string): RestoreStage {
+  const normalized = detail.toLowerCase();
+  if (
+    normalized.includes("permission denied") ||
+    normalized.includes("must be owner") ||
+    normalized.includes("not owner")
+  ) {
+    return "archive_restore_privilege";
+  }
+  if (normalized.includes("extension")) return "archive_restore_extension";
+  return "archive_restore";
+}
+
+function restoreCommand(
+  args: readonly string[],
+  env: NodeJS.ProcessEnv,
+  input: NodeJS.ReadableStream,
+): Promise<void> {
+  return new Promise((resolveRun, rejectRun) => {
+    const child = spawn("docker", args, {
+      cwd: process.cwd(),
+      env,
+      stdio: ["pipe", "ignore", "pipe"],
+    });
+    let detail = "";
+    child.stderr.on("data", (chunk: string | Buffer) => {
+      detail = `${detail}${chunk.toString()}`.slice(-8_192);
+    });
+    child.once("error", () =>
+      rejectRun(new StagingRestoreError("archive_restore")),
+    );
+    child.once("exit", (code) => {
+      if (code === 0) resolveRun();
+      else rejectRun(new StagingRestoreError(restoreFailureStage(detail)));
+    });
+    if (child.stdin) input.pipe(child.stdin);
+  });
+}
+
 function compose(
   args: readonly string[],
   env: NodeJS.ProcessEnv,
@@ -373,8 +412,7 @@ async function run(): Promise<{ evidenceReference: string }> {
     } finally {
       await platformPool.end();
     }
-    await command(
-      "docker",
+    await restoreCommand(
       [
         "compose",
         "-p",
@@ -439,9 +477,7 @@ async function run(): Promise<{ evidenceReference: string }> {
       ],
       containerEnvironment(restore),
       createReadStream(selected.archive),
-    ).catch(() => {
-      throw new StagingRestoreError("archive_restore");
-    });
+    );
     await validate(
       required("M2_RECOVERY_PLATFORM_URL", "recovery_target_configuration"),
       restore.user,
