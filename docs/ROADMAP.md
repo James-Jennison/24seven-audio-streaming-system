@@ -341,6 +341,25 @@ artifacts without signalling a runtime.
 - Simulation/property tests across all stations, DST boundaries, empty and
   constrained libraries, malformed programming, repeatability, and rollback.
 
+### Published schedule artifact contract (approval-gated design deliverable)
+
+- Define a deterministic, versioned runtime-consumable schedule-artifact
+  schema, including publication revision and compatibility semantics and
+  integrity verification before runtime use.
+- Resolve media to immutable media handles when publishing. Programming
+  payloads must never supply arbitrary filesystem paths to the runtime.
+- Specify atomic artifact activation and rollback, plus offline-runtime
+  behavior: during PostgreSQL/control-plane unavailability, a runtime may
+  retain only its last verified published artifact and may not accept new
+  programming.
+- Permit runtime consumption only across the `Published → Executed` boundary.
+  The runtime has read-only access to published artifacts and has no approval
+  or publication authority.
+- Prove the contract with deterministic-schema, compatibility, integrity,
+  atomic-activation, rollback, and control-plane-unavailable tests. This is a
+  control-plane design/acceptance deliverable; it does not require a live
+  playout engine or stream execution.
+
 ### Out of scope
 
 Direct queue writes, automatic playout, a time-triggered scheduler, runtime
@@ -353,6 +372,9 @@ commands, audio transitions, or listener-visible output.
   place; rollback is versioned and auditable.
 - Human review confirms that dry-run and published views say "proposal" or
   "published artifact," never "on air" or "executing."
+- The published-artifact contract proves that only verified, compatible,
+  immutable-handle artifacts can be atomically activated or rolled back by a
+  later read-only runtime.
 
 ### Risks, dependencies, and next gate
 
@@ -398,6 +420,64 @@ contract.
   live-DJ takeover/priority/fallback state. The control plane remains a
   configuration writer, never a playback-state authority.
 
+### Runtime architecture and fault-model gate (before implementation)
+
+- Define "four decks" precisely: main and auxiliary responsibilities,
+  cue/preview routing, overlap/crossfade behavior, interruption priority,
+  voice-tracking insertion, and recovery after any deck or worker loss.
+- Specify a local runtime command/IPC contract with idempotency,
+  acknowledgements, timeouts, and crash-recovery semantics.
+- Define measurable fault acceptance for worker crash, decoder stall, corrupt
+  media, disk/media unavailability, silence detection, schedule-artifact
+  rollback, CPU saturation, and worst-case overlapping decks. Benchmark using
+  target sample rate, codecs, bitrates, and overlap conditions; measure
+  internal processing/buffer latency separately from listener end-to-end
+  streaming latency.
+- The M5 baseline is a Rust runtime supervisor as the durable authority for
+  verified published-artifact consumption, runtime state, health, recovery,
+  watchdogs, safe telemetry, and authoritative metadata-event emission. An
+  unprivileged, replaceable Liquidsoap worker may implement the initial shadow
+  runtime/audio graph through a narrow local execution contract only; it has
+  no PostgreSQL, control-plane, approval, or publication authority.
+- A native Rust audio graph remains an evidence-based future decision, only if
+  measurements show unacceptable transition accuracy, latency, CPU behavior,
+  fault recovery, or required deck behavior. This gate is not authorization to
+  introduce Rust runtime or Liquidsoap code during M1.
+
+### WASM-first automation sandbox gate (before implementation)
+
+- Start with no WASI and no filesystem, network, environment, clocks, process
+  spawning, database access, or arbitrary host imports. Allow only a strict,
+  bounded host-call allowlist.
+- Require a pure-function model: `approved runtime context → bounded proposed
+action(s) → runtime validation of allowlisted result`. The sandbox may not
+  directly operate runtime components.
+- Enforce a 50 ms maximum execution with deterministic fuel budgeting and a
+  wall-clock interruption/watchdog. Set memory below the external 64 MB cap to
+  retain host-overhead headroom, and bound instances, tables, memories, inputs,
+  and outputs in a short-lived isolated lifecycle.
+- Define trap, timeout, validation-failure, and content-free audit-safe error
+  behavior, supported by a security and regression corpus. Arbitrary
+  JavaScript is not the initial path; any future compatibility path requires a
+  separate explicit decision and OS-level isolation design.
+
+### DSP ownership and replaceable-component evaluation
+
+- M3 measures integrated loudness, loudness range, true peak, silence/cue
+  data, and recommended gain during ingestion. M5 applies stored per-track
+  gain and transition-aware handling, then one shared station program-bus
+  processor applies final EQ, conservative multiband processing when justified,
+  and true-peak limiting before codec fan-out.
+- M7 encodes that already-processed PCM bus into AAC-LC and MP3 variants; it
+  does not independently re-master each output. FFmpeg filters, Liquidsoap
+  facilities, and candidate processors such as `master_me` are replaceable
+  components, never system authorities.
+- A production component choice requires a bill-of-materials and
+  license/package review, measured real-time headroom and worst-case overlap
+  testing, normal sustained DSP/encoding load below approximately 50–60% of
+  allocated capacity, and structured listening-test acceptance rather than a
+  feature-list comparison.
+
 ### Out of scope
 
 Public listener delivery, Icecast listener service, production source media,
@@ -413,6 +493,9 @@ that bypasses the feasibility decision.
   show unavailable/degraded rather than fabricated healthy state.
 - Owner signs off on hands-on listening across representative material from all
   five formats; automated tests alone cannot close this milestone.
+- The runtime design gate has documented deck, IPC, fault, benchmark, sandbox,
+  component-license, capacity, and listening-test evidence before a component
+  becomes a production choice.
 
 ### Risks, dependencies, and next gate
 
@@ -489,6 +572,8 @@ recoverable services, starting with private test outputs only.
 - Explicit source-encoder contracts for AAC-LC and MP3, bitrate/profile
   selection, metadata injection, source health, reconnect/backoff, and bounded
   failure handling.
+- Codec variants consume the shared, already-processed station PCM program bus
+  defined by M5; neither encoder variant may independently re-master output.
 - Icecast 2.x primary/secondary architecture, private mount testing, source
   authentication stored outside the repository, listener/output metrics,
   log/retention policy, and active/passive failover design.
@@ -497,6 +582,24 @@ recoverable services, starting with private test outputs only.
 - Failure drills for source loss, encoder crash, Icecast node loss, metadata
   lag, DNS/cache behavior, and recovery. The sub-500 ms failover objective is a
   measurement target to validate, not an assumption or automatic acceptance.
+
+### Epoch-aware metadata and failover contract (approval-gated deliverable)
+
+- Define a separate, runtime-owned authoritative metadata event path containing
+  station-scoped opaque event ID, monotonic sequence, stream epoch, published
+  schedule revision, effective audio timestamp, and idempotency key
+  `(station_id, stream_epoch, sequence)`.
+- Require a metadata distributor to fan out events to Icecast mount adapters,
+  listener-facing WebSocket/SSE, and dashboard/player APIs. WebSocket/SSE is
+  the primary listener-facing authority; ICY is a compatibility channel.
+- On failover, increment the epoch, reconcile the current runtime event into
+  the replacement mount, reject stale prior-epoch events, and expose a brief
+  `synchronizing` state rather than stale Now Playing data.
+- Measure runtime-to-distributor latency, distributor-to-mount convergence,
+  WebSocket/SSE latency, audio continuity, and listener-perceived metadata
+  alignment separately. Sub-second internal propagation is feasible; a
+  universal frame-perfect listener-visible guarantee across buffered players is
+  not.
 
 ### Out of scope
 
@@ -512,6 +615,9 @@ future adapter only after Icecast is proven.
   documented with actual measured timings and safe listener messaging.
 - Secrets are injected through the approved environment/secret mechanism and
   never appear in the repository, logs, test fixtures, or audit records.
+- Metadata evidence proves epoch-aware stale-event rejection, replacement-mount
+  reconciliation, and the documented distinction between audio continuity and
+  listener-visible metadata convergence.
 
 ### Risks, dependencies, and next gate
 
@@ -563,6 +669,13 @@ systems without explicit access approval, or decommissioning anything.
   open.
 - A date-specific M9 runbook has a tested rollback route and named human
   decision makers.
+- "The stream remained connected" is not sufficient. Document measured
+  thresholds and operator signoff for listening and transition quality,
+  cue/crossfade timing, worst-case CPU/memory headroom, worker/runtime restart
+  and recovery, published-artifact rollback, decoder/corrupt-media/silence
+  handling, source failover, metadata convergence/stale-event rejection, and
+  audio continuity separately from metadata correctness. Where SAM parity is
+  intended, verify it; record intentional differences explicitly.
 
 ### Risks, dependencies, and next gate
 

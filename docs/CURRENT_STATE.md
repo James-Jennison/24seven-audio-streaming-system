@@ -18,6 +18,14 @@
 - Media files, import/download tooling, media scanning, credentials, public/browser exposure, production infrastructure, and any production media migration.
 - Liquidsoap/FFmpeg execution, playout, transitions, audio processing, encoders, Icecast/SHOUTcast, live-DJ audio, telemetry, listeners, relays, or current-system integration.
 
+## Approved future architecture gates (roadmap only)
+
+`docs/ROADMAP.md` records approved M4–M8 design gates for published schedule
+artifacts, runtime/fault and automation-sandbox contracts, DSP ownership,
+epoch-aware metadata failover, and evidence-based shadow acceptance. They are
+not implemented capabilities, do not authorize M4–M8 work, and do not change
+M1's local-only boundary or its required approval gates.
+
 ## Validation record
 
 The latest safe M1 backend validation ran locally on 2026-08-03:
