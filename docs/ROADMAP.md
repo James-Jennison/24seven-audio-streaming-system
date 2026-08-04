@@ -82,35 +82,33 @@ commit `8fea092`. M1 exists only as local, uncommitted work. No migration,
 Docker/Compose invocation, service startup, deployment, runtime/stream action,
 or production-system action is authorized by this roadmap.
 
-| Area                       | Evidence in the current worktree                                                                                                                               | State                                                                |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Live persistence direction | `PostgresPersistence`, `PostgresM1Repositories`, separate runtime/migrator URLs, loopback Compose asset, and `002_m1_control_plane.sql`                        | In progress; no migration has run                                    |
-| Identity and authorization | scrypt hashing, server-session primitives, owner/administrator/programmer/operator/observer helpers, bootstrap/login/logout adapters, and CSRF/session helpers | In progress; needs live-flow and adversarial coverage                |
-| Programming model          | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, and scheduled events are represented in schema/repositories              | In progress                                                          |
-| API boundary               | Injected protected programming adapter and authenticated dry-run route exist                                                                                   | In progress; error mapping and broad CRUD coverage remain incomplete |
-| Update validation          | Media and program-block paths use scoped load/merge patterns; other update paths still include generic single-field behavior                                   | Open M1 completion work                                              |
-| UI                         | M1 state-rendering primitives exist, but the active browser UI is still the M0 status dashboard                                                                | Open M1 completion work                                              |
-| Validation                 | `npm run check` currently builds, lints, typechecks, runs 20 tests, audits dependencies, and runs hygiene                                                      | Passing locally; coverage is not M1 acceptance evidence yet          |
-| Automation                 | No `.github` workflow is present                                                                                                                               | Planned; local check remains the current gate                        |
+| Area                       | Evidence in the current worktree                                                                                                                               | State                                                        |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| Live persistence direction | `PostgresPersistence`, `PostgresM1Repositories`, separate runtime/migrator URLs, loopback Compose asset, and `002_m1_control_plane.sql`                        | In progress; no migration has run                            |
+| Identity and authorization | scrypt hashing, server-session primitives, owner/administrator/programmer/operator/observer helpers, bootstrap/login/logout adapters, and CSRF/session helpers | In progress; needs live-flow and adversarial coverage        |
+| Programming model          | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, and scheduled events are represented in schema/repositories              | In progress                                                  |
+| API boundary               | Injected protected programming adapter, safe error mapping, authenticated dry-run route, and route-level negative-path coverage exist                          | Backend pass complete; UI integration remains                |
+| Update validation          | All seven entity families use scoped load/merge/validate/persist paths; retained and replacement references are SQL-scoped                                     | Backend pass complete                                        |
+| UI                         | M1 state-rendering primitives exist, but the active browser UI is still the M0 status dashboard                                                                | Open M1 completion work                                      |
+| Validation                 | `npm run check` currently builds, lints, typechecks, runs 29 tests, audits dependencies, and runs hygiene                                                      | Passing locally; UI and approved integration evidence remain |
+| Automation                 | No `.github` workflow is present                                                                                                                               | Planned; local check remains the current gate                |
 
 `m1-store` is a test double only and must never enter the live application
-path. The existing `npm test` command still invokes Node's experimental SQLite
-flag for legacy M0 tests. That does not make SQLite a live fallback, but M1
-must retire or isolate that test-runner dependency before it can claim a clean
-PostgreSQL-only application direction.
+path. The test runner no longer requires Node's experimental SQLite flag, and
+SQLite remains absent from the live M1 application path.
 
 ### Active M1 completion scope
 
 M1 must finish the following before its gate:
 
-1. Apply complete-state updates to playlists, separation rules, rotations,
-   clocks, and scheduled events:
+1. Complete-state updates to playlists, separation rules, rotations, clocks,
+   and scheduled events are complete locally:
    `load by id + station_id → merge permitted fields → validate full state →
 validate same-station foreign keys in SQL → persist valid complete state`.
-2. Add meaningful protected-API and adapter coverage for CRUD, CSRF using
+2. Protected-API and adapter coverage for CRUD, CSRF using
    `x-csrf-token`, RBAC/session handling, `not_found` isolation, content-free
    auditing, and deterministic dry runs.
-3. Preserve and validate the read-only proposal endpoint
+3. The read-only proposal endpoint remains validated:
    `GET /api/v1/stations/:stationId/dry-run?separationMinutes=N`. It must be
    deterministic, station-scoped, and never change queue, schedule, runtime,
    or media state.

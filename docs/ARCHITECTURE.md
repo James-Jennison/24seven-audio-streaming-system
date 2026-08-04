@@ -39,6 +39,12 @@ M0 uses SQLite through Node's built-in `node:sqlite` API to keep local setup sma
 
 M0 has no authentication by design and is loopback-only. A future authenticated UI/API will enforce users, roles, station grants, audit records, credential references (not credential values), and least privilege. Configuration records and logs must never contain output passwords or other production secrets.
 
+## M1 authentication and programming boundary
+
+M1 adds schema and application contracts for owner, administrator, programmer, operator, and observer roles. Every protected programming mutation must check both role capability and an explicit station grant; owners may manage all stations. Sessions are server-side records with expiry/revocation and a separate CSRF token. Passwords are stored only as scrypt hashes. Audit records capture actor, station, action, entity type/id, and timestamp; they never copy passwords, session tokens, or media content.
+
+The M1 data model covers station-scoped media metadata, playlists/items, rotations, separation rules, clocks, program blocks, and scheduled events. The dry-run selector is deterministic, filters to the chosen station, and reports eligibility reasons. It is a planning aid only: it does not create a queue or audio output.
+
 ## Media migration path
 
 The current library is not accessed in M0. A future migration will be an explicit, read-only inventory/export mapping into `MediaAsset` and metadata records, with immutable source identifiers, checksums where authorized, a dry-run report, and operator approval before any copy/import. The platform can operate with an empty library from the beginning.

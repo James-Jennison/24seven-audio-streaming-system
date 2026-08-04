@@ -3,18 +3,18 @@ import type { AddressInfo } from "node:net";
 import test from "node:test";
 
 import { createControlPlaneServer } from "../src/api/server.js";
-import { SqlitePersistence } from "../src/db/persistence.js";
+import { seededStations } from "../src/domain/stations.js";
 
 async function withServer(
   run: (baseUrl: string) => Promise<void>,
 ): Promise<void> {
-  const persistence = new SqlitePersistence(":memory:");
-  persistence.migrate();
-  persistence.seed();
-  const controlPlane = createControlPlaneServer(persistence, {
-    version: "0.1.0-test",
-    buildId: "test-build",
-  });
+  const controlPlane = createControlPlaneServer(
+    { list: () => seededStations },
+    {
+      version: "0.1.0-test",
+      buildId: "test-build",
+    },
+  );
   await new Promise<void>((resolve) =>
     controlPlane.server.listen(0, "127.0.0.1", resolve),
   );
@@ -25,7 +25,6 @@ async function withServer(
     await new Promise<void>((resolve, reject) =>
       controlPlane.server.close((error) => (error ? reject(error) : resolve())),
     );
-    persistence.close();
   }
 }
 

@@ -6,8 +6,20 @@ import {
 } from "node:http";
 
 import type { ApplicationVersion } from "../app/version.js";
-import type { StationRepository } from "../db/persistence.js";
 import { renderDashboard } from "../ui/dashboard.js";
+import { handleM1Auth } from "./m1-routes.js";
+import type { AuthPersistence } from "./m1-auth.js";
+import { authenticate, type SessionLookup } from "./m1-session.js";
+import {
+  handleProgramming,
+  type ProgrammingPersistence,
+} from "./m1-programming-routes.js";
+
+export interface StationReader {
+  list():
+    | readonly import("../domain/contracts.js").Station[]
+    | Promise<readonly import("../domain/contracts.js").Station[]>;
+}
 
 export interface ControlPlaneServer {
   server: Server;
@@ -15,27 +27,63 @@ export interface ControlPlaneServer {
 }
 
 export function createControlPlaneServer(
-  stations: StationRepository,
+  stations: StationReader,
   version: ApplicationVersion,
+  auth?: AuthPersistence,
+  sessions?: SessionLookup,
+  programming?: ProgrammingPersistence,
 ): ControlPlaneServer {
   let ready = false;
 
   const server = createServer((request, response) => {
-    handleRequest(request, response, stations, version, ready);
+    void handleRequest(
+      request,
+      response,
+      stations,
+      version,
+      ready,
+      auth,
+      sessions,
+      programming,
+    ).catch(() => sendJson(response, 500, { error: "internal_error" }));
   });
   ready = true;
   return { server, isReady: () => ready };
 }
 
-function handleRequest(
+async function handleRequest(
   request: IncomingMessage,
   response: ServerResponse,
-  stations: StationRepository,
+  stations: StationReader,
   version: ApplicationVersion,
   ready: boolean,
-): void {
+  auth?: AuthPersistence,
+  sessions?: SessionLookup,
+  programming?: ProgrammingPersistence,
+): Promise<void> {
   const method = request.method ?? "GET";
   const url = new URL(request.url ?? "/", "http://localhost");
+  if (auth && (await handleM1Auth(request, response, auth, sessions))) return;
+  if (
+    sessions &&
+    programming &&
+    (await handleProgramming(request, response, sessions, programming))
+  )
+    return;
+  if (sessions && method === "GET" && url.pathname === "/api/v1/session") {
+    try {
+      const principal = await authenticate(sessions, request.headers.cookie);
+      sendJson(response, 200, {
+        userId: principal.userId,
+        role: principal.role,
+        stationIds: principal.stationIds,
+        readOnly: principal.role === "observer",
+      });
+    } catch {
+      sendJson(response, 401, { error: "unauthenticated" });
+    }
+    return;
+  }
   if (method !== "GET") {
     sendJson(response, 405, { error: "method_not_allowed" });
     return;
@@ -56,9 +104,10 @@ function handleRequest(
     return;
   }
   if (url.pathname === "/api/v1/stations") {
+    const stationList = await stations.list();
     sendJson(response, 200, {
       contractVersion: "v1",
-      stations: stations.list().map((station) => ({
+      stations: stationList.map((station) => ({
         ...station,
         runtime: {
           status: "unavailable",
@@ -70,8 +119,9 @@ function handleRequest(
     return;
   }
   if (url.pathname === "/") {
+    const stationList = await stations.list();
     response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
-    response.end(renderDashboard(stations.list(), version));
+    response.end(renderDashboard(stationList, version));
     return;
   }
   sendJson(response, 404, { error: "not_found" });

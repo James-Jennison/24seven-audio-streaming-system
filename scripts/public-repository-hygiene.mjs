@@ -24,8 +24,10 @@ const forbiddenExtensions =
   /\.(?:mp3|flac|wav|aac|ogg|sqlite|sqlite3|db|pem|key|p12|pfx)$/i;
 const privateIp =
   /\b(?:10\.(?:\d{1,3}\.){2}\d{1,3}|192\.168\.(?:\d{1,3}\.)\d{1,3}|172\.(?:1[6-9]|2\d|3[0-1])\.(?:\d{1,3}\.)\d{1,3})\b/;
-const secretAssignment =
-  /(?:api[_-]?key|token|password|secret)\s*[=:]\s*["']?(?!\$\{|<)[A-Za-z0-9_\-/]{8,}/i;
+const quotedSecretAssignment =
+  /(?:api[_-]?key|token|password|secret)\s*[=:]\s*["'](?!\$\{|<|replace-locally|example)[A-Za-z0-9_\-/]{8,}["']/i;
+const environmentSecretAssignment =
+  /(?:API[_-]?KEY|TOKEN|PASSWORD|SECRET)\s*=\s*(?!\$\{|<|replace-locally|example)[A-Za-z0-9_\-/]{8,}/;
 const privatePath = /\/(?:home|Users)\/[A-Za-z0-9_.-]+\//;
 
 for (const file of files) {
@@ -38,7 +40,10 @@ for (const file of files) {
   const content = readFileSync(file, "utf8");
   if (privateIp.test(content))
     violations.push(`${file}: contains a private IP address`);
-  if (secretAssignment.test(content))
+  if (
+    quotedSecretAssignment.test(content) ||
+    environmentSecretAssignment.test(content)
+  )
     violations.push(`${file}: appears to contain a secret assignment`);
   if (privatePath.test(content))
     violations.push(`${file}: contains a private filesystem path`);

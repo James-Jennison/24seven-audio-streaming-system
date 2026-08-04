@@ -10,7 +10,7 @@ A Linux-first, web-administered audio automation and streaming platform for the 
 
 ## Status
 
-M0 is a **local-only control-plane foundation**. It provides typed domain contracts, a SQLite-backed development seed, a loopback-only HTTP API, and a small status dashboard. It deliberately does not include media, authentication, playout, audio processing, Icecast, output credentials, or a public listener.
+M1 is an in-progress, local-only control-plane implementation. PostgreSQL is the required runtime persistence target; Compose binds it only to loopback. Audio runtime, media import, output services, and public listeners remain deliberately unavailable.
 
 The current UI makes this explicit: every station reports that the audio runtime is not implemented. No mocked audio path is presented as working.
 
@@ -20,16 +20,19 @@ The project separates a durable control plane from a supervised audio runtime. T
 
 ## Local run
 
-Requires Node 22.5–22.x (the M0 SQLite adapter uses Node's built-in experimental SQLite module).
+Requires Node 22.5–22.x and Docker Compose for PostgreSQL integration.
 
 ```bash
 npm install
+cp .env.example .env # replace placeholders locally; never commit .env
+docker compose up -d postgres
+npm run migrate      # migration authority only; not the application runtime role
 npm run dev
 ```
 
 The server listens only on `127.0.0.1:3100` by default. Visit `http://127.0.0.1:3100/`. API endpoints are `/healthz`, `/readyz`, `/api/v1/version`, and `/api/v1/stations`.
 
-Use `DATABASE_PATH` to select a local SQLite file. The default is ignored by Git. `.env.example` contains placeholders only; this M0 program intentionally does not load secrets.
+`DATABASE_RUNTIME_URL` and `DATABASE_MIGRATOR_URL` are deliberately separate. The application refuses to use SQLite as an M1 fallback. `.env.example` contains placeholders only and no default account/password exists.
 
 ## Checks
 
