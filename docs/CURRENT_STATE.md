@@ -23,22 +23,21 @@ milestone. M2.1 documentation planning is explicitly approved; M2 remains
 operationally unstarted, and any M2 connection, migration, service, VM, backup,
 or restore activity requires a separate explicit approval.
 
-M2.2 staging migration preflight/run-plan documentation is accepted and pushed
-as `2cd85c3`; it records future execution safeguards and unresolved owner
-decisions, but does not authorize a staging connection, migration, or
-operational activity. M2.3 staging topology-validation planning documentation
-is accepted and pushed as `be6a242`; it likewise authorizes no operational
-action. M2.4 backup, restore, and DR-rehearsal planning documentation is
-published as `c8d5904`; it remains planning-only and authorizes no backup,
-restore, DR rehearsal, or other operational action.
+M2.2 **Migration Execution Plan** documentation is accepted and pushed as
+`2cd85c3`; its corresponding **Migration Execution Gate** has not started and
+does not authorize a staging connection, migration, or operational activity.
+M2.3 **Topology Validation Plan** documentation is accepted and pushed as
+`be6a242`; its corresponding **Topology Validation Gate** has not started and
+does not authorize an operational action. M2.4 **Backup, Restore, and DR Plan**
+documentation is published as `c8d5904`; its corresponding backup-creation,
+restore-rehearsal, and DR gates remain planning-only and unstarted.
 
-M2.5 operational-authorization decision-packet planning is complete and
-published as `b07814d`. It consolidates owner decisions required for the
-independently approved M2.2 migration, M2.3 topology, backup,
-restore-rehearsal, and M2-acceptance gates; it authorizes none of them. M2
-operational execution and acceptance are not started. The next approval gate is
-owner review and approval of the M2.5 decision-packet decisions before any
-separately scoped M2.2 migration-execution authorization.
+M2.5 **Operational-Authorization Decision Packet** planning is complete and
+published as `b07814d`. It consolidates owner decisions required for the M2.2
+Migration Execution Gate, M2.3 Topology Validation Gate, M2.4 backup/restore
+gates, and M2 Acceptance Gate; it authorizes none of them. The next approval
+gate is owner completion of the M2.5 decisions before any separately scoped
+M2.2 Migration Execution Gate authorization.
 
 ## Deliberately not implemented
 

@@ -49,17 +49,33 @@ Replace legacy **SAM Pro / SAM Broadcaster** and **SHOUTcast 1.9.8** with a Linu
   operational-authorization preparation is complete and published; every M2
   operational action requires separate explicit approval.
 
+### M2 naming convention
+
+To avoid treating a published plan as completed staging work, M2 uses these
+terms consistently:
+
+- **M2.x Plan** means a completed, documentation-only planning or decision
+  artifact. It never authorizes an operational action.
+- **M2.x Execution Gate** means the future, separately approved staging action
+  described by that plan. It is incomplete until bounded operational evidence
+  is accepted.
+
+For example, **M2.2 Migration Execution Plan** is published, while the
+**M2.2 Migration Execution Gate** has not started. The same distinction applies
+to the M2.3 topology, M2.4 backup/restore, and M2 acceptance gates.
+
 ---
 
 ## 3. Current Implementation State
 
 The published baseline is **M0 (`2fa02a1`)**. **M1** was completed on
 **2026-08-04 UTC**. M2.1–M2.5 planning and operational-authorization
-preparation is complete and published through **`b07814d47668e85256dcbe03ac5f67d5c84b9d70`**;
-`main...origin/main` is aligned at that commit. M2 operational execution and
-acceptance remain unstarted and non-operational. The next approval gate is
-owner review and approval of the M2.5 decision-packet decisions before any
-separately scoped M2.2 migration-execution authorization.
+preparation is complete and published through **`b07814d47668e85256dcbe03ac5f67d5c84b9d70`**.
+The status correction recording that publication was committed as
+**`ad2bbc5baa2e09e83f07692b179b6799a8614d61`**.
+M2 execution gates and M2 acceptance remain unstarted and non-operational. The
+next approval gate is owner completion of the M2.5 decision packet before any
+separately scoped M2.2 Migration Execution Gate authorization.
 
 | Area                  | Current Worktree Status                                                                                                   | State                               |
 | :-------------------- | :------------------------------------------------------------------------------------------------------------------------ | :---------------------------------- |
@@ -98,16 +114,17 @@ separately scoped M2.2 migration-execution authorization.
 
 ### Phase 2: M2 — Persistence Activation, Staging & DR
 
-- **Status:** M2.1–M2.5 planning and operational-authorization preparation is
-  complete and published. M2 operational execution and acceptance are
-  incomplete and unstarted; no M2 operational action is authorized.
+- **Status:** M2.1–M2.5 Plans are complete and published. The M2.2 Migration
+  Execution Gate, M2.3 Topology Validation Gate, M2.4 Backup/Restore Gates,
+  and M2 Acceptance Gate are incomplete and unstarted; no M2 operational action
+  is authorized.
 - **Objective:** Validate PostgreSQL migrations and disaster recovery in an isolated, non-public staging environment.
 - **Key Tasks:** Apply `002_m1_control_plane.sql` via dedicated migration role; verify least-privilege runtime access; establish backup/restore drills and recovery runbooks.
-- **M2.1 plan:** [Staging activation and migration-rehearsal plan](M2.1_STAGING_ACTIVATION_PLAN.md) is complete and published as `b7a51cd`; it authorizes no operational activity.
-- **M2.2 plan:** [Staging migration preflight and run plan](M2.2_STAGING_MIGRATION_PREFLIGHT_AND_RUN_PLAN.md) is complete and published as `2cd85c3`; it does not authorize a staging connection or migration execution.
-- **M2.3 plan:** [Staging topology validation plan](M2.3_STAGING_TOPOLOGY_VALIDATION_PLAN.md) is complete and published as `be6a242`; it does not authorize a topology-validation action.
-- **M2.4 plan:** [Staging backup, restore, and DR rehearsal plan](M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md) is complete and published as `c8d5904`; it does not authorize backup, restore, DR rehearsal, or any other operational activity.
-- **M2.5 decision packet:** [Operational-authorization decision packet](M2.5_OPERATIONAL_AUTHORIZATION_DECISION_PACKET.md) is complete and published as `b07814d`. It captures the owner decisions required for M2.2–M2.4 and M2 acceptance; it authorizes no connection, migration, topology validation, backup, restore, rehearsal, or acceptance. **Next approval gate: owner review and approval of its decisions before any separately scoped M2.2 migration-execution authorization.**
+- **M2.1 Staging Activation Plan:** [Staging activation and migration-rehearsal plan](M2.1_STAGING_ACTIVATION_PLAN.md) is complete and published as `b7a51cd`; it authorizes no operational activity.
+- **M2.2 Migration Execution Plan:** [Staging migration preflight and run plan](M2.2_STAGING_MIGRATION_PREFLIGHT_AND_RUN_PLAN.md) is complete and published as `2cd85c3`. The corresponding **M2.2 Migration Execution Gate** has not started and does not authorize a staging connection or migration execution.
+- **M2.3 Topology Validation Plan:** [Staging topology validation plan](M2.3_STAGING_TOPOLOGY_VALIDATION_PLAN.md) is complete and published as `be6a242`. The corresponding **M2.3 Topology Validation Gate** has not started and does not authorize a topology-validation action.
+- **M2.4 Backup, Restore, and DR Plan:** [Staging backup, restore, and DR rehearsal plan](M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md) is complete and published as `c8d5904`. The corresponding backup-creation, restore-rehearsal, and DR gates have not started and authorize no operational activity.
+- **M2.5 Operational-Authorization Decision Packet:** [Operational-authorization decision packet](M2.5_OPERATIONAL_AUTHORIZATION_DECISION_PACKET.md) is complete and published as `b07814d`. It captures owner decisions required for the execution gates and M2 acceptance; it authorizes no connection, migration, topology validation, backup, restore, rehearsal, or acceptance. **Next approval gate: owner completion of its decisions before any separately scoped M2.2 Migration Execution Gate authorization.**
 
 ### Phase 3: M3 — Media Ingestion, Metadata & Asset Lifecycle
 
