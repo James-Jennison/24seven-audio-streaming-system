@@ -27,7 +27,9 @@ M2.2 staging migration preflight/run-plan documentation is accepted and pushed
 as `2cd85c3`; it records future execution safeguards and unresolved owner
 decisions, but does not authorize a staging connection, migration, or
 operational activity. M2.3 staging topology-validation planning documentation
-is drafted locally for review and likewise authorizes no operational action.
+is accepted and pushed as `be6a242`; it likewise authorizes no operational
+action. M2.4 backup, restore, and DR-rehearsal planning documentation is
+drafted locally for review and authorizes no operational action.
 
 ## Deliberately not implemented
 
