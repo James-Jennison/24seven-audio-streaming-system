@@ -15,9 +15,9 @@ M2 is formally accepted for isolated staging persistence and disaster-recovery
 readiness. PostgreSQL is the sole live persistence store; active staging is
 non-public and loopback-only. The finalized M2.5 decision-only packet creates
 no standing authorization for future staging work. The M3 local-only
-control-plane foundation is implemented pending commit/acceptance, but audio
-runtime, media import, output services, and public listeners remain deliberately
-unavailable.
+control-plane foundation is committed; its acceptance and operational
+activation remain separately gated. Audio runtime, media import, output
+services, and public listeners remain deliberately unavailable.
 
 Any future staging connection, Compose/service action, migration, validation,
 backup, restore, topology change, opaque-reference use, worker activation, or

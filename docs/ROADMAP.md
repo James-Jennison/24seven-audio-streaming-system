@@ -161,6 +161,9 @@ action without a new human approval.
 
 #### M3.1 — Scope, authority, and asset-lifecycle contract
 
+- **Authoritative record:**
+  [M3.1 media intake and immutable asset-lifecycle contract](M3.1_MEDIA_INTAKE_AND_IMMUTABLE_ASSET_LIFECYCLE_CONTRACT.md)
+  is the decision-oriented planning record for this sub-milestone.
 - **Purpose / planes / mode / prerequisites:** Define the Programming Control
   Plane-only lifecycle and named owner authority; local-only, using accepted
   M1/M2 boundaries and the committed M3 contract as prerequisites.

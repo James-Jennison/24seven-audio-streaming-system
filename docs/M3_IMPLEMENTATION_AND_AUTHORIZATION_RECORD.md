@@ -2,8 +2,8 @@
 
 ## Status
 
-**Local implementation complete in the worktree; pending commit and owner
-acceptance. Non-operational.** This record documents the narrow M3 approval
+**Local implementation committed; owner acceptance and operational activation
+remain pending. Non-operational.** This record documents the narrow M3 approval
 and implementation evidence. It creates no standing authority for a
 migration, database connection, container, worker, media handling, provider
 access, playout, encoding, Icecast, deployment, or production action.
