@@ -74,8 +74,9 @@ preparation is complete and published through **`b07814d47668e85256dcbe03ac5f67d
 The status correction recording that publication was committed as
 **`ad2bbc5baa2e09e83f07692b179b6799a8614d61`**.
 M2 execution gates and M2 acceptance remain unstarted and non-operational. The
-next approval gate is owner completion of the M2.5 decision packet before any
-separately scoped M2.2 Migration Execution Gate authorization.
+next M2.2 prerequisite is owner review of the locally drafted least-privilege
+role-and-grant artifact; only a further, separately scoped platform-boundary
+approval may apply it. That approval is still not a migration-execution gate.
 
 | Area                  | Current Worktree Status                                                                                                   | State                               |
 | :-------------------- | :------------------------------------------------------------------------------------------------------------------------ | :---------------------------------- |
@@ -122,6 +123,7 @@ separately scoped M2.2 Migration Execution Gate authorization.
 - **Key Tasks:** Apply `002_m1_control_plane.sql` via dedicated migration role; verify least-privilege runtime access; establish backup/restore drills and recovery runbooks.
 - **M2.1 Staging Activation Plan:** [Staging activation and migration-rehearsal plan](M2.1_STAGING_ACTIVATION_PLAN.md) is complete and published as `b7a51cd`; it authorizes no operational activity.
 - **M2.2 Migration Execution Plan:** [Staging migration preflight and run plan](M2.2_STAGING_MIGRATION_PREFLIGHT_AND_RUN_PLAN.md) is complete and published as `2cd85c3`. The corresponding **M2.2 Migration Execution Gate** has not started and does not authorize a staging connection or migration execution.
+- **M2.2 Least-Privilege Role-and-Grant Artifact:** [Review artifact](M2.2_STAGING_ROLE_AND_GRANT_ARTIFACT.sql) is locally reviewed and unapproved. It defines separate platform/bootstrap, migrator, runtime, backup, restore, and evidence-review authority boundaries; it is not a migration and authorizes no connection, service, or execution. **Next M2.2 gate:** owner approval to apply this reviewed artifact through the platform authority before any migration-execution approval.
 - **M2.3 Topology Validation Plan:** [Staging topology validation plan](M2.3_STAGING_TOPOLOGY_VALIDATION_PLAN.md) is complete and published as `be6a242`. The corresponding **M2.3 Topology Validation Gate** has not started and does not authorize a topology-validation action.
 - **M2.4 Backup, Restore, and DR Plan:** [Staging backup, restore, and DR rehearsal plan](M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md) is complete and published as `c8d5904`. The corresponding backup-creation, restore-rehearsal, and DR gates have not started and authorize no operational activity.
 - **M2.5 Operational-Authorization Decision Packet:** [Operational-authorization decision packet](M2.5_OPERATIONAL_AUTHORIZATION_DECISION_PACKET.md) is complete and published as `b07814d`. It captures owner decisions required for the execution gates and M2 acceptance; it authorizes no connection, migration, topology validation, backup, restore, rehearsal, or acceptance. **Next approval gate: owner completion of its decisions before any separately scoped M2.2 Migration Execution Gate authorization.**

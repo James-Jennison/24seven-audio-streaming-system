@@ -35,9 +35,17 @@ restore-rehearsal, and DR gates remain planning-only and unstarted.
 M2.5 **Operational-Authorization Decision Packet** planning is complete and
 published as `b07814d`. It consolidates owner decisions required for the M2.2
 Migration Execution Gate, M2.3 Topology Validation Gate, M2.4 backup/restore
-gates, and M2 Acceptance Gate; it authorizes none of them. The next approval
-gate is owner completion of the M2.5 decisions before any separately scoped
-M2.2 Migration Execution Gate authorization.
+gates, and M2 Acceptance Gate; it authorizes none of them. The current M2.2
+prerequisite is owner review of the locally drafted least-privilege role-and-
+grant artifact; a later, separately scoped platform-boundary approval is needed
+to apply it and remains distinct from migration-execution authorization.
+
+The M2.2 least-privilege [role-and-grant review artifact](M2.2_STAGING_ROLE_AND_GRANT_ARTIFACT.sql)
+is locally reviewed and unapproved. It separates platform/bootstrap, migrator,
+runtime, backup, restore, and evidence-review authority classes; it is not a
+migration and authorizes no connection, service, or execution. The remaining
+platform gate is explicit owner approval to apply the reviewed artifact through
+the designated platform authority before any M2.2 migration-execution approval.
 
 ## Deliberately not implemented
 
