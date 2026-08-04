@@ -29,11 +29,29 @@ interface StationRow {
   updated_at: Date;
 }
 
+interface PostgresPersistenceDependencies {
+  pool?: Pool;
+  readMigration?: (name: string) => string;
+}
+
 export class PostgresPersistence implements StationRepository {
   public readonly pool: Pool;
+  private readonly readMigration: (name: string) => string;
 
-  public constructor(databaseUrl: string) {
-    this.pool = new Pool({ connectionString: databaseUrl, max: 5 });
+  public constructor(
+    databaseUrl: string,
+    dependencies: PostgresPersistenceDependencies = {},
+  ) {
+    this.pool =
+      dependencies.pool ?? new Pool({ connectionString: databaseUrl, max: 5 });
+    this.readMigration =
+      dependencies.readMigration ??
+      ((name) => {
+        const path = fileURLToPath(
+          new URL(`../../migrations/${name}`, import.meta.url),
+        );
+        return readFileSync(path, "utf8");
+      });
   }
 
   public async migrate(): Promise<void> {
@@ -49,12 +67,9 @@ export class PostgresPersistence implements StationRepository {
         ]),
       );
       if (existing.rowCount) continue;
-      const path = fileURLToPath(
-        new URL(`../../migrations/${name}`, import.meta.url),
-      );
       let migration: string;
       try {
-        migration = readFileSync(path, "utf8");
+        migration = this.readMigration(name);
       } catch {
         throw new MigrationRunError("migration_artifact_read");
       }

@@ -1,5 +1,7 @@
 export const migrationFailureStages = [
+  "migration_build",
   "migration_reference",
+  "migration_runner_initialization",
   "migration_ledger_bootstrap",
   "migration_ledger_lookup",
   "migration_artifact_read",
@@ -30,4 +32,10 @@ export function migrationFailureReport(error: unknown): {
     stage:
       error instanceof MigrationRunError ? error.stage : "migration_runner",
   };
+}
+
+export function migrationSuccessReport(): {
+  event: "m2.migration_completed";
+} {
+  return { event: "m2.migration_completed" };
 }

@@ -16,7 +16,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "format:check": "prettier --check .",
     "audit": "npm audit --audit-level=high",
-    "migrate": "npm run build && node dist/src/migrate.js",
+    "migrate": "node scripts/run-migration.mjs",
     "hygiene": "(git ls-files -z; printf '\\001'; git diff --cached --name-only -z) | node scripts/public-repository-hygiene.mjs",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run audit && npm run hygiene"
   },
