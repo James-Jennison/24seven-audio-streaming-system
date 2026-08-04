@@ -162,23 +162,27 @@ function restoreCommand(
   input: NodeJS.ReadableStream,
 ): Promise<void> {
   return new Promise((resolveRun, rejectRun) => {
-    const child = spawn("docker", args, {
-      cwd: process.cwd(),
-      env,
-      stdio: ["pipe", "ignore", "pipe"],
-    });
-    let detail = "";
-    child.stderr?.on("data", (chunk: string | Buffer) => {
-      detail = `${detail}${chunk.toString()}`.slice(-8_192);
-    });
-    child.once("error", () =>
-      rejectRun(new StagingRestoreError("archive_restore")),
-    );
-    child.once("exit", (code) => {
-      if (code === 0) resolveRun();
-      else rejectRun(new StagingRestoreError(restoreFailureStage(detail)));
-    });
-    if (child.stdin) input.pipe(child.stdin);
+    try {
+      const child = spawn("docker", args, {
+        cwd: process.cwd(),
+        env,
+        stdio: ["pipe", "ignore", "pipe"],
+      });
+      let detail = "";
+      child.stderr?.on("data", (chunk: string | Buffer) => {
+        detail = `${detail}${chunk.toString()}`.slice(-8_192);
+      });
+      child.once("error", () =>
+        rejectRun(new StagingRestoreError("archive_restore")),
+      );
+      child.once("exit", (code) => {
+        if (code === 0) resolveRun();
+        else rejectRun(new StagingRestoreError(restoreFailureStage(detail)));
+      });
+      if (child.stdin) input.pipe(child.stdin);
+    } catch {
+      rejectRun(new StagingRestoreError("archive_restore"));
+    }
   });
 }
 
