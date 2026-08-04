@@ -33,7 +33,10 @@ published as `c8d5904`; its executable logical custom-archive backup contract
 and separate backup-authority artifact are versioned. One approved staging
 backup completed archive parsing, SHA-256/manifest verification, and retention
 validation with content-free evidence `m2-backup-20260804T202301068Z-8a1a86fc408de506`.
-Restore rehearsal and DR acceptance remain independently gated and unstarted.
+The isolated recovery-target/restore contract is locally implemented and
+uncommitted; no restore, recovery target, application, runtime, or listener
+action has occurred. Restore rehearsal and DR acceptance remain independently
+gated.
 
 M2.5 **Operational-Authorization Decision Packet** planning is complete and
 published as `b07814d`. It supplied the separated M2 execution decisions; it
