@@ -45,9 +45,10 @@ Replace legacy **SAM Pro / SAM Broadcaster** and **SHOUTcast 1.9.8** with a Linu
 - Completed work is recorded with bounded evidence and an actual UTC completion
   date. Forecasts apply only to uncompleted, approval-gated work and are
   recalibrated at each approved boundary.
-- M2 is the next milestone. M2.1–M2.5 planning and
-  operational-authorization preparation is complete and published; every M2
-  operational action requires separate explicit approval.
+- M2 is formally accepted as of 2026-08-04 UTC. M2.1–M2.5 planning,
+  operational-authorization preparation, and the separately approved staging
+  execution evidence are complete; M3.1 planning is the next approval-gated
+  sub-goal.
 
 ### M2 naming convention
 
@@ -80,18 +81,21 @@ M2.4 now has a versioned logical custom-archive backup contract and a separate
 backup-authority artifact. Its approved staging backup/archive-parse/SHA-256/
 retention evidence is `m2-backup-20260804T202301068Z-8a1a86fc408de506`; restore
 rehearsal passed on an isolated disposable target with content-free evidence
-`m2-restore-20260804T211341391Z-33b489dab2be47b7`; M2 acceptance remains distinct. No application or audio/listener
-service is authorized by these records.
+`m2-restore-20260804T211341391Z-33b489dab2be47b7`. **M2 is formally
+accepted** for staging persistence and DR readiness; see the
+[M2 acceptance and staging-readiness decision](M2_ACCEPTANCE_AND_STAGING_READINESS_DECISION.md).
+No application, audio/listener, production, or M3 work is authorized by these
+records.
 
-| Area                  | Current Worktree Status                                                                                                   | State                               |
-| :-------------------- | :------------------------------------------------------------------------------------------------------------------------ | :---------------------------------- |
-| **Live Persistence**  | `PostgresPersistence`, `PostgresM1Repositories`, dual runtime/migrator URLs, loopback Compose, `002_m1_control_plane.sql` | M1.1 Complete (Unapplied Migration) |
-| **Identity & Auth**   | scrypt hashing, server sessions, station-scoped grants, bootstrap/login adapters, CSRF protection                         | M1.1 / M1.2 Complete                |
-| **Programming Model** | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, scheduled events                    | M1.1 / M1.2 Complete                |
-| **API Boundary**      | Protected programming adapter, safe error mapping, authenticated dry-run route                                            | M1.2 Complete                       |
-| **Update Validation** | Scoped load/merge/validate/persist paths across all 7 entity families                                                     | M1.2 Complete                       |
-| **Operator UI**       | Station-scoped UI connected to protected APIs; explicit unavailable runtime status                                        | M1.3 Complete (`9772b69`)           |
-| **Validation**        | `npm run check` passes (build, lint, typecheck, test, dependency audit)                                                   | M1 Complete                         |
+| Area                  | Current Worktree Status                                                                                                   | State                          |
+| :-------------------- | :------------------------------------------------------------------------------------------------------------------------ | :----------------------------- |
+| **Live Persistence**  | `PostgresPersistence`, `PostgresM1Repositories`, dual runtime/migrator URLs, loopback Compose, `002_m1_control_plane.sql` | M2 Accepted (isolated staging) |
+| **Identity & Auth**   | scrypt hashing, server sessions, station-scoped grants, bootstrap/login adapters, CSRF protection                         | M1.1 / M1.2 Complete           |
+| **Programming Model** | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, scheduled events                    | M1.1 / M1.2 Complete           |
+| **API Boundary**      | Protected programming adapter, safe error mapping, authenticated dry-run route                                            | M1.2 Complete                  |
+| **Update Validation** | Scoped load/merge/validate/persist paths across all 7 entity families                                                     | M1.2 Complete                  |
+| **Operator UI**       | Station-scoped UI connected to protected APIs; explicit unavailable runtime status                                        | M1.3 Complete (`9772b69`)      |
+| **Validation**        | `npm run check` passes (build, lint, typecheck, test, dependency audit)                                                   | M1 Complete                    |
 
 ---
 
@@ -100,7 +104,7 @@ service is authorized by these records.
 | Milestone | Focus Area                  | Focused Effort | Elapsed Duration |    Indicative Window     | Key Gate / Dependency                |
 | :-------: | :-------------------------- | :------------: | :--------------: | :----------------------: | :----------------------------------- |
 |  **M1**   | Control Plane & Security    |    Complete    |     Complete     | **Completed 2026-08-04** | Formal M1 Local Acceptance           |
-|  **M2**   | Staging, Migration & DR     |    4–8 wks     |     8–16 wks     |   Dec 2026 – Mar 2027    | Staging & Migration Approval         |
+|  **M2**   | Staging, Migration & DR     |    Complete    |     Complete     | **Completed 2026-08-04** | M2 Acceptance Decision               |
 |  **M3**   | Ingestion & Asset Lifecycle |    8–14 wks    |    14–28 wks     |   Apr 2027 – Oct 2027    | Rights Manifest & Sandbox Policy     |
 |  **M4**   | Advanced Scheduling         |    7–12 wks    |    10–20 wks     |   Jul 2027 – Mar 2028    | Immutable Asset Handles              |
 |  **M5**   | Playout Runtime & DSP       |   16–28 wks    |    28–52 wks     |   Feb 2028 – May 2029    | Published Schedule Artifacts         |
@@ -120,19 +124,21 @@ service is authorized by these records.
 
 ### Phase 2: M2 — Persistence Activation, Staging & DR
 
-- **Status:** M2.1–M2.5 plans are complete and published. M2.2 migration/seed
-  and post-migration grant validation, and M2.3 topology validation, are
-  complete under their separate approvals. M2.4 backup creation and integrity
-  verification and isolated restore rehearsal are complete with bounded
-  content-free evidence; M2 acceptance remains a distinct gate.
+- **Status:** Complete and formally accepted (2026-08-04) for isolated staging
+  persistence and DR readiness. M2.1–M2.5 planning, M2.2 migration/seed and
+  post-migration least-privilege validation, M2.3 topology validation, and
+  M2.4 backup/integrity/restore rehearsal completed under independent,
+  bounded approvals. The [M2 acceptance decision](M2_ACCEPTANCE_AND_STAGING_READINESS_DECISION.md)
+  does not authorize application activation, runtime work, listener-facing
+  work, production activity, or M3.
 - **Objective:** Validate PostgreSQL migrations and disaster recovery in an isolated, non-public staging environment.
 - **Key Tasks:** Apply `002_m1_control_plane.sql` via dedicated migration role; verify least-privilege runtime access; establish backup/restore drills and recovery runbooks.
 - **M2.1 Staging Activation Plan:** [Staging activation and migration-rehearsal plan](M2.1_STAGING_ACTIVATION_PLAN.md) is complete and published as `b7a51cd`; it authorizes no operational activity.
 - **M2.2 Migration Execution Plan:** [Staging migration preflight and run plan](M2.2_STAGING_MIGRATION_PREFLIGHT_AND_RUN_PLAN.md) is complete and published as `2cd85c3`. The approved migration, idempotent five-station seed, and post-migration least-privilege validation completed with content-free evidence; application activation remains separately gated.
 - **M2.2 Least-Privilege Role-and-Grant Artifact:** [Role-and-grant artifact](M2.2_STAGING_ROLE_AND_GRANT_ARTIFACT.sql) defines platform/bootstrap, migrator, runtime, backup, restore, and evidence-review boundaries and was applied only in approved M2.2 phases. It creates no runtime/audio authority.
 - **M2.3 Topology Validation Plan:** [Staging topology validation plan](M2.3_STAGING_TOPOLOGY_VALIDATION_PLAN.md) is complete and published as `be6a242`; the approved topology observation validated the non-public PostgreSQL-only staging boundary without starting an application or runtime service.
-- **M2.4 Backup, Restore, and DR Plan:** [Staging backup, restore, and DR rehearsal plan](M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md) is published as `c8d5904`. The versioned [logical-backup authority artifact](M2.4_STAGING_BACKUP_AUTHORITY.sql) and repository backup command made the approved custom-archive, integrity, manifest, and 14-successful-day retention contract executable. Backup creation and verification completed with content-free evidence `m2-backup-20260804T202301068Z-8a1a86fc408de506`; the isolated recovery-target rehearsal passed with `m2-restore-20260804T211341391Z-33b489dab2be47b7`. M2 acceptance remains unstarted.
-- **M2.5 Operational-Authorization Decision Packet:** [Operational-authorization decision packet](M2.5_OPERATIONAL_AUTHORIZATION_DECISION_PACKET.md) is complete and published as `b07814d`. It captures owner decisions required for the execution gates and M2 acceptance; it authorizes no connection, migration, topology validation, backup, restore, rehearsal, or acceptance. **Next approval gate: owner completion of its decisions before any separately scoped M2.2 Migration Execution Gate authorization.**
+- **M2.4 Backup, Restore, and DR Plan:** [Staging backup, restore, and DR rehearsal plan](M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md) is published as `c8d5904`. The versioned [logical-backup authority artifact](M2.4_STAGING_BACKUP_AUTHORITY.sql) and repository backup command made the approved custom-archive, integrity, manifest, and 14-successful-day retention contract executable. Backup creation and verification completed with content-free evidence `m2-backup-20260804T202301068Z-8a1a86fc408de506`; the isolated recovery-target rehearsal passed with `m2-restore-20260804T211341391Z-33b489dab2be47b7` and cleanup passed.
+- **M2.5 Operational-Authorization Decision Packet:** [Operational-authorization decision packet](M2.5_OPERATIONAL_AUTHORIZATION_DECISION_PACKET.md) is complete and published as `b07814d`. It captured the independent decision fields used by the completed M2 gates; the packet itself did not authorize execution. **Next approval gate: M3.1 media-intake and immutable asset-lifecycle contract planning only, under separate explicit approval.**
 
 ### Phase 3: M3 — Media Ingestion, Metadata & Asset Lifecycle
 

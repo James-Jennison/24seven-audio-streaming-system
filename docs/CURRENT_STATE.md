@@ -37,12 +37,17 @@ The isolated recovery-target/restore contract is locally implemented and
 published. On 2026-08-04 UTC, its one approved disposable-target restore
 rehearsal passed archive attribution, recovery validation, station isolation,
 least-privilege, RPO, RTO, and cleanup checks with content-free evidence
-`m2-restore-20260804T211341391Z-33b489dab2be47b7`. M2 acceptance remains
-independently gated; no application, runtime, or listener action has occurred.
+`m2-restore-20260804T211341391Z-33b489dab2be47b7`. M2 is formally accepted
+as of 2026-08-04 UTC for staging persistence and DR readiness; the bounded
+decision record is [M2 acceptance and staging-readiness decision](M2_ACCEPTANCE_AND_STAGING_READINESS_DECISION.md).
+No application, runtime, listener-facing, production, or M3 action has
+occurred or is authorized.
 
 M2.5 **Operational-Authorization Decision Packet** planning is complete and
 published as `b07814d`. It supplied the separated M2 execution decisions; it
-does not authorize a restore rehearsal, DR acceptance, or any M3 work.
+did not itself authorize execution. M2 execution evidence has now been
+accepted only through the decision record above; M3.1 planning remains
+separately approval-gated.
 
 The M2.2 least-privilege [role-and-grant artifact](M2.2_STAGING_ROLE_AND_GRANT_ARTIFACT.sql)
 was applied in the approved phases required for migration and runtime-boundary
@@ -50,6 +55,13 @@ validation. M2.4 adds a separate, fail-closed
 [backup-authority artifact](M2.4_STAGING_BACKUP_AUTHORITY.sql) for the
 logical-export identity only. It creates no restore capability and does not
 authorize application activation.
+
+## M2 acceptance boundary
+
+M2 acceptance records only the non-public staging persistence and DR outcome.
+It does not claim application activation, browser validation, runtime work, or
+listener-facing readiness. The next permissible work is M3.1 planning only,
+after separate explicit approval.
 
 ## Deliberately not implemented
 
@@ -63,7 +75,7 @@ artifacts, runtime/fault and automation-sandbox contracts, DSP ownership,
 epoch-aware metadata failover, and evidence-based shadow acceptance. Its
 sequential M1–M9 approval-gate policy and range-based calendar forecast are
 planning tools only: they are not implemented capabilities and do not authorize
-M2.2–M9 work or operational activity.
+M3–M9 work or operational activity.
 
 ## M1.4 local-only acceptance record
 
@@ -116,6 +128,7 @@ Result: passed. Prettier, ESLint, TypeScript strict checking, six Node tests (th
 
 An additional process-level smoke test started `npm run start` on `127.0.0.1:31987` with an ignored local SQLite file. `GET /readyz` returned `{"status":"ready"}` and `GET /api/v1/stations` returned five stations, each with runtime status `unavailable`.
 
-No M1 migration has been executed. The UpCloud development VM is provisioned
-for later container validation, but no application/database/stream service is
-exposed publicly.
+The historical M0 local-only record above predates M2. The M1 migration was
+subsequently applied only in approved isolated staging; active staging remains
+non-public and PostgreSQL-only. No application or stream service is exposed
+publicly.
