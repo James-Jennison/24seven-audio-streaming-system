@@ -30,8 +30,10 @@ content-free evidence. M2.3 **Topology Validation Plan** documentation is
 published as `be6a242`; its approved topology validation completed with
 content-free evidence. M2.4 **Backup, Restore, and DR Plan** documentation is
 published as `c8d5904`; its executable logical custom-archive backup contract
-and separate backup-authority artifact are versioned, while backup creation,
-restore rehearsal, and DR acceptance remain independently gated.
+and separate backup-authority artifact are versioned. One approved staging
+backup completed archive parsing, SHA-256/manifest verification, and retention
+validation with content-free evidence `m2-backup-20260804T202301068Z-8a1a86fc408de506`.
+Restore rehearsal and DR acceptance remain independently gated and unstarted.
 
 M2.5 **Operational-Authorization Decision Packet** planning is complete and
 published as `b07814d`. It supplied the separated M2 execution decisions; it
