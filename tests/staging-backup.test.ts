@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { join } from "node:path";
 
 import {
   StagingBackupError,
@@ -38,5 +40,21 @@ test("backup diagnostics expose only approved content-free stages", () => {
   assert.doesNotMatch(
     JSON.stringify(stagingBackupFailureReport(new Error("sensitive detail"))),
     /sensitive detail/,
+  );
+});
+
+test("backup authority artifact passes the protected input through transaction state", async () => {
+  const artifact = await readFile(
+    join(process.cwd(), "docs", "M2.4_STAGING_BACKUP_AUTHORITY.sql"),
+    "utf8",
+  );
+  assert.match(artifact, /set_config\(\s*'m2\.backup_authority_password'/);
+  assert.match(
+    artifact,
+    /current_setting\('m2\.backup_authority_password', true\)/,
+  );
+  assert.doesNotMatch(
+    artifact,
+    /DO \$\$[\s\S]*:'m2_backup_authority_password'/,
   );
 });

@@ -33,10 +33,17 @@ SELECT set_config(
   true
 );
 
+SELECT set_config(
+  'm2.backup_authority_password',
+  :'m2_backup_authority_password',
+  true
+);
+
 DO $$
 DECLARE
   backup_group CONSTANT TEXT := 'twentyfourseven_staging_backup';
   backup_login CONSTANT TEXT := 'twentyfourseven_staging_backup_export';
+  backup_password TEXT := current_setting('m2.backup_authority_password', true);
   conflicting_group TEXT;
 BEGIN
   IF current_setting('m2.backup_authority_phase', true) <> 'provision' THEN
@@ -47,6 +54,10 @@ BEGIN
     RAISE EXCEPTION 'reviewed backup group is absent';
   END IF;
 
+  IF backup_password IS NULL OR backup_password = '' THEN
+    RAISE EXCEPTION 'backup authority password is absent';
+  END IF;
+
   IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = backup_login) THEN
     RAISE EXCEPTION 'backup export login already exists; rotation requires a separate approval';
   END IF;
@@ -54,7 +65,7 @@ BEGIN
   EXECUTE format(
     'CREATE ROLE %I LOGIN INHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS CONNECTION LIMIT 1 PASSWORD %L',
     backup_login,
-    :'m2_backup_authority_password'
+    backup_password
   );
   EXECUTE format('GRANT %I TO %I', backup_group, backup_login);
 
