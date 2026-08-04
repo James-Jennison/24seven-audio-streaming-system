@@ -45,10 +45,10 @@ Replace legacy **SAM Pro / SAM Broadcaster** and **SHOUTcast 1.9.8** with a Linu
 - Completed work is recorded with bounded evidence and an actual UTC completion
   date. Forecasts apply only to uncompleted, approval-gated work and are
   recalibrated at each approved boundary.
-- M2 is formally accepted as of 2026-08-04 UTC. M2.1–M2.5 planning,
-  operational-authorization preparation, and the separately approved staging
-  execution evidence are complete; M3.1 planning is the next approval-gated
-  sub-goal.
+- M2 is formally accepted as of 2026-08-04 UTC. Its finalized M2.5
+  decision-only packet requires a new, separately scoped owner authorization
+  before any future staging action; it creates no standing operational
+  approval. M3.1 planning is the next project approval-gated sub-goal.
 
 ### M2 naming convention
 
@@ -138,7 +138,7 @@ records.
 - **M2.2 Least-Privilege Role-and-Grant Artifact:** [Role-and-grant artifact](M2.2_STAGING_ROLE_AND_GRANT_ARTIFACT.sql) defines platform/bootstrap, migrator, runtime, backup, restore, and evidence-review boundaries and was applied only in approved M2.2 phases. It creates no runtime/audio authority.
 - **M2.3 Topology Validation Plan:** [Staging topology validation plan](M2.3_STAGING_TOPOLOGY_VALIDATION_PLAN.md) is complete and published as `be6a242`; the approved topology observation validated the non-public PostgreSQL-only staging boundary without starting an application or runtime service.
 - **M2.4 Backup, Restore, and DR Plan:** [Staging backup, restore, and DR rehearsal plan](M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md) is published as `c8d5904`. The versioned [logical-backup authority artifact](M2.4_STAGING_BACKUP_AUTHORITY.sql) and repository backup command made the approved custom-archive, integrity, manifest, and 14-successful-day retention contract executable. Backup creation and verification completed with content-free evidence `m2-backup-20260804T202301068Z-8a1a86fc408de506`; the isolated recovery-target rehearsal passed with `m2-restore-20260804T211341391Z-33b489dab2be47b7` and cleanup passed.
-- **M2.5 Operational-Authorization Decision Packet:** [Operational-authorization decision packet](M2.5_OPERATIONAL_AUTHORIZATION_DECISION_PACKET.md) is complete and published as `b07814d`. It captured the independent decision fields used by the completed M2 gates; the packet itself did not authorize execution. **Next approval gate: M3.1 media-intake and immutable asset-lifecycle contract planning only, under separate explicit approval.**
+- **M2.5 Operational-Authorization Decision Packet:** [Operational-authorization decision packet](M2.5_OPERATIONAL_AUTHORIZATION_DECISION_PACKET.md) is finalized as a decision-only record. It records the accepted M2 posture and the exact future owner gates for any Compose/service, migration, runtime, backup/restore, topology, opaque-reference, or promotion action. It creates no standing approval and performed no operation. **Next project approval gate: M3.1 media-intake and immutable asset-lifecycle contract planning only; any executable staging action separately requires an explicit owner authorization.**
 
 ### Phase 3: M3 — Media Ingestion, Metadata & Asset Lifecycle
 

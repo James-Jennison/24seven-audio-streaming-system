@@ -43,11 +43,11 @@ decision record is [M2 acceptance and staging-readiness decision](M2_ACCEPTANCE_
 No application, runtime, listener-facing, production, or M3 action has
 occurred or is authorized.
 
-M2.5 **Operational-Authorization Decision Packet** planning is complete and
-published as `b07814d`. It supplied the separated M2 execution decisions; it
-did not itself authorize execution. M2 execution evidence has now been
-accepted only through the decision record above; M3.1 planning remains
-separately approval-gated.
+M2.5 **Operational-Authorization Decision Packet** is finalized as a
+decision-only governance record. It records the accepted M2 posture and the
+future owner gates for any separately scoped staging action; it creates no
+standing authorization and performed no staging operation. M3.1 planning
+remains separately approval-gated.
 
 The M2.2 least-privilege [role-and-grant artifact](M2.2_STAGING_ROLE_AND_GRANT_ARTIFACT.sql)
 was applied in the approved phases required for migration and runtime-boundary

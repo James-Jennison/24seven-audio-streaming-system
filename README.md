@@ -11,15 +11,16 @@ A Linux-first, web-administered audio automation and streaming platform for the 
 ## Status
 
 M1 is formally complete as a local-only programming-control-plane milestone.
-PostgreSQL is the sole live persistence design; Compose binds its future
-staging database boundary only to loopback. M2 is the next milestone, and its
-staging work remains independently approval-gated. Audio runtime, media import,
+M2 is formally accepted for isolated staging persistence and disaster-recovery
+readiness. PostgreSQL is the sole live persistence store; active staging is
+non-public and loopback-only. The finalized M2.5 decision-only packet creates
+no standing authorization for future staging work. Audio runtime, media import,
 output services, and public listeners remain deliberately unavailable.
 
-M2.1–M2.5 planning and operational-authorization preparation is complete and
-published. M2 operational execution and acceptance remain unstarted and
-separately approval-gated; this status does not authorize any staging
-connection, migration, service, validation, backup, restore, or deployment.
+Any future staging connection, Compose/service action, migration, validation,
+backup, restore, topology change, opaque-reference use, or deployment requires
+a new, separately scoped explicit owner authorization. M3.1 planning remains
+separately approval-gated.
 
 The current UI makes this explicit: every station reports that the audio runtime is not implemented. No mocked audio path is presented as working.
 
