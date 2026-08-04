@@ -1,22 +1,22 @@
 /* global console, process */
 
-import { execFileSync } from "node:child_process";
 import { readFileSync, statSync } from "node:fs";
 
-const trackedFiles = execFileSync("git", ["ls-files", "-z"], {
-  encoding: "utf8",
-})
-  .split("\0")
-  .filter(Boolean);
-const stagedFiles = execFileSync(
-  "git",
-  ["diff", "--cached", "--name-only", "-z"],
-  {
-    encoding: "utf8",
-  },
-)
-  .split("\0")
-  .filter(Boolean);
+const input = readFileSync(0, "utf8");
+const separator = input.indexOf("\u0001");
+if (separator < 0) {
+  throw new Error(
+    "tracked-file input is required from the package hygiene script",
+  );
+}
+
+/** @param {string} payload @returns {string[]} */
+function filesFrom(payload) {
+  return payload.split("\0").filter(Boolean);
+}
+
+const trackedFiles = filesFrom(input.slice(0, separator));
+const stagedFiles = filesFrom(input.slice(separator + 1));
 const files = [...new Set([...trackedFiles, ...stagedFiles])];
 
 const violations = [];
