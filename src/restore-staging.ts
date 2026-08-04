@@ -6,7 +6,6 @@ import {
   mkdir,
   readFile,
   readdir,
-  rm,
   stat,
   writeFile,
 } from "node:fs/promises";
@@ -192,6 +191,40 @@ function compose(
     ["compose", "-p", project, "-f", "compose.m2-recovery.yaml", ...args],
     env,
   );
+}
+
+async function removeRecoveryDataDirectory(
+  dataDirectory: string,
+): Promise<void> {
+  try {
+    const parent = resolve(dataDirectory, "..");
+    const leaf = dataDirectory.slice(parent.length + 1);
+    if (!leaf || leaf.includes("/")) throw new Error();
+    await command(
+      "docker",
+      [
+        "run",
+        "--rm",
+        "--entrypoint",
+        "rm",
+        "-v",
+        `${parent}:/m2-recovery-parent`,
+        "postgres:17.5-bookworm",
+        "-rf",
+        "--",
+        `/m2-recovery-parent/${leaf}`,
+      ],
+      process.env,
+    );
+    try {
+      await lstat(dataDirectory);
+      throw new Error();
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+    }
+  } catch {
+    throw new StagingRestoreError("recovery_target_cleanup");
+  }
 }
 
 async function digest(path: string): Promise<string> {
@@ -489,7 +522,7 @@ async function run(): Promise<{ evidenceReference: string }> {
       throw new StagingRestoreError("recovery_target_cleanup");
     });
     startedTarget = false;
-    await rm(dataDirectory, { recursive: true, force: true });
+    await removeRecoveryDataDirectory(dataDirectory);
     return {
       evidenceReference: await evidence(
         evidenceDirectory,

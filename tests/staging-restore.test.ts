@@ -49,6 +49,7 @@ test("restore contract is isolated, loopback-only, and cleanup-bound", async () 
   assert.match(runner, /PGUSER: connection\.user/);
   assert.match(runner, /"-e",\s*"PGUSER"/);
   assert.match(runner, /down", "--volumes/);
+  assert.match(runner, /--entrypoint",\s*"rm"/);
   assert.match(runner, /isWithinRecoveryObjective/);
   assert.match(compose, /127\.0\.0\.1:/);
   assert.match(compose, /postgres:17\.5-bookworm/);
