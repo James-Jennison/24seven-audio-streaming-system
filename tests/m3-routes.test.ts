@@ -137,6 +137,38 @@ test("M3 dry run validates an opaque request without invoking persistence or pro
   assert.equal(store.processingCalls, 0);
 });
 
+test("M3.4 processing-boundary status is station-scoped, read-only, and disabled", async () => {
+  const store = new M3Fake();
+  const status = await invoke(
+    "/api/v1/stations/station-a/media-imports/request-a/processing-boundary",
+    "GET",
+    store,
+  );
+  assert.deepEqual(status, {
+    status: 200,
+    body: {
+      stationId: "station-a",
+      requestId: "request-a",
+      lifecycleState: "proposed",
+      processing: "disabled",
+      execution: "unavailable",
+    },
+  });
+  const outOfScope = await invoke(
+    "/api/v1/stations/station-b/media-imports/request-a/processing-boundary",
+    "GET",
+    store,
+    undefined,
+    sessions(["station-b"]),
+  );
+  assert.deepEqual(outOfScope, { status: 404, body: { error: "not_found" } });
+  assert.equal(store.processingCalls, 0);
+  assert.doesNotMatch(
+    store.calls.join(" "),
+    /worker|process|playout|encoder|relay|icecast/i,
+  );
+});
+
 test("M3 routes isolate stations, require CSRF for proposed approval flow, and do not expose runtime routes", async () => {
   const store = new M3Fake();
   const created = await invoke(

@@ -213,6 +213,9 @@ action without a new human approval.
 
 #### M3.4 — Asynchronous processing-worker boundary
 
+- **Authoritative record:**
+  [M3.4 disabled async processing boundary](M3.4_DISABLED_ASYNC_PROCESSING_BOUNDARY.md)
+  is the implementation and evidence record for this local-only sub-milestone.
 - **Purpose / planes / mode / prerequisites:** Specify an injectable future
   worker boundary for approved station-scoped job references; local-only and
   disabled by default, dependent on M3.1–M3.3.

@@ -11,7 +11,11 @@ remains decision-only. The completed local-only [M3.3 safe source-reference
 and quarantine boundary](M3.3_SAFE_SOURCE_REFERENCE_AND_QUARANTINE_BOUNDARY.md)
 adds deterministic opaque-reference validation outcomes, quarantine/rejection
 records, and explicit no-dispatch retry visibility. It authorizes no M3.4-or-
-later work or operational action.
+later work or operational action at its completion.
+The completed local-only [M3.4 disabled async processing boundary](M3.4_DISABLED_ASYNC_PROCESSING_BOUNDARY.md)
+adds station-scoped future-worker eligibility, resource-limit, idempotency,
+failure/retry, and content-free evidence contracts. Its default dispatcher is
+disabled and no M3.5-or-later work or operational action is authorized.
 It adds a station-scoped, non-executing control-plane foundation for opaque
 import requests/jobs; immutable asset revisions, provenance, analysis,
 metadata-candidate, resolution, and failure records; deterministic EBU R128

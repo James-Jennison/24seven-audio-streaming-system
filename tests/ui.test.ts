@@ -32,6 +32,7 @@ test("operator shell preserves the configured stations and makes the control-pla
   assert.match(html, /This read-only preview produces proposals only/);
   assert.match(html, /Authorize eligible retry \(no processing\)/);
   assert.match(html, /Rejected requests are terminal/);
+  assert.match(html, /Processing boundary status: disabled/);
   assert.match(html, /--background: #0f1419/);
   assert.match(html, /--primary: #9dcbff/);
   for (const label of [

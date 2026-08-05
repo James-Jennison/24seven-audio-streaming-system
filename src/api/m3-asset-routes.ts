@@ -53,6 +53,38 @@ export async function handleM3Assets(
   store: M3AssetPersistence,
 ): Promise<boolean> {
   const url = new URL(request.url ?? "/", "http://localhost");
+  const processingStatus = url.pathname.match(
+    /^\/api\/v1\/stations\/([^/]+)\/media-imports\/([^/]+)\/processing-boundary$/,
+  );
+  if (processingStatus) {
+    if (request.method !== "GET") return method(response);
+    let principal: SessionContext | undefined;
+    try {
+      principal = await authenticate(sessions, request.headers.cookie);
+      authorize(principal, processingStatus[1]!, "read");
+      const intake = await store.readImportRequest(
+        processingStatus[1]!,
+        processingStatus[2]!,
+      );
+      json(response, 200, {
+        stationId: intake.stationId,
+        requestId: intake.id,
+        lifecycleState: intake.lifecycleState,
+        processing: "disabled",
+        execution: "unavailable",
+      });
+    } catch (error) {
+      await rejectionAudit(
+        store,
+        principal,
+        processingStatus[1]!,
+        processingStatus[2]!,
+      );
+      const safe = safeError(error);
+      json(response, safe.status, { error: safe.error });
+    }
+    return true;
+  }
   const dryRun = url.pathname.match(
     /^\/api\/v1\/stations\/([^/]+)\/media-imports\/dry-run$/,
   );
