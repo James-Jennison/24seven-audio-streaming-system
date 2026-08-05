@@ -29,9 +29,12 @@ planes, and owner-only stop decisions, while making execution unavailable.
 M3.11 accepts only the local M3 contract boundary: it records content-free
 evidence, station-isolation results, owned open risks, and input-only
 M4/M5/M7 handoffs while keeping asset readiness distinct from publication and
-execution. **M4.1 — Schedule-domain and versioning contract** is the next
-unstarted, separately approval-gated roadmap item. Completion of any milestone
-or sub-milestone does not authorize the next one.
+execution. **M3.12 — Operational Staging Activation Readiness and Authorization
+Plan** is a future, non-executable post-acceptance planning exception. It does
+not revoke M3’s completed local-only scope or authorize staging execution;
+**M4.1 — Schedule-domain and versioning contract** remains deferred until
+M3.12 is separately accepted. Completion of any milestone or sub-milestone
+does not authorize the next one.
 
 The future post-M9 delivery target is a bootable, customized Ubuntu Server
 appliance with secure first-boot enrollment and LAN Operator Dashboard access.

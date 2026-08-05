@@ -104,18 +104,18 @@ alter the M2 staging boundary.
 
 ## 4. Master Milestone Timeline
 
-| Milestone | Focus Area                  |          Focused Effort          |     Elapsed Duration      |    Indicative Window     | Key Gate / Dependency                  |
-| :-------: | :-------------------------- | :------------------------------: | :-----------------------: | :----------------------: | :------------------------------------- |
-|  **M1**   | Control Plane & Security    |             Complete             |         Complete          | **Completed 2026-08-04** | Formal M1 Local Acceptance             |
-|  **M2**   | Staging, Migration & DR     |             Complete             |         Complete          | **Completed 2026-08-04** | M2 Acceptance Decision                 |
-|  **M3**   | Ingestion & Asset Lifecycle | Complete (local-only acceptance) | Not started operationally | **Completed 2026-08-04** | Explicit staging/worker authorization  |
-|  **M4**   | Advanced Scheduling         |             7–12 wks             |         10–20 wks         |   Jul 2027 – Mar 2028    | Immutable Asset Handles                |
-|  **M5**   | Playout Runtime & DSP       |            16–28 wks             |         28–52 wks         |   Feb 2028 – May 2029    | Published Schedule Artifacts           |
-|  **M6**   | Requests & Moderation       |             5–9 wks              |         8–18 wks          |   May 2029 – Oct 2029    | Public Threat Model Approval           |
-|  **M7**   | Encoders & Icecast          |            10–18 wks             |         18–36 wks         |   Oct 2029 – Jul 2030    | Private Infrastructure Approval        |
-|  **M8**   | Shadow Testing & Parity     |             8–14 wks             |         16–32 wks         |   Aug 2030 – May 2031    | Parallel Listening & Failover Drills   |
-|  **M9**   | Cutover & Decommissioning   |             6–12 wks             |         12–28 wks         |   Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off     |
-|  **M10**  | Ubuntu Appliance Delivery   |           Post-M9 only           |        Not started        | After M9 acceptance only | M3–M9 accepted + explicit M10 approval |
+| Milestone | Focus Area                  |             Focused Effort              |     Elapsed Duration      |    Indicative Window     | Key Gate / Dependency                  |
+| :-------: | :-------------------------- | :-------------------------------------: | :-----------------------: | :----------------------: | :------------------------------------- |
+|  **M1**   | Control Plane & Security    |                Complete                 |         Complete          | **Completed 2026-08-04** | Formal M1 Local Acceptance             |
+|  **M2**   | Staging, Migration & DR     |                Complete                 |         Complete          | **Completed 2026-08-04** | M2 Acceptance Decision                 |
+|  **M3**   | Ingestion & Asset Lifecycle | M3.1–M3.11 complete; M3.12 plan pending | Not started operationally | **Completed 2026-08-04** | Separate M3.12 approval before M4.1    |
+|  **M4**   | Advanced Scheduling         |                7–12 wks                 |         10–20 wks         |   Jul 2027 – Mar 2028    | Immutable Asset Handles                |
+|  **M5**   | Playout Runtime & DSP       |                16–28 wks                |         28–52 wks         |   Feb 2028 – May 2029    | Published Schedule Artifacts           |
+|  **M6**   | Requests & Moderation       |                 5–9 wks                 |         8–18 wks          |   May 2029 – Oct 2029    | Public Threat Model Approval           |
+|  **M7**   | Encoders & Icecast          |                10–18 wks                |         18–36 wks         |   Oct 2029 – Jul 2030    | Private Infrastructure Approval        |
+|  **M8**   | Shadow Testing & Parity     |                8–14 wks                 |         16–32 wks         |   Aug 2030 – May 2031    | Parallel Listening & Failover Drills   |
+|  **M9**   | Cutover & Decommissioning   |                6–12 wks                 |         12–28 wks         |   Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off     |
+|  **M10**  | Ubuntu Appliance Delivery   |              Post-M9 only               |        Not started        | After M9 acceptance only | M3–M9 accepted + explicit M10 approval |
 
 ---
 
@@ -147,14 +147,17 @@ alter the M2 staging boundary.
 
 ### Phase 3: M3 — Media Ingestion, Metadata & Asset Lifecycle
 
-**Status:** M3 is complete and accepted as a local-only, non-operational
-Control Plane milestone on `main`. Its operational activation remains
-separately gated: no M3 migration, worker, media intake, provider connection,
-or operational activation has occurred. `ready_for_schedule_use` is an asset
-eligibility state only: it is neither M4 publication, M5 execution, M7
-encoding readiness, nor listener availability. See [the M3 implementation and
-authorization record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md) and the
-[M3.11 acceptance and handoff boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md).
+**Status:** M3.1–M3.11 are complete and accepted as a local-only,
+non-operational Control Plane milestone on `main`. The narrowly bounded M3.12
+post-acceptance planning exception is next and does not revoke that acceptance.
+Operational activation remains separately gated: no M3 migration, worker,
+media intake, provider connection, or operational activation has occurred.
+`ready_for_schedule_use` is an asset eligibility state only: it is neither M4
+publication, M5 execution, M7 encoding readiness, nor listener availability.
+See [the M3 implementation and authorization
+record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md), the [M3.11 acceptance
+and handoff boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md), and the
+[M3.12 operational staging readiness plan](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md).
 
 Every M3 sub-milestone remains station-scoped by `id + station_id`, uses
 `station_reference_forbidden` for cross-station references and `not_found` for
@@ -358,7 +361,37 @@ action without a new human approval.
   isolation results, open-risk ownership, and explicit M4/M5/M7 handoff
   boundaries. A new human approval is required for each later milestone.
 - **Dependencies / stop:** Supplies M4 catalog eligibility and M5 design input
-  only; decision owner stops if acceptance language implies operational authority.
+  only after M3.12 is completed and separately accepted; decision owner stops
+  if acceptance language implies operational authority.
+
+#### M3.12 — Operational Staging Activation Readiness and Authorization Plan
+
+- **Authoritative record:** [M3.12 operational staging activation readiness and
+  authorization plan](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md)
+  is the planning-only record for this narrowly bounded post-acceptance
+  exception.
+- **Purpose / planes / mode / prerequisites:** Define, but do not execute, an
+  authorization framework for the first isolated, non-production M3
+  media-lifecycle rehearsal. It preserves accepted M3.1–M3.11 local-only scope,
+  is dependent on M3.10/M3.11 and accepted M2 authorization/DR decisions, and
+  requires a new explicit M3.12 approval.
+- **Scope / exclusions:** Define only target/cohort classifications, separate
+  approval gates, ownership, stop conditions, recovery choices, evidence
+  categories, and future acceptance criteria. Exclude real media, persistence
+  or migration activity, workers/media tools/providers, cleanup/recovery
+  execution, M4 scheduling, M5 runtime/DSP, M7 encoding/Icecast, M9 cutover,
+  M10 appliance work, and production.
+- **Controls / evidence / gate:** Require `id + station_id`, `not_found`,
+  `station_reference_forbidden`, content-free evidence, explicit
+  rollback/forward-fix ownership, inactive downstream planes, and separate
+  human approvals for target validation, media access, intake, processing,
+  review, cleanup, evidence review, and M3 operational acceptance. Completion
+  of the plan does not authorize staging execution. M4.1 remains deferred
+  until M3.12 is separately accepted.
+- **Dependencies / stop:** Preserve strict plane separation and stop on target
+  ambiguity, unapproved media, authority/scope gaps, protected evidence,
+  cross-station mismatch, or any plane activation. Only the named decision
+  owner may choose rollback or a separately approved forward-fix.
 
 ### Phase 4: M4 — Advanced Scheduling & Versioned Publication
 
