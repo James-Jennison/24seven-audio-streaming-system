@@ -116,7 +116,7 @@ export class PostgresPersistence implements StationRepository {
             station.slug,
             station.name,
             station.timezone,
-            station.enabled,
+            station.enabled ? 1 : 0,
             station.createdAt,
             station.updatedAt,
           ],

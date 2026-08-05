@@ -155,3 +155,11 @@ test("identity persistence resolves roles deterministically and supports the glo
   );
   assert.match(migration, /role = 'owner' AND station_id IS NULL/);
 });
+
+test("PostgreSQL station seeding uses the migration-compatible numeric enabled flag", () => {
+  const source = readFileSync(
+    fileURLToPath(new URL("../src/db/postgres.js", import.meta.url)),
+    "utf8",
+  );
+  assert.match(source, /station\.enabled \? 1 : 0/);
+});
