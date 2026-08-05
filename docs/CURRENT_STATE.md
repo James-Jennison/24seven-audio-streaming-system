@@ -1,6 +1,6 @@
 # Current State
 
-## M4.4 separation policy — complete, local-only, and non-operational
+## M4.5 dry-run preview — complete, local-only, and non-operational
 
 M3 acceptance unblocked M4 in sequence. With the owner authorization to begin
 M4, the [M4.1 schedule-domain and versioning
@@ -18,8 +18,13 @@ and evaluation engine](M4.4_SEPARATION_POLICY_MODEL_AND_EVALUATION_ENGINE.md):
 it evaluates only approved opaque artist/title/album/category keys with explicit
 precedence and fail-closed missing-key behavior. It does not generate a
 schedule, enrich metadata, mutate catalog state, or enforce a runtime policy.
-**M4.5 remains separately approval-gated**; publication is explicitly never
-runtime execution, and M5 remains unapproved.
+M4.5 now completes the [dry-run generation, conflict reporting, and preview
+boundary](M4.5_DRY_RUN_GENERATION_CONFLICT_REPORTING_AND_PREVIEW.md): it
+composes frozen catalog, civil-day, and separation inputs into a deterministic,
+content-minimized preview or a controlled incomplete conflict report. It stores
+nothing and never approves, publishes, or executes a schedule. **M4.6 remains
+separately approval-gated**; publication is explicitly never runtime execution,
+and M5 remains unapproved.
 
 ## M3 local-only foundation — complete and accepted
 

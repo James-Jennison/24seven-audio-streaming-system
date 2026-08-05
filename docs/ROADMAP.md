@@ -165,9 +165,9 @@ record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md), the [M3.11 acceptance
 and handoff boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md), and the
 [M3.12 operational staging activation authorization and isolated
 media-lifecycle rehearsal](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md).
-M3 completion did not grant M4.1. Its separate owner approval has since been
-received; M4.1 is active as the current local planning sub-milestone and does
-not authorize M4.2.
+M3 completion did not grant M4.1. Separate owner approvals have since accepted
+M4.1–M4.5 as local-only Control Plane sub-milestones. M4.6 remains unstarted
+and separately approval-gated.
 
 Every M3 sub-milestone remains station-scoped by `id + station_id`, uses
 `station_reference_forbidden` for cross-station references and `not_found` for
@@ -427,8 +427,8 @@ action without a new human approval.
 
 **Objective:** Build a deterministic 24-hour planning engine that produces
 immutable, station-scoped schedule artifacts. Publication is never runtime
-execution. M4.1 is active as a local documentation/planning contract under
-owner approval; every later M4 sub-milestone requires its own approval.
+execution. M4.1–M4.5 are accepted local Control Plane boundaries; every later
+M4 sub-milestone requires its own approval.
 
 #### M4.1 — Schedule-domain and versioning contract
 
@@ -512,15 +512,21 @@ station_id`, `not_found`, `station_reference_forbidden`, immutable
 
 #### M4.5 — Dry-run generation, conflict reporting, and preview
 
+- **Authoritative record:** The [M4.5 dry-run generation, conflict reporting,
+  and preview](M4.5_DRY_RUN_GENERATION_CONFLICT_REPORTING_AND_PREVIEW.md) and
+  its [acceptance decision](M4.5_DRY_RUN_GENERATION_CONFLICT_REPORTING_AND_PREVIEW_ACCEPTANCE_DECISION.md)
+  complete this local-only Control Plane sub-milestone. It introduces no
+  persistence, approval, publication, execution, or operational action.
 - **Purpose / planes / mode / prerequisites:** Generate deterministic,
-  read-only station schedule proposals and conflict reports; local-only,
+  read-only station schedule previews and conflict reports; local-only,
   dependent on M4.1–M4.4.
 - **Scope / exclusions:** Provide explainable, content-minimized preview and
   safe count/category evidence. Exclude approval, publication, execution, and
   external dispatch.
-- **Controls / evidence / gate:** Prove repeated output stability, no writes or
-  downstream adapter calls, station isolation, and content-free audit. Owner
-  approval is required before M4.6.
+- **Controls / evidence / gate:** The accepted local boundary proves repeated
+  output stability, incomplete-plan safe stop without retained partial
+  assignments, no writes/downstream adapter calls, station isolation, and
+  content-free evidence. Owner approval is required before M4.6.
 - **Dependencies / stop:** Is the sole input to approval review; stop on an
   invalid or incomplete plan and retain no inferred replacement content.
 
