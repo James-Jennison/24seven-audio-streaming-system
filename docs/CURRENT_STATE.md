@@ -1,6 +1,6 @@
 # Current State
 
-## M4.5 dry-run preview — complete, local-only, and non-operational
+## M4.6 proposal approval — complete, local-only, and non-operational
 
 M3 acceptance unblocked M4 in sequence. With the owner authorization to begin
 M4, the [M4.1 schedule-domain and versioning
@@ -22,9 +22,13 @@ M4.5 now completes the [dry-run generation, conflict reporting, and preview
 boundary](M4.5_DRY_RUN_GENERATION_CONFLICT_REPORTING_AND_PREVIEW.md): it
 composes frozen catalog, civil-day, and separation inputs into a deterministic,
 content-minimized preview or a controlled incomplete conflict report. It stores
-nothing and never approves, publishes, or executes a schedule. **M4.6 remains
-separately approval-gated**; publication is explicitly never runtime execution,
-and M5 remains unapproved.
+nothing and never approves, publishes, or executes a schedule. M4.6 now
+completes the [proposed-schedule approval workflow](M4.6_PROPOSED_SCHEDULE_APPROVAL_WORKFLOW.md):
+it allows a CSRF/RBAC-gated, station-scoped, append-only in-memory approval or
+rejection for only a frozen complete preview. It exposes no API/UI route and
+never publishes or executes a schedule. **M4.7 remains separately
+approval-gated**; publication is explicitly never runtime execution, and M5
+remains unapproved.
 
 ## M3 local-only foundation — complete and accepted
 

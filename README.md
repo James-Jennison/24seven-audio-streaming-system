@@ -28,7 +28,9 @@ complete as a deterministic, opaque-key separation-policy evaluator with no
 schedule generation or runtime effect. **M4.5 — Dry-run generation, conflict
 reporting, and preview** is complete as a deterministic, in-memory, opaque
 proposal preview with no approval, publication, or runtime effect. **M4.6
-remains separately approval-gated**.
+— Proposed-schedule approval workflow** is complete as an in-memory,
+station-scoped, CSRF/RBAC-gated decision boundary with no API/UI route,
+publication, or runtime effect. **M4.7 remains separately approval-gated**.
 
 The future post-M9 delivery target is a bootable, customized Ubuntu Server
 appliance with secure first-boot enrollment and LAN Operator Dashboard access.

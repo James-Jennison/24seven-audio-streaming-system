@@ -166,7 +166,7 @@ and handoff boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md), and the
 [M3.12 operational staging activation authorization and isolated
 media-lifecycle rehearsal](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md).
 M3 completion did not grant M4.1. Separate owner approvals have since accepted
-M4.1–M4.5 as local-only Control Plane sub-milestones. M4.6 remains unstarted
+M4.1–M4.6 as local-only Control Plane sub-milestones. M4.7 remains unstarted
 and separately approval-gated.
 
 Every M3 sub-milestone remains station-scoped by `id + station_id`, uses
@@ -427,7 +427,7 @@ action without a new human approval.
 
 **Objective:** Build a deterministic 24-hour planning engine that produces
 immutable, station-scoped schedule artifacts. Publication is never runtime
-execution. M4.1–M4.5 are accepted local Control Plane boundaries; every later
+execution. M4.1–M4.6 are accepted local Control Plane boundaries; every later
 M4 sub-milestone requires its own approval.
 
 #### M4.1 — Schedule-domain and versioning contract
@@ -532,15 +532,21 @@ station_id`, `not_found`, `station_reference_forbidden`, immutable
 
 #### M4.6 — Proposed-schedule approval workflow
 
+- **Authoritative record:** The [M4.6 proposed-schedule approval
+  workflow](M4.6_PROPOSED_SCHEDULE_APPROVAL_WORKFLOW.md) and its [acceptance
+  decision](M4.6_PROPOSED_SCHEDULE_APPROVAL_WORKFLOW_ACCEPTANCE_DECISION.md)
+  complete this local-only Control Plane sub-milestone. It introduces no
+  API/UI route, persistence, publication, execution, or operational action.
 - **Purpose / planes / mode / prerequisites:** Add explicit authorized review
   and approval for a named proposed schedule; Control Plane, local-only,
   dependent on M4.5.
 - **Scope / exclusions:** Require CSRF/RBAC, station-scoped reviewer action,
   immutable reviewed inputs, and rejection/rework. Exclude publication,
   runtime signaling, and automatic approval.
-- **Controls / evidence / gate:** Test unauthorized/out-of-scope behavior,
-  legal transitions, and content-free approval/rejection audit. Owner approval
-  is required before M4.7.
+- **Controls / evidence / gate:** The accepted local boundary tests
+  unauthorized/out-of-scope behavior, legal immutable decisions, idempotency,
+  rejection/rework, and content-free approval/rejection evidence. Owner
+  approval is required before M4.7.
 - **Dependencies / stop:** Produces only an Approved proposal; stop if a
   reviewed input changes and require a new proposal/approval.
 
