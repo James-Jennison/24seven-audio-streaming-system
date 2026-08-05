@@ -1,6 +1,6 @@
 # Current State
 
-## M3 local-only foundation — implemented and committed; operational activation pending
+## M3 local-only foundation — complete and committed; operational activation pending
 
 M3 is implemented locally under the explicit M3 approval and committed on the
 authoritative branch. The [M3.1 media intake and immutable asset-lifecycle
@@ -169,12 +169,14 @@ approved; any staging activation remains independently approval-gated.
 
 ## Approved future architecture gates (roadmap only)
 
-`docs/ROADMAP.md` records approved M4–M8 design gates for published schedule
+`docs/ROADMAP.md` records approved M4–M9 design gates for published schedule
 artifacts, runtime/fault and automation-sandbox contracts, DSP ownership,
-epoch-aware metadata failover, and evidence-based shadow acceptance. Its
-sequential M1–M9 approval-gate policy and range-based calendar forecast are
-planning tools only: they are not implemented capabilities and do not authorize
-M4–M9 work or operational activity. M3 is limited to the local-only foundation
+epoch-aware metadata failover, shadow acceptance, and listener cutover. Its
+post-M9 M10 Ubuntu Appliance delivery target is future, explicitly gated
+planning only: a customized Ubuntu Server installer with secure enrollment and
+no embedded owner data. The sequential M1–M10 approval-gate policy and
+range-based calendar forecast are planning tools only; they do not authorize
+M4–M10 work or operational activity. M3 is limited to the local-only foundation
 recorded above and remains non-operational.
 
 ## M1.4 local-only acceptance record

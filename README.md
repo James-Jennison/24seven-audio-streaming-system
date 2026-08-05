@@ -33,6 +33,12 @@ execution. **M4.1 — Schedule-domain and versioning contract** is the next
 unstarted, separately approval-gated roadmap item. Completion of any milestone
 or sub-milestone does not authorize the next one.
 
+The future post-M9 delivery target is a bootable, customized Ubuntu Server
+appliance with secure first-boot enrollment and LAN Operator Dashboard access.
+It does not exist today, is not a forked operating system or an owner-data
+image, and may use media-library intake only through separately approved M3
+lifecycle capabilities.
+
 ## Architecture and safety boundary
 
 The system keeps four independently deployable planes separate:

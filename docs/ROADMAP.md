@@ -39,7 +39,7 @@ Replace legacy **SAM Pro / SAM Broadcaster** and **SHOUTcast 1.9.8** with a Linu
 
 ### Approval and Completion Policy
 
-- M1–M9 are sequential, primary approval gates. Completion of a milestone or
+- M1–M10 are sequential, primary approval gates. Completion of a milestone or
   internal work package never authorizes the next one, deployment,
   infrastructure activity, or runtime execution.
 - Completed work is recorded with bounded evidence and an actual UTC completion
@@ -104,17 +104,18 @@ alter the M2 staging boundary.
 
 ## 4. Master Milestone Timeline
 
-| Milestone | Focus Area                  |               Focused Effort                |     Elapsed Duration      |     Indicative Window     | Key Gate / Dependency                 |
-| :-------: | :-------------------------- | :-----------------------------------------: | :-----------------------: | :-----------------------: | :------------------------------------ |
-|  **M1**   | Control Plane & Security    |                  Complete                   |         Complete          | **Completed 2026-08-04**  | Formal M1 Local Acceptance            |
-|  **M2**   | Staging, Migration & DR     |                  Complete                   |         Complete          | **Completed 2026-08-04**  | M2 Acceptance Decision                |
-|  **M3**   | Ingestion & Asset Lifecycle | Local acceptance complete; activation gated | Not started operationally | Local acceptance complete | Explicit staging/worker authorization |
-|  **M4**   | Advanced Scheduling         |                  7–12 wks                   |         10–20 wks         |    Jul 2027 – Mar 2028    | Immutable Asset Handles               |
-|  **M5**   | Playout Runtime & DSP       |                  16–28 wks                  |         28–52 wks         |    Feb 2028 – May 2029    | Published Schedule Artifacts          |
-|  **M6**   | Requests & Moderation       |                   5–9 wks                   |         8–18 wks          |    May 2029 – Oct 2029    | Public Threat Model Approval          |
-|  **M7**   | Encoders & Icecast          |                  10–18 wks                  |         18–36 wks         |    Oct 2029 – Jul 2030    | Private Infrastructure Approval       |
-|  **M8**   | Shadow Testing & Parity     |                  8–14 wks                   |         16–32 wks         |    Aug 2030 – May 2031    | Parallel Listening & Failover Drills  |
-|  **M9**   | Cutover & Decommissioning   |                  6–12 wks                   |         12–28 wks         |    Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off    |
+| Milestone | Focus Area                  |          Focused Effort          |     Elapsed Duration      |    Indicative Window     | Key Gate / Dependency                  |
+| :-------: | :-------------------------- | :------------------------------: | :-----------------------: | :----------------------: | :------------------------------------- |
+|  **M1**   | Control Plane & Security    |             Complete             |         Complete          | **Completed 2026-08-04** | Formal M1 Local Acceptance             |
+|  **M2**   | Staging, Migration & DR     |             Complete             |         Complete          | **Completed 2026-08-04** | M2 Acceptance Decision                 |
+|  **M3**   | Ingestion & Asset Lifecycle | Complete (local-only acceptance) | Not started operationally | **Completed 2026-08-04** | Explicit staging/worker authorization  |
+|  **M4**   | Advanced Scheduling         |             7–12 wks             |         10–20 wks         |   Jul 2027 – Mar 2028    | Immutable Asset Handles                |
+|  **M5**   | Playout Runtime & DSP       |            16–28 wks             |         28–52 wks         |   Feb 2028 – May 2029    | Published Schedule Artifacts           |
+|  **M6**   | Requests & Moderation       |             5–9 wks              |         8–18 wks          |   May 2029 – Oct 2029    | Public Threat Model Approval           |
+|  **M7**   | Encoders & Icecast          |            10–18 wks             |         18–36 wks         |   Oct 2029 – Jul 2030    | Private Infrastructure Approval        |
+|  **M8**   | Shadow Testing & Parity     |             8–14 wks             |         16–32 wks         |   Aug 2030 – May 2031    | Parallel Listening & Failover Drills   |
+|  **M9**   | Cutover & Decommissioning   |             6–12 wks             |         12–28 wks         |   Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off     |
+|  **M10**  | Ubuntu Appliance Delivery   |           Post-M9 only           |        Not started        | After M9 acceptance only | M3–M9 accepted + explicit M10 approval |
 
 ---
 
@@ -146,13 +147,14 @@ alter the M2 staging boundary.
 
 ### Phase 3: M3 — Media Ingestion, Metadata & Asset Lifecycle
 
-**Status:** The local-only M3 foundation is accepted on `main`; no M3
-migration, worker, media intake, provider connection, or operational
-activation has occurred. `ready_for_schedule_use` is an asset eligibility state
-only: it is neither M4 publication, M5 execution, M7 encoding readiness, nor
-listener availability. See [the M3 implementation and authorization
-record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md) and the [M3.11
-acceptance and handoff boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md).
+**Status:** M3 is complete and accepted as a local-only, non-operational
+Control Plane milestone on `main`. Its operational activation remains
+separately gated: no M3 migration, worker, media intake, provider connection,
+or operational activation has occurred. `ready_for_schedule_use` is an asset
+eligibility state only: it is neither M4 publication, M5 execution, M7
+encoding readiness, nor listener availability. See [the M3 implementation and
+authorization record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md) and the
+[M3.11 acceptance and handoff boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md).
 
 Every M3 sub-milestone remains station-scoped by `id + station_id`, uses
 `station_reference_forbidden` for cross-station references and `not_found` for
@@ -1187,6 +1189,49 @@ M9 is unstarted; no section creates standing production authority.
   acceptance criteria are met; decision owner stops if evidence or ownership is
   incomplete.
 
+### Phase 10: M10 — Ubuntu Appliance Packaging, Enrollment, Upgrade, Backup, and Restore
+
+**Objective:** After M3–M9 are complete and accepted, provide the final
+delivery target as a bootable, customized Ubuntu Server appliance. The owner
+would install it from USB, complete secure first-boot enrollment, access the
+Operator Dashboard on the LAN, and use only approved M3 lifecycle capabilities
+to add an existing media library. M10 is unstarted, documentation-only, and
+does not authorize any appliance operation now.
+
+#### M10 — Ubuntu Appliance Packaging, Enrollment, Upgrade, Backup, and Restore
+
+- **Authoritative record:** [M10 Ubuntu Appliance delivery
+  roadmap](M10_UBUNTU_APPLIANCE_DELIVERY_ROADMAP.md) defines this future,
+  post-M9 delivery gate.
+- **Purpose / planes / mode / prerequisites:** Define a customized Ubuntu
+  Server appliance, not a forked operating system or owner-data image. It may
+  initially run on one physical server while preserving separate software
+  lifecycle/deployability boundaries for the Programming Control Plane and
+  Operator Dashboard, PostgreSQL, approved media-processing workers, Playout
+  & Automation Runtime, Source Encoder Layer, and Listener-Facing Icecast 2.x
+  Layer. It is documentation-only and dependent on accepted M3–M9 plus a new
+  explicit M10 approval.
+- **Scope / exclusions:** Specify reproducible versioned bootable installer
+  images; signed or verifiably pinned packages/images, dependency manifests,
+  and build provenance; secure first-boot enrollment; least privilege,
+  firewalling, secure updates, upgrade/rollback, backup/restore, recovery, and
+  clean-install acceptance. The installer must exclude media, credentials,
+  private keys, database secrets, runtime tokens, and owner-specific
+  configuration. Exclude building an installer, packaging services, activating
+  ingestion, importing real media, deployment, and production operation.
+- **Controls / evidence / gate:** Require content-free build-provenance,
+  installation, upgrade/rollback, backup/restore, and recovery evidence; LAN
+  dashboard availability only after successful authorized installation; and
+  media-library intake only through approved M3 lifecycle gates. Preserve
+  PostgreSQL-only persistence, Icecast 2.x-only listener delivery, `id +
+station_id`, `not_found`, `station_reference_forbidden`, content-free audit,
+  and no implicit cross-plane dashboard/API action. Every M10 execution action
+  requires its own new human approval.
+- **Dependencies / stop:** Document all-in-one boundaries and the future path
+  to role/plane-specific appliances without a rewrite. Stop on a requirement
+  that collapses a plane boundary, embeds owner data, implies implementation
+  authority, or makes an M3 readiness decision operational.
+
 ---
 
 ## 6. Future Architecture Gates
@@ -1217,6 +1262,11 @@ not authorization to implement or operate those capabilities now.
   requires measured transition/listening quality, capacity headroom, restart
   and rollback recovery, corrupt-media/silence handling, source failover,
   metadata correctness, and operator signoff on intended SAM differences.
+- **M10 — Ubuntu Appliance delivery:** after accepted M3–M9 only, a
+  reproducible Ubuntu Server installer must preserve independently deployable
+  plane boundaries, secure enrollment, least privilege, updates, recovery, and
+  content-free evidence. It is not an authorization to build, install, or
+  operate an appliance before a separate M10 approval.
 
 ---
 
@@ -1239,7 +1289,7 @@ not authorization to implement or operate those capabilities now.
 
 ---
 
-## 8. Definition of Done (M9 Completion)
+## 8. Definition of Done (M10 Appliance Delivery)
 
 The project is officially complete when:
 
@@ -1250,3 +1300,7 @@ The project is officially complete when:
 5. Icecast streams, encoder failovers, dynamic metadata, and monitoring are fully validated.
 6. Royalty/SoundExchange export logs reconcile accurately with historical data.
 7. The system owner formally approves the listener cutover and subsequent retirement of legacy hardware and software.
+8. M10 acceptance verifies a reproducible Ubuntu Server appliance installer,
+   secure enrollment without embedded owner data, independent plane lifecycle
+   boundaries, secure upgrade/rollback and backup/restore/recovery, and a
+   future role/plane-appliance split path.
