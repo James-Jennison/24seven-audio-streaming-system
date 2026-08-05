@@ -1,6 +1,6 @@
 # 24Seven.FM Audio Streaming System Roadmap
 
-**Last Updated:** August 4, 2026
+**Last Updated:** August 5, 2026
 **Status:** Authoritative Implementation Sequence (Planning Document)
 
 ---
@@ -89,33 +89,33 @@ These M2 records authorize no application, audio/listener, or production work.
 The later M3 local-only implementation is separately authorized and does not
 alter the M2 staging boundary.
 
-| Area                   | Current Worktree Status                                                                                                           | State                          |
-| :--------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :----------------------------- |
-| **Live Persistence**   | `PostgresPersistence`, `PostgresM1Repositories`, dual runtime/migrator URLs, loopback Compose, `002_m1_control_plane.sql`         | M2 Accepted (isolated staging) |
-| **Identity & Auth**    | scrypt hashing, server sessions, station-scoped grants, bootstrap/login adapters, CSRF protection                                 | M1.1 / M1.2 Complete           |
-| **Programming Model**  | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, scheduled events                            | M1.1 / M1.2 Complete           |
-| **M3 Asset Lifecycle** | Opaque import/job lifecycle, append-only provenance/analysis contracts, deterministic fixture boundary, protected status controls | Local-only; activation gated   |
-| **API Boundary**       | Protected programming adapter, safe error mapping, authenticated dry-run route                                                    | M1.2 Complete                  |
-| **Update Validation**  | Scoped load/merge/validate/persist paths across all 7 entity families                                                             | M1.2 Complete                  |
-| **Operator UI**        | Station-scoped UI connected to protected APIs; explicit unavailable runtime status                                                | M1.3 Complete (`9772b69`)      |
-| **Validation**         | `npm run check` passes (build, lint, typecheck, test, dependency audit)                                                           | M1 Complete                    |
+| Area                   | Current Worktree Status                                                                                                           | State                                 |
+| :--------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------ |
+| **Live Persistence**   | `PostgresPersistence`, `PostgresM1Repositories`, dual runtime/migrator URLs, loopback Compose, `002_m1_control_plane.sql`         | M2 Accepted (isolated staging)        |
+| **Identity & Auth**    | scrypt hashing, server sessions, station-scoped grants, bootstrap/login adapters, CSRF protection                                 | M1.1 / M1.2 Complete                  |
+| **Programming Model**  | Station-scoped media, playlists, separation rules, rotations, clocks, program blocks, scheduled events                            | M1.1 / M1.2 Complete                  |
+| **M3 Asset Lifecycle** | Opaque import/job lifecycle, append-only provenance/analysis contracts, deterministic fixture boundary, protected status controls | M3 Accepted (isolated rehearsal only) |
+| **API Boundary**       | Protected programming adapter, safe error mapping, authenticated dry-run route                                                    | M1.2 Complete                         |
+| **Update Validation**  | Scoped load/merge/validate/persist paths across all 7 entity families                                                             | M1.2 Complete                         |
+| **Operator UI**        | Station-scoped UI connected to protected APIs; explicit unavailable runtime status                                                | M1.3 Complete (`9772b69`)             |
+| **Validation**         | `npm run check` passes (build, lint, typecheck, test, dependency audit)                                                           | M1 Complete                           |
 
 ---
 
 ## 4. Master Milestone Timeline
 
-| Milestone | Focus Area                  |                             Focused Effort                              |     Elapsed Duration      |    Indicative Window     | Key Gate / Dependency                            |
-| :-------: | :-------------------------- | :---------------------------------------------------------------------: | :-----------------------: | :----------------------: | :----------------------------------------------- |
-|  **M1**   | Control Plane & Security    |                                Complete                                 |         Complete          | **Completed 2026-08-04** | Formal M1 Local Acceptance                       |
-|  **M2**   | Staging, Migration & DR     |                                Complete                                 |         Complete          | **Completed 2026-08-04** | M2 Acceptance Decision                           |
-|  **M3**   | Ingestion & Asset Lifecycle | M3.1–M3.11 complete; Phase 1 accepted, classification decision proposed | Not started operationally | **Completed 2026-08-04** | Target validation + M3.12 acceptance before M4.1 |
-|  **M4**   | Advanced Scheduling         |                                7–12 wks                                 |         10–20 wks         |   Jul 2027 – Mar 2028    | Immutable Asset Handles                          |
-|  **M5**   | Playout Runtime & DSP       |                                16–28 wks                                |         28–52 wks         |   Feb 2028 – May 2029    | Published Schedule Artifacts                     |
-|  **M6**   | Requests & Moderation       |                                 5–9 wks                                 |         8–18 wks          |   May 2029 – Oct 2029    | Public Threat Model Approval                     |
-|  **M7**   | Encoders & Icecast          |                                10–18 wks                                |         18–36 wks         |   Oct 2029 – Jul 2030    | Private Infrastructure Approval                  |
-|  **M8**   | Shadow Testing & Parity     |                                8–14 wks                                 |         16–32 wks         |   Aug 2030 – May 2031    | Parallel Listening & Failover Drills             |
-|  **M9**   | Cutover & Decommissioning   |                                6–12 wks                                 |         12–28 wks         |   Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off               |
-|  **M10**  | Ubuntu Appliance Delivery   |                              Post-M9 only                               |        Not started        | After M9 acceptance only | M3–M9 accepted + explicit M10 approval           |
+| Milestone | Focus Area                  | Focused Effort |               Elapsed Duration               |    Indicative Window     | Key Gate / Dependency                                           |
+| :-------: | :-------------------------- | :------------: | :------------------------------------------: | :----------------------: | :-------------------------------------------------------------- |
+|  **M1**   | Control Plane & Security    |    Complete    |                   Complete                   | **Completed 2026-08-04** | Formal M1 Local Acceptance                                      |
+|  **M2**   | Staging, Migration & DR     |    Complete    |                   Complete                   | **Completed 2026-08-04** | M2 Acceptance Decision                                          |
+|  **M3**   | Ingestion & Asset Lifecycle |    Complete    | Isolated deterministic-double rehearsal only | **Completed 2026-08-05** | M3 Operational Acceptance Decision (M4.1 requires new approval) |
+|  **M4**   | Advanced Scheduling         |    7–12 wks    |                  10–20 wks                   |   Jul 2027 – Mar 2028    | Immutable Asset Handles                                         |
+|  **M5**   | Playout Runtime & DSP       |   16–28 wks    |                  28–52 wks                   |   Feb 2028 – May 2029    | Published Schedule Artifacts                                    |
+|  **M6**   | Requests & Moderation       |    5–9 wks     |                   8–18 wks                   |   May 2029 – Oct 2029    | Public Threat Model Approval                                    |
+|  **M7**   | Encoders & Icecast          |   10–18 wks    |                  18–36 wks                   |   Oct 2029 – Jul 2030    | Private Infrastructure Approval                                 |
+|  **M8**   | Shadow Testing & Parity     |    8–14 wks    |                  16–32 wks                   |   Aug 2030 – May 2031    | Parallel Listening & Failover Drills                            |
+|  **M9**   | Cutover & Decommissioning   |    6–12 wks    |                  12–28 wks                   |   Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off                              |
+|  **M10**  | Ubuntu Appliance Delivery   |  Post-M9 only  |                 Not started                  | After M9 acceptance only | M3–M9 accepted + explicit M10 approval                          |
 
 ---
 
@@ -147,14 +147,17 @@ alter the M2 staging boundary.
 
 ### Phase 3: M3 — Media Ingestion, Metadata & Asset Lifecycle
 
-**Status:** M3.1–M3.11 are complete and accepted as a local-only,
-non-operational Control Plane milestone on `main`. The narrowly bounded M3.12
-post-acceptance exception is the sole approved path for a readiness plan and,
-after explicit human approvals, an isolated non-production rehearsal; it does
-not revoke that acceptance. Phase 1 is accepted and a content-free candidate
-classification decision is proposed; Phase 2 remains separately gated and
-unstarted: no M3 migration, worker, media intake, provider connection, or
-operational activation has occurred.
+**Status: complete and accepted 2026-08-05 UTC.** M3.1–M3.11 are complete and
+accepted as a local-only, non-operational Control Plane milestone on `main`.
+The narrowly bounded M3.12 post-acceptance exception completed both phases:
+its readiness plan was accepted, and its isolated non-production rehearsal —
+an in-memory deterministic double with no filesystem, database, network, or
+provider adapter — was executed and accepted through eight separate one-action
+approvals. See the [M3 operational acceptance
+decision](M3_OPERATIONAL_ACCEPTANCE_DECISION.md) and the [M3.12 execution
+acceptance decision](M3.12_EXECUTION_ACCEPTANCE_DECISION.md). No PostgreSQL
+migration, worker, real media intake, or provider connection has occurred at
+any point in M3.
 `ready_for_schedule_use` is an asset eligibility state only: it is neither M4
 publication, M5 execution, M7 encoding readiness, nor listener availability.
 See [the M3 implementation and authorization
@@ -162,6 +165,8 @@ record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md), the [M3.11 acceptance
 and handoff boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md), and the
 [M3.12 operational staging activation authorization and isolated
 media-lifecycle rehearsal](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md).
+**M4.1 remains unstarted and requires its own new, separate human approval**;
+M3 completion does not grant it.
 
 Every M3 sub-milestone remains station-scoped by `id + station_id`, uses
 `station_reference_forbidden` for cross-station references and `not_found` for
@@ -374,16 +379,23 @@ action without a new human approval.
   and isolated media-lifecycle rehearsal](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md)
   defines the sole narrowly bounded post-acceptance exception path; the
   [Phase 1 readiness-plan acceptance decision](M3.12_PHASE_1_READINESS_PLAN_ACCEPTANCE_DECISION.md)
-  accepts only its non-executable plan. The proposed [Phase 2 staging-target
+  accepts its non-executable plan. The accepted [Phase 2 staging-target
   safe-classification decision](M3.12_PHASE_2_STAGING_TARGET_SAFE_CLASSIFICATION_DECISION.md)
   records an opaque `safely_classified` candidate from accepted governance
-  evidence only.
+  evidence only, and the eight one-action gates in [Action
+  1](M3.12_PHASE_2_ACTION_1_TARGET_VALIDATION_AUTHORIZATION.md) through
+  [Action 8](M3.12_PHASE_2_ACTION_8_RECOVERY_DECISION.md), followed by the
+  [M3.12 execution acceptance decision](M3.12_EXECUTION_ACCEPTANCE_DECISION.md),
+  completed the isolated rehearsal.
 - **Purpose / planes / mode / prerequisites:** Define two strictly ordered
   phases: a non-executable readiness/authorization plan, then an isolated
   non-production rehearsal only after plan acceptance and explicit one-action
   human approvals. It preserves accepted M3.1–M3.11 local-only scope and is
-  dependent on M3.10/M3.11 and accepted M2 authorization/DR decisions. Phase 1
-  is accepted; Phase 2 remains unstarted.
+  dependent on M3.10/M3.11 and accepted M2 authorization/DR decisions. **Both
+  Phase 1 and Phase 2 are complete and accepted** as of 2026-08-05 UTC; the
+  Phase 2 rehearsal exercised only the in-memory `M3RehearsalAdapter`
+  deterministic double defined in the [rehearsal adapter
+  contract](M3.12_REHEARSAL_ADAPTER_CONTRACT.md).
 - **Scope / exclusions:** The plan may define target/cohort classifications,
   authorities, gates, stop/recovery decisions, evidence, and future acceptance.
   A separately approved rehearsal may validate controlled M3 intake,
@@ -397,10 +409,13 @@ action without a new human approval.
   rollback/forward-fix ownership, inactive downstream planes, and distinct
   human approvals for target validation, media access, intake, processing,
   review, cleanup, evidence review, recovery, and M3 operational acceptance.
-  No approval creates standing authority. After the classification decision is
-  approved and committed, the next step is a future separately approved M3.12
-  target/service-level validation authorization, not a new M3.13 milestone.
-  M4.1 remains deferred until M3.12 execution is completed and accepted.
+  No approval creates standing authority. All nine gates (target validation
+  through M3 operational acceptance) are complete; see [Action
+  1](M3.12_PHASE_2_ACTION_1_TARGET_VALIDATION_AUTHORIZATION.md) through
+  [Action 8](M3.12_PHASE_2_ACTION_8_RECOVERY_DECISION.md) and the [M3
+  operational acceptance decision](M3_OPERATIONAL_ACCEPTANCE_DECISION.md).
+  M4.1 remains deferred until its own new, separate human approval is
+  granted; M3.12 completion does not itself grant it.
 - **Dependencies / stop:** Preserve strict plane separation and stop on target
   ambiguity, unapproved media, authority/scope gaps, protected evidence,
   cross-station mismatch, or any plane activation. Only the named recovery
