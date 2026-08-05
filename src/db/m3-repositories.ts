@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 
 import {
+  assertExplicitRecoveryRetry,
   assertAssetLifecycleTransition,
   type AssetRevision,
   type AssetLifecycleState,
@@ -178,11 +179,17 @@ export class PostgresM3Repositories {
       | "internal",
     retryable: boolean,
   ): Promise<void> {
-    const owned = await this.database.query(
-      `SELECT 1 FROM m3_import_jobs WHERE id=$1 AND station_id=$2`,
+    const owned = await this.database.query<ImportJobRow>(
+      `SELECT id,station_id AS "stationId",request_id AS "requestId",lifecycle_state AS "lifecycleState",retry_count AS "retryCount",created_at AS "createdAt",updated_at AS "updatedAt"
+       FROM m3_import_jobs WHERE id=$1 AND station_id=$2`,
       [jobId, stationId],
     );
-    if (!owned.rowCount) throw new Error("not_found");
+    const job = owned.rows[0];
+    if (!job) throw new Error("not_found");
+    const next = retryable ? "failed" : "quarantined";
+    assertAssetLifecycleTransition(job.lifecycleState, next);
+    const request = await this.readImportRequest(stationId, job.requestId);
+    assertAssetLifecycleTransition(request.lifecycleState, next);
     await this.database.query(
       `INSERT INTO m3_job_failures (id,station_id,job_id,category,retryable,occurred_at)
        VALUES ($1,$2,$3,$4,$5,now())`,
@@ -190,8 +197,13 @@ export class PostgresM3Repositories {
     );
     await this.database.query(
       `UPDATE m3_import_jobs SET lifecycle_state=$1,retry_count=retry_count+1,updated_at=now()
-       WHERE id=$2 AND station_id=$3`,
-      [retryable ? "failed" : "quarantined", jobId, stationId],
+       WHERE id=$2 AND station_id=$3 AND lifecycle_state=$4`,
+      [next, jobId, stationId, job.lifecycleState],
+    );
+    await this.database.query(
+      `UPDATE m3_import_requests SET lifecycle_state=$1,updated_at=now()
+       WHERE id=$2 AND station_id=$3 AND lifecycle_state=$4`,
+      [next, job.requestId, stationId, request.lifecycleState],
     );
     await this.audit(
       actorUserId,
@@ -200,6 +212,60 @@ export class PostgresM3Repositories {
       "media_import_job",
       jobId,
     );
+  }
+
+  /**
+   * An explicit control-plane retry records only the legal lifecycle recovery.
+   * It does not resolve a source reference or enqueue/dispatch any processing.
+   */
+  async retryImportRequest(
+    actorUserId: string,
+    stationId: string,
+    requestId: string,
+  ): Promise<M3ImportRequest> {
+    const current = await this.readImportRequest(stationId, requestId);
+    const job = (
+      await this.database.query<ImportJobRow>(
+        `SELECT id,station_id AS "stationId",request_id AS "requestId",lifecycle_state AS "lifecycleState",retry_count AS "retryCount",created_at AS "createdAt",updated_at AS "updatedAt"
+         FROM m3_import_jobs WHERE request_id=$1 AND station_id=$2`,
+        [requestId, stationId],
+      )
+    ).rows[0];
+    if (!job) throw new Error("not_found");
+    const failure = (
+      await this.database.query<{ retryable: boolean }>(
+        `SELECT retryable FROM m3_job_failures
+         WHERE job_id=$1 AND station_id=$2 ORDER BY occurred_at DESC LIMIT 1`,
+        [job.id, stationId],
+      )
+    ).rows[0];
+    const next = assertExplicitRecoveryRetry(
+      current.lifecycleState,
+      failure?.retryable
+        ? "requires_explicit_authorized_retry"
+        : "not_eligible",
+    );
+    const requestResult = await this.database.query<ImportRequestRow>(
+      `UPDATE m3_import_requests SET lifecycle_state=$1,updated_at=now()
+       WHERE id=$2 AND station_id=$3 AND lifecycle_state=$4
+       RETURNING id,station_id AS "stationId",idempotency_key AS "idempotencyKey",source_kind AS "sourceKind",source_opaque_id AS "sourceOpaqueId",lifecycle_state AS "lifecycleState",created_at AS "createdAt",updated_at AS "updatedAt"`,
+      [next, requestId, stationId, current.lifecycleState],
+    );
+    const row = requestResult.rows[0];
+    if (!row) throw new Error("invalid_lifecycle_transition");
+    await this.database.query(
+      `UPDATE m3_import_jobs SET lifecycle_state=$1,updated_at=now()
+       WHERE id=$2 AND station_id=$3 AND lifecycle_state=$4`,
+      [next, job.id, stationId, job.lifecycleState],
+    );
+    await this.audit(
+      actorUserId,
+      stationId,
+      "m3.intake_retry_authorized",
+      "media_import_request",
+      requestId,
+    );
+    return this.request(row);
   }
 
   async appendAssetRevision(

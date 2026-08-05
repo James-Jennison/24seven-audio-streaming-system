@@ -58,6 +58,14 @@ class M3Fake implements M3AssetPersistence {
     this.calls.push(`transition:${stationId}:${id}:${next}`);
     return { ...requestRecord, lifecycleState: next };
   }
+  async retryImportRequest(
+    _actor: string,
+    stationId: string,
+    id: string,
+  ): Promise<M3ImportRequest> {
+    this.calls.push(`retry:${stationId}:${id}`);
+    return { ...requestRecord, lifecycleState: "validated" };
+  }
   async auditRejection(
     _actor: string | undefined,
     stationId: string,
@@ -165,4 +173,19 @@ test("M3 routes isolate stations, require CSRF for proposed approval flow, and d
   );
   assert.deepEqual(outOfScope, { status: 404, body: { error: "not_found" } });
   assert.doesNotMatch(store.calls.join(" "), /playout|encoder|relay|icecast/i);
+});
+
+test("M3 retry is an explicit CSRF-protected state record and never dispatches processing", async () => {
+  const store = new M3Fake();
+  const retry = await invoke(
+    "/api/v1/stations/station-a/media-imports/request-a/retry",
+    "POST",
+    store,
+  );
+  assert.deepEqual(retry, {
+    status: 200,
+    body: { ...requestRecord, lifecycleState: "validated" },
+  });
+  assert.deepEqual(store.calls, ["retry:station-a:request-a"]);
+  assert.equal(store.processingCalls, 0);
 });

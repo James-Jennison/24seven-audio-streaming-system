@@ -34,6 +34,11 @@ export interface M3AssetPersistence {
     id: string,
     next: AssetLifecycleState,
   ): Promise<M3ImportRequest>;
+  retryImportRequest(
+    actor: string,
+    stationId: string,
+    id: string,
+  ): Promise<M3ImportRequest>;
   auditRejection?(
     actor: string | undefined,
     stationId: string,
@@ -80,7 +85,7 @@ export async function handleM3Assets(
     return true;
   }
   const match = url.pathname.match(
-    /^\/api\/v1\/stations\/([^/]+)\/media-imports(?:\/([^/]+)(?:\/(validate|approve|reject))?)?$/,
+    /^\/api\/v1\/stations\/([^/]+)\/media-imports(?:\/([^/]+)(?:\/(validate|approve|reject|retry))?)?$/,
   );
   if (!match) return false;
   const [, stationId, id, action] = match;
@@ -106,6 +111,14 @@ export async function handleM3Assets(
         response,
         201,
         await store.createImportRequest(principal.userId, stationId!, input),
+      );
+      return true;
+    }
+    if (id && action === "retry") {
+      json(
+        response,
+        200,
+        await store.retryImportRequest(principal.userId, stationId!, id),
       );
       return true;
     }
@@ -218,6 +231,8 @@ function safeError(error: unknown): { status: number; error: string } {
     return { status: 400, error: "invalid_request" };
   if (
     message === "invalid_lifecycle_transition" ||
+    message === "recovery_not_eligible" ||
+    message === "idempotency_conflict" ||
     message.startsWith("invalid_") ||
     message === "validation_error"
   )

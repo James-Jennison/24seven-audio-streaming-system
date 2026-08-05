@@ -16,6 +16,12 @@ test("M3 lifecycle accepts only bounded non-runtime transitions", () => {
   assert.doesNotThrow(() =>
     assertAssetLifecycleTransition("failed", "validated"),
   );
+  assert.doesNotThrow(() =>
+    assertAssetLifecycleTransition("processing", "quarantined"),
+  );
+  assert.doesNotThrow(() =>
+    assertAssetLifecycleTransition("quarantined", "validated"),
+  );
   assert.throws(
     () => assertAssetLifecycleTransition("proposed", "processing"),
     /invalid_lifecycle_transition/,
@@ -23,6 +29,10 @@ test("M3 lifecycle accepts only bounded non-runtime transitions", () => {
   assert.throws(
     () =>
       assertAssetLifecycleTransition("ready_for_schedule_use", "processing"),
+    /invalid_lifecycle_transition/,
+  );
+  assert.throws(
+    () => assertAssetLifecycleTransition("proposed", "quarantined"),
     /invalid_lifecycle_transition/,
   );
 });

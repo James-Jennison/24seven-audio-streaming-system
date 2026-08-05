@@ -196,6 +196,9 @@ action without a new human approval.
 
 #### M3.3 — Safe source-reference, quarantine, and rejection model
 
+- **Authoritative record:**
+  [M3.3 safe source-reference and quarantine boundary](M3.3_SAFE_SOURCE_REFERENCE_AND_QUARANTINE_BOUNDARY.md)
+  is the implementation and evidence record for this local-only sub-milestone.
 - **Purpose / planes / mode / prerequisites:** Define opaque source-reference,
   validation, quarantine, rejection, and recovery contracts in the Control
   Plane; local-only, dependent on M3.1–M3.2.

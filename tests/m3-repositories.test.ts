@@ -12,7 +12,7 @@ const input: M3ImportRequestInput = {
   source: { kind: "operator_staged_reference", opaqueId: "source:0001" },
 };
 
-test("M3 repository scopes request, job, failure, and metadata operations by station", async () => {
+test("M3 repository scopes request, job, and metadata operations by station", async () => {
   const calls: Array<{ text: string; values?: readonly unknown[] }> = [];
   const db: SqlExecutor = {
     async query<T>(text: string, values?: readonly unknown[]) {
@@ -46,7 +46,6 @@ test("M3 repository scopes request, job, failure, and metadata operations by sta
     "request-a",
     "validated",
   );
-  await repo.recordFailure("user-a", "station-a", "job-a", "analysis", true);
   await repo.resolveMetadataCandidate(
     "user-a",
     "station-a",
@@ -91,6 +90,76 @@ test("M3 repository returns not_found for an out-of-scope request without owners
   });
   await assert.rejects(
     () => repo.readImportRequest("station-b", "request-a"),
+    /not_found/,
+  );
+});
+
+test("M3 retry requires retained eligibility, scopes every lookup, and records no dispatch", async () => {
+  const calls: Array<{ text: string; values?: readonly unknown[] }> = [];
+  const repo = new PostgresM3Repositories({
+    async query<T>(text: string, values?: readonly unknown[]) {
+      calls.push({ text, values });
+      if (text.includes("FROM m3_import_requests WHERE id=$1"))
+        return {
+          rows: [
+            { ...requestRow(), lifecycleState: "quarantined" },
+          ] as unknown as T[],
+          rowCount: 1,
+        };
+      if (text.includes("FROM m3_import_jobs WHERE request_id=$1"))
+        return {
+          rows: [
+            { ...jobRow(), lifecycleState: "quarantined" },
+          ] as unknown as T[],
+          rowCount: 1,
+        };
+      if (text.includes("FROM m3_job_failures"))
+        return {
+          rows: [{ retryable: true }] as unknown as T[],
+          rowCount: 1,
+        };
+      if (text.startsWith("UPDATE m3_import_requests"))
+        return {
+          rows: [
+            { ...requestRow(), lifecycleState: "validated" },
+          ] as unknown as T[],
+          rowCount: 1,
+        };
+      return { rows: [] as T[], rowCount: 1 };
+    },
+  });
+
+  const retried = await repo.retryImportRequest(
+    "user-a",
+    "station-a",
+    "request-a",
+  );
+  assert.equal(retried.lifecycleState, "validated");
+  const allSql = calls.map((call) => call.text).join("\n");
+  assert.match(allSql, /m3_job_failures[\s\S]*job_id=\$1 AND station_id=\$2/);
+  assert.match(
+    allSql,
+    /UPDATE m3_import_requests[\s\S]*id=\$2 AND station_id=\$3/,
+  );
+  const auditValues = calls
+    .filter((call) => call.text.includes("audit_events"))
+    .flatMap((call) => call.values ?? [])
+    .join(" ");
+  assert.match(auditValues, /m3\.intake_retry_authorized/);
+  assert.doesNotMatch(
+    allSql,
+    /worker|ffmpeg|network|playout|encoder|relay|icecast/i,
+  );
+});
+
+test("M3 retry returns not_found for an out-of-scope request", async () => {
+  const repo = new PostgresM3Repositories({
+    async query<T>() {
+      return { rows: [] as T[], rowCount: 0 };
+    },
+  });
+  await assert.rejects(
+    () => repo.retryImportRequest("user-a", "station-b", "request-a"),
     /not_found/,
   );
 });

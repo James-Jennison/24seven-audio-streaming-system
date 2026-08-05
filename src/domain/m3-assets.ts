@@ -26,10 +26,84 @@ export type FailureCategory =
   | "metadata"
   | "internal";
 
+/**
+ * These categories intentionally describe only boundary outcomes. They must
+ * never contain source content, locations, parser output, or exception text.
+ */
+export type SourceReferenceValidationCategory =
+  | "accepted"
+  | "invalid_opaque_reference"
+  | "unsupported_source_kind"
+  | "ownership_unverified"
+  | "policy_rejected"
+  | "limit_exceeded";
+
+export type SourceReferenceValidationState =
+  | "valid"
+  | "quarantined"
+  | "rejected";
+
+export type RecoveryRetryEligibility =
+  | "not_eligible"
+  | "requires_explicit_authorized_retry";
+
 export interface OpaqueSourceReference {
   kind: SourceKind;
   /** An opaque, operator-issued handle; never a path, filename, URL, or payload. */
   opaqueId: string;
+}
+
+/**
+ * A station-scoped source-reference record is an opaque control-plane value,
+ * not a filesystem object or a media handle. Its id and stationId travel
+ * together in every internal relationship.
+ */
+export interface StationScopedSourceReference {
+  id: StableId;
+  stationId: StableId;
+  source: OpaqueSourceReference;
+  validationState: SourceReferenceValidationState;
+  validationCategory: SourceReferenceValidationCategory;
+  recoveryEligibility: RecoveryRetryEligibility;
+  createdAt: UtcTimestamp;
+}
+
+/** An append-only, content-free decision about one intake source reference. */
+export interface SourceReferenceValidationOutcome {
+  id: StableId;
+  stationId: StableId;
+  intakeRequestId: StableId;
+  sourceReferenceId: StableId;
+  state: SourceReferenceValidationState;
+  category: SourceReferenceValidationCategory;
+  recoveryEligibility: RecoveryRetryEligibility;
+  occurredAt: UtcTimestamp;
+}
+
+/** Quarantine preserves the safe reason and requires an explicit retry. */
+export interface QuarantineRecord extends SourceReferenceValidationOutcome {
+  state: "quarantined";
+  recoveryEligibility: "requires_explicit_authorized_retry";
+}
+
+/** Rejection is terminal for the intake proposal; it cannot be retried. */
+export interface RejectionRecord extends SourceReferenceValidationOutcome {
+  state: "rejected";
+  recoveryEligibility: "not_eligible";
+}
+
+/**
+ * An append-only operator decision which authorizes a later eligible retry.
+ * It is deliberately separate from the original validation/quarantine fact.
+ */
+export interface SourceReferenceRecoveryRecord {
+  id: StableId;
+  stationId: StableId;
+  intakeRequestId: StableId;
+  sourceReferenceId: StableId;
+  validationOutcomeId: StableId;
+  resultingLifecycleState: "validated";
+  createdAt: UtcTimestamp;
 }
 
 export interface M3ImportRequest {
@@ -175,6 +249,84 @@ export function validateImportRequestInput(input: {
   )
     throw new Error("invalid_source_kind");
   validateOpaqueReference(input.source.opaqueId);
+}
+
+export function assertStationScopedSourceReference(
+  stationId: StableId,
+  reference: StationScopedSourceReference,
+): void {
+  if (reference.stationId !== stationId)
+    throw new Error("station_reference_forbidden");
+  validateImportRequestInput({
+    idempotencyKey: reference.id,
+    source: reference.source,
+  });
+  if (
+    (reference.validationState === "valid" &&
+      (reference.validationCategory !== "accepted" ||
+        reference.recoveryEligibility !== "not_eligible")) ||
+    (reference.validationState === "quarantined" &&
+      reference.recoveryEligibility !== "requires_explicit_authorized_retry") ||
+    (reference.validationState === "rejected" &&
+      reference.recoveryEligibility !== "not_eligible")
+  )
+    throw new Error("invalid_source_reference_outcome");
+}
+
+export function validateSourceReferenceValidationOutcome(
+  outcome: SourceReferenceValidationOutcome,
+): void {
+  validateOpaqueReference(outcome.id);
+  validateOpaqueReference(outcome.intakeRequestId);
+  validateOpaqueReference(outcome.sourceReferenceId);
+  if (
+    ![
+      "accepted",
+      "invalid_opaque_reference",
+      "unsupported_source_kind",
+      "ownership_unverified",
+      "policy_rejected",
+      "limit_exceeded",
+    ].includes(outcome.category)
+  )
+    throw new Error("invalid_source_reference_outcome");
+  if (
+    (outcome.state === "valid" &&
+      (outcome.category !== "accepted" ||
+        outcome.recoveryEligibility !== "not_eligible")) ||
+    (outcome.state === "quarantined" &&
+      outcome.recoveryEligibility !== "requires_explicit_authorized_retry") ||
+    (outcome.state === "rejected" &&
+      outcome.recoveryEligibility !== "not_eligible")
+  )
+    throw new Error("invalid_source_reference_outcome");
+}
+
+/**
+ * Recovery is a state-recording control-plane action only. It never reads the
+ * source or dispatches a worker, and rejected proposals remain terminal.
+ */
+export function assertExplicitRecoveryRetry(
+  state: AssetLifecycleState,
+  recoveryEligibility: RecoveryRetryEligibility,
+): "validated" {
+  if (
+    recoveryEligibility !== "requires_explicit_authorized_retry" ||
+    !["quarantined", "failed"].includes(state)
+  )
+    throw new Error("recovery_not_eligible");
+  return "validated";
+}
+
+export function validateSourceReferenceRecoveryRecord(
+  record: SourceReferenceRecoveryRecord,
+): void {
+  validateOpaqueReference(record.id);
+  validateOpaqueReference(record.intakeRequestId);
+  validateOpaqueReference(record.sourceReferenceId);
+  validateOpaqueReference(record.validationOutcomeId);
+  if (record.resultingLifecycleState !== "validated")
+    throw new Error("invalid_recovery_record");
 }
 
 export function validateLoudnessMeasurement(value: LoudnessMeasurement): void {

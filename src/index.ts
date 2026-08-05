@@ -69,6 +69,8 @@ const controlPlane = createControlPlaneServer(
       m3.createImportRequest(actor, stationId, input),
     transitionImportRequest: (actor, stationId, id, next) =>
       m3.transitionImportRequest(actor, stationId, id, next),
+    retryImportRequest: (actor, stationId, id) =>
+      m3.retryImportRequest(actor, stationId, id),
     auditRejection: (actor, stationId, id) =>
       m3.auditRejection(actor, stationId, id),
   },
