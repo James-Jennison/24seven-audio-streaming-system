@@ -1,5 +1,17 @@
 # Current State
 
+## M4.1 scoping — decision-only planning contract; no M4 work authorized
+
+M4 was unblocked in sequence by M3 acceptance but remained unstarted and
+unapproved. With a new, separate owner approval (2026-08-05) to draft its
+scoping document only, the [M4.1 schedule-domain and versioning
+contract](M4.1_SCHEDULE_DOMAIN_AND_VERSIONING_CONTRACT.md) now defines the
+Programming Control Plane's schedule proposal, approval, publication,
+version, compatibility, and rollback boundary. It is documentation/planning
+only: no schema, migration, code, or operational action exists for M4, and
+this contract authorizes no M4.2-or-later work. Publication is explicitly
+never runtime execution; M5 remains a separate, unapproved milestone.
+
 ## M3 local-only foundation — complete and committed; operational activation pending
 
 M3 is implemented locally under the explicit M3 approval and committed on the

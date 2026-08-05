@@ -429,6 +429,11 @@ execution. All M4 work is unstarted and requires a new approval.
 
 #### M4.1 — Schedule-domain and versioning contract
 
+- **Authoritative record:**
+  [M4.1 schedule-domain and versioning contract](M4.1_SCHEDULE_DOMAIN_AND_VERSIONING_CONTRACT.md)
+  is the decision-oriented planning record for this sub-milestone. It is
+  documentation/planning only; no M4.1 code, migration, or operational action
+  exists.
 - **Purpose / planes / mode / prerequisites:** Define Control Plane schedule,
   proposal, approval, publication, version, compatibility, and rollback
   contracts; local-only, dependent on accepted M1 and an explicit M4 approval.
