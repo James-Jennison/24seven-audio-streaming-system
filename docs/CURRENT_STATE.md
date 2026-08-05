@@ -60,12 +60,14 @@ handoffs while rejecting operational authority. It confirms that
 `ready_for_schedule_use` is neither publication nor execution, adds no
 dashboard/API control, and authorizes no M4-or-later work or operational
 action.
-The future [M3.12 operational staging activation readiness and authorization
-plan](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md)
-is a narrowly bounded post-acceptance exception. It preserves the completed
-M3.1–M3.11 local-only acceptance and defines only a non-executable future
-authorization framework; it authorizes no staging execution or operational
-action.
+The [M3.12 operational staging activation authorization and isolated
+media-lifecycle rehearsal](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md)
+is the sole narrowly bounded post-acceptance exception path. Its documented
+first phase is a non-executable readiness and authorization plan; its second,
+unstarted phase is an isolated non-production rehearsal that requires plan
+acceptance and separate one-action human approvals. It preserves completed
+M3.1–M3.11 local-only acceptance, creates no standing authorization, and this
+documentation change authorizes no staging or media operation.
 It adds a station-scoped, non-executing control-plane foundation for opaque
 import requests/jobs; immutable asset revisions, provenance, analysis,
 metadata-candidate, resolution, and failure records; deterministic EBU R128
@@ -97,10 +99,11 @@ commit/migration identity, least-privilege role scope, station isolation,
 empty/non-production input boundary, sandbox limits, inactive runtime/encoder/
 Icecast planes, rollback/stop conditions, and content-free verification. See
 [the M3 implementation and authorization record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md).
-The next unstarted item is separately approval-gated **M3.12 — Operational
-Staging Activation Readiness and Authorization Plan**. M4.1 is deferred until
-M3.12 is completed and separately accepted; neither M3.12 planning nor prior
-M3 acceptance authorizes an operational action.
+The next unstarted roadmap step is **M3.12 Phase 1 acceptance**, followed only
+by separately approved M3.12 Phase 2 execution. **M4.1 — Schedule-domain and
+versioning contract** remains deferred until M3.12 execution is completed and
+accepted. Neither M3.12 documentation nor prior M3 acceptance authorizes an
+operational action.
 
 ## M1 complete — 2026-08-04 UTC
 

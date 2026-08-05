@@ -29,12 +29,13 @@ planes, and owner-only stop decisions, while making execution unavailable.
 M3.11 accepts only the local M3 contract boundary: it records content-free
 evidence, station-isolation results, owned open risks, and input-only
 M4/M5/M7 handoffs while keeping asset readiness distinct from publication and
-execution. **M3.12 — Operational Staging Activation Readiness and Authorization
-Plan** is a future, non-executable post-acceptance planning exception. It does
-not revoke M3’s completed local-only scope or authorize staging execution;
-**M4.1 — Schedule-domain and versioning contract** remains deferred until
-M3.12 is separately accepted. Completion of any milestone or sub-milestone
-does not authorize the next one.
+execution. **M3.12 — Operational Staging Activation Authorization and Isolated
+Media-Lifecycle Rehearsal** is the sole approved post-acceptance exception path:
+first a non-executable readiness plan, then only after explicit human approvals
+an isolated non-production rehearsal. It does not revoke M3’s completed
+local-only scope or create standing authorization. **M4.1 — Schedule-domain and
+versioning contract** remains deferred until M3.12 execution is completed and
+accepted. This documentation change authorizes no staging or media operation.
 
 The future post-M9 delivery target is a bootable, customized Ubuntu Server
 appliance with secure first-boot enrollment and LAN Operator Dashboard access.
