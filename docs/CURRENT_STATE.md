@@ -1,6 +1,6 @@
 # Current State
 
-## M4.3 clock templates — complete, local-only, and non-operational
+## M4.4 separation policy — complete, local-only, and non-operational
 
 M3 acceptance unblocked M4 in sequence. With the owner authorization to begin
 M4, the [M4.1 schedule-domain and versioning
@@ -13,8 +13,13 @@ it projects only same-station, immutable M3 revisions whose lifecycle is
 the [deterministic 24-hour clock and template model](M4.3_DETERMINISTIC_24_HOUR_CLOCK_AND_TEMPLATE_MODEL.md):
 it derives repeatable station-local civil-day input from opaque template slots
 without a live clock, instant conversion, schedule generation, media access,
-persistence, or publication. **M4.4 remains separately approval-gated**;
-publication is explicitly never runtime execution, and M5 remains unapproved.
+persistence, or publication. M4.4 now completes the [separation-policy model
+and evaluation engine](M4.4_SEPARATION_POLICY_MODEL_AND_EVALUATION_ENGINE.md):
+it evaluates only approved opaque artist/title/album/category keys with explicit
+precedence and fail-closed missing-key behavior. It does not generate a
+schedule, enrich metadata, mutate catalog state, or enforce a runtime policy.
+**M4.5 remains separately approval-gated**; publication is explicitly never
+runtime execution, and M5 remains unapproved.
 
 ## M3 local-only foundation — complete and accepted
 

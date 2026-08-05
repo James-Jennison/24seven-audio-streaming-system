@@ -24,7 +24,9 @@ boundary** is complete as a read-only, station-scoped Control Plane projection
 with no schedule, publication, or runtime effect. **M4.3 — Deterministic
 24-hour clock and template model** is complete as a civil-time-only, station-
 scoped planning input. It has no live clock or runtime effect. **M4.4 remains
-separately approval-gated**.
+complete as a deterministic, opaque-key separation-policy evaluator with no
+schedule generation or runtime effect. **M4.5 remains separately approval-
+gated\*\*.
 
 The future post-M9 delivery target is a bootable, customized Ubuntu Server
 appliance with secure first-boot enrollment and LAN Operator Dashboard access.

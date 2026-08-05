@@ -491,15 +491,22 @@ station_id`, `not_found`, `station_reference_forbidden`, immutable
 
 #### M4.4 — Separation-policy model and evaluation engine
 
+- **Authoritative record:** The [M4.4 separation-policy model and evaluation
+  engine](M4.4_SEPARATION_POLICY_MODEL_AND_EVALUATION_ENGINE.md) and its
+  [acceptance decision](M4.4_SEPARATION_POLICY_MODEL_AND_EVALUATION_ENGINE_ACCEPTANCE_DECISION.md)
+  complete this local-only Control Plane sub-milestone. It introduces no
+  schedule generation, metadata enrichment, persistence, or operational
+  action.
 - **Purpose / planes / mode / prerequisites:** Define deterministic artist,
   title, album, category, and policy separation evaluation; Control Plane,
   local-only, dependent on M4.2–M4.3.
 - **Scope / exclusions:** Evaluate only approved policy inputs and candidate
   references. Exclude silent policy overrides, metadata enrichment, and runtime
   enforcement outside published artifacts.
-- **Controls / evidence / gate:** Test conflicts, precedence, empty catalog,
-  station isolation, and content-free reasons. Owner approval is required
-  before M4.5.
+- **Controls / evidence / gate:** The accepted local boundary tests conflicts,
+  precedence, empty catalog, missing-key fail-closed behavior, station
+  isolation, content-free reasons, and no operational adapter. Owner approval
+  is required before M4.5.
 - **Dependencies / stop:** Feeds preview generation; stop on unsatisfied policy
   and return a proposal rather than auto-publishing a degraded schedule.
 

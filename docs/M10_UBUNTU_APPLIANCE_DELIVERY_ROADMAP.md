@@ -85,6 +85,6 @@ scope, rollback or forward-fix owner, and content-free evidence boundary.
 Until that approval, this record authorizes no ISO build, package/image build,
 service activation, network exposure, media import, deployment, infrastructure
 change, or production operation. It does not alter the current next milestone:
-**M4.4 — Separation-policy model and evaluation engine** is next after the
-accepted M4.3 clock/template model and remains separately approval-gated
+**M4.5 — Dry-run generation, conflict reporting, and preview** is next after
+the accepted M4.4 separation-policy model and remains separately approval-gated
 implementation work.
