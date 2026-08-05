@@ -322,6 +322,10 @@ action without a new human approval.
 
 #### M3.10 — Separately authorized staging activation/rehearsal proposal
 
+- **Authoritative record:** [M3.10 staging activation/rehearsal
+  proposal](M3.10_STAGING_ACTIVATION_REHEARSAL_PROPOSAL.md) is the
+  implementation and acceptance record for this local-only, non-executable
+  sub-milestone.
 - **Purpose / planes / mode / prerequisites:** Define, but do not perform, a
   bounded staging-only rehearsal of the M3 persistence/worker boundary;
   dependent on M3.1–M3.9 and a new owner authorization.

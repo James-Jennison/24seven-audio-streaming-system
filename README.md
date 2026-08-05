@@ -9,11 +9,11 @@ Adagio.FM, Death.FM, and Entranced.FM.
 M1 is complete as a local-only Programming Control Plane milestone. M2 is
 accepted for isolated, non-public PostgreSQL staging persistence and disaster-
 recovery readiness; the M2.5 decision packet grants no standing operational
-authority. M3.1–M3.9 are complete as local-only, non-executing contracts:
+authority. M3.1–M3.10 are complete as local-only, non-executing contracts:
 asset lifecycle, persistence design, source/quarantine, disabled processing,
 normalization, cue/fade, metadata-candidate/operator-resolution, and a visual
-Operator Dashboard shell, plus consolidated isolation, idempotency, failure,
-and recovery validation.
+Operator Dashboard shell, consolidated isolation/idempotency/failure/recovery
+validation, and a non-executable staging activation/rehearsal proposal.
 
 M3.8 is a responsive, station-scoped visual shell for contract status only. It
 labels its Media Workspace as fixture/example status and makes the playout,
@@ -21,10 +21,13 @@ encoder, and listener-facing planes explicitly unavailable. It performs no
 provider call, media-tag extraction, stream-metadata publication, or live
 station-data lookup. M3.9 adds focused local proof of station isolation,
 idempotency, immutable recovery records, content-free evidence, disabled
-non-dispatch, and accessible unavailable states. **M3.10 — separately
-authorized staging activation/rehearsal proposal** is the next unstarted
-roadmap item and requires a new, explicitly bounded owner approval. Completion
-of any milestone or sub-milestone does not authorize the next one.
+non-dispatch, and accessible unavailable states. M3.10 adds a review-only
+future-rehearsal proposal: it requires an isolated empty target classification,
+least-privilege authority categories, declared sandbox limits, inactive later
+planes, and owner-only stop decisions, while making execution unavailable.
+**M3.11 — M3 acceptance and handoff boundary** is the next unstarted roadmap
+item. Completion of any milestone or sub-milestone does not authorize the next
+one.
 
 ## Architecture and safety boundary
 
