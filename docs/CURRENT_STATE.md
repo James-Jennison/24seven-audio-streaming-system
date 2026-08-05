@@ -26,9 +26,12 @@ nothing and never approves, publishes, or executes a schedule. M4.6 now
 completes the [proposed-schedule approval workflow](M4.6_PROPOSED_SCHEDULE_APPROVAL_WORKFLOW.md):
 it allows a CSRF/RBAC-gated, station-scoped, append-only in-memory approval or
 rejection for only a frozen complete preview. It exposes no API/UI route and
-never publishes or executes a schedule. **M4.7 remains separately
-approval-gated**; publication is explicitly never runtime execution, and M5
-remains unapproved.
+never publishes or executes a schedule. M4.7 now completes the [immutable
+versioned publication and atomic rollback design](M4.7_IMMUTABLE_VERSIONED_PUBLICATION_AND_ATOMIC_ROLLBACK_DESIGN.md):
+it creates only frozen, opaque in-memory artifacts and changes only the active
+pointer after compatibility validation; rollback is non-destructive. **M4.8
+remains separately approval-gated**; publication is explicitly never runtime
+execution, and M5 remains unapproved.
 
 ## M3 local-only foundation — complete and accepted
 

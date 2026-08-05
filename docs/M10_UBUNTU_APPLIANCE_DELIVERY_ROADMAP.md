@@ -85,6 +85,6 @@ scope, rollback or forward-fix owner, and content-free evidence boundary.
 Until that approval, this record authorizes no ISO build, package/image build,
 service activation, network exposure, media import, deployment, infrastructure
 change, or production operation. It does not alter the current next milestone:
-**M4.7 — Immutable versioned publication and atomic rollback design** is next
-after the accepted M4.6 proposal-approval boundary and remains separately
-approval-gated implementation work.
+**M4.8 — API/UI authorization and safe operator visibility** is next after the
+accepted M4.7 publication/rollback design and remains separately approval-gated
+implementation work.

@@ -166,7 +166,7 @@ and handoff boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md), and the
 [M3.12 operational staging activation authorization and isolated
 media-lifecycle rehearsal](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md).
 M3 completion did not grant M4.1. Separate owner approvals have since accepted
-M4.1–M4.6 as local-only Control Plane sub-milestones. M4.7 remains unstarted
+M4.1–M4.7 as local-only Control Plane sub-milestones. M4.8 remains unstarted
 and separately approval-gated.
 
 Every M3 sub-milestone remains station-scoped by `id + station_id`, uses
@@ -427,7 +427,7 @@ action without a new human approval.
 
 **Objective:** Build a deterministic 24-hour planning engine that produces
 immutable, station-scoped schedule artifacts. Publication is never runtime
-execution. M4.1–M4.6 are accepted local Control Plane boundaries; every later
+execution. M4.1–M4.7 are accepted local Control Plane boundaries; every later
 M4 sub-milestone requires its own approval.
 
 #### M4.1 — Schedule-domain and versioning contract
@@ -552,15 +552,21 @@ station_id`, `not_found`, `station_reference_forbidden`, immutable
 
 #### M4.7 — Immutable versioned publication and atomic rollback design
 
+- **Authoritative record:** The [M4.7 immutable versioned publication and
+  atomic rollback design](M4.7_IMMUTABLE_VERSIONED_PUBLICATION_AND_ATOMIC_ROLLBACK_DESIGN.md)
+  and its [acceptance decision](M4.7_IMMUTABLE_VERSIONED_PUBLICATION_AND_ATOMIC_ROLLBACK_DESIGN_ACCEPTANCE_DECISION.md)
+  complete this local-only Control Plane sub-milestone. It introduces no
+  API/UI route, persistence, runtime consumer, or operational action.
 - **Purpose / planes / mode / prerequisites:** Define Control Plane publication
   of an approved schedule as an immutable versioned artifact; local-only,
   dependent on M4.6.
 - **Scope / exclusions:** Specify atomic publish, compatibility checks,
   version identity, and rollback-to-prior-published artifact. Exclude direct
   runtime consumption, queue control, encoder/relay, and listener activity.
-- **Controls / evidence / gate:** Validate immutability, atomicity failure
-  behavior, station isolation, and content-free publication audit. Owner
-  approval is required before M4.8.
+- **Controls / evidence / gate:** The accepted local boundary validates
+  immutable artifacts, compatibility-before-pointer atomicity, non-destructive
+  rollback, station isolation, and content-free publication/rollback evidence.
+  Owner approval is required before M4.8.
 - **Dependencies / stop:** M5 may later consume only these artifacts; stop on
   partial publication and let publication owner select rollback/forward-fix.
 

@@ -30,7 +30,10 @@ reporting, and preview** is complete as a deterministic, in-memory, opaque
 proposal preview with no approval, publication, or runtime effect. **M4.6
 — Proposed-schedule approval workflow** is complete as an in-memory,
 station-scoped, CSRF/RBAC-gated decision boundary with no API/UI route,
-publication, or runtime effect. **M4.7 remains separately approval-gated**.
+publication, or runtime effect. **M4.7 — Immutable versioned publication and
+atomic rollback design** is complete as an in-memory, opaque-artifact and
+active-pointer model with no API/UI route or runtime effect. **M4.8 remains
+separately approval-gated**.
 
 The future post-M9 delivery target is a bootable, customized Ubuntu Server
 appliance with secure first-boot enrollment and LAN Operator Dashboard access.
