@@ -179,6 +179,9 @@ action without a new human approval.
 
 #### M3.2 — Additive PostgreSQL persistence and migration design
 
+- **Authoritative record:**
+  [M3.2 additive PostgreSQL persistence and migration design](M3.2_ADDITIVE_POSTGRESQL_PERSISTENCE_AND_MIGRATION_DESIGN.md)
+  is the decision-oriented planning record for this sub-milestone.
 - **Purpose / planes / mode / prerequisites:** Define additive Control Plane
   tables for requests/jobs, immutable assets/revisions/provenance, results,
   candidates/resolutions, and failures; local-only and dependent on M3.1.

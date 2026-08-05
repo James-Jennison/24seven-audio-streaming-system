@@ -3,10 +3,11 @@
 ## M3 local-only foundation — implemented and committed; operational activation pending
 
 M3 is implemented locally under the explicit M3 approval and committed on the
-authoritative branch. Its [M3.1 media intake and immutable asset-lifecycle
-contract](M3.1_MEDIA_INTAKE_AND_IMMUTABLE_ASSET_LIFECYCLE_CONTRACT.md) is the
-current decision-oriented planning record; it authorizes no later M3 work or
-operational action.
+authoritative branch. The [M3.1 media intake and immutable asset-lifecycle
+contract](M3.1_MEDIA_INTAKE_AND_IMMUTABLE_ASSET_LIFECYCLE_CONTRACT.md)
+established the planning boundary; the current [M3.2 additive PostgreSQL
+persistence and migration design](M3.2_ADDITIVE_POSTGRESQL_PERSISTENCE_AND_MIGRATION_DESIGN.md)
+is decision-only and authorizes no M3.3-or-later work or operational action.
 It adds a station-scoped, non-executing control-plane foundation for opaque
 import requests/jobs; immutable asset revisions, provenance, analysis,
 metadata-candidate, resolution, and failure records; deterministic EBU R128
