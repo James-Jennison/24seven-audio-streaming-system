@@ -8,6 +8,7 @@ import {
   handleM3Assets,
   type M3AssetPersistence,
 } from "../src/api/m3-asset-routes.js";
+import { DisabledMetadataEnrichmentBoundary } from "../src/app/m3-metadata-boundary.js";
 import type { SessionLookup } from "../src/api/m1-session.js";
 import type { M3ImportRequest } from "../src/domain/m3-assets.js";
 
@@ -91,6 +92,8 @@ async function invoke(
   store: M3Fake,
   payload?: Record<string, unknown>,
   lookup = sessions(),
+  metadata?: DisabledMetadataEnrichmentBoundary,
+  includeCsrf = true,
 ): Promise<{ status: number; body: unknown }> {
   const request = Readable.from(
     payload ? [JSON.stringify(payload)] : [],
@@ -100,7 +103,9 @@ async function invoke(
     url: path,
     headers: {
       cookie: `session=${token}`,
-      ...(method === "POST" ? { "x-csrf-token": csrfToken } : {}),
+      ...(method === "POST" && includeCsrf
+        ? { "x-csrf-token": csrfToken }
+        : {}),
     },
   });
   let status = 0;
@@ -113,7 +118,10 @@ async function invoke(
       content += value ?? "";
     },
   } as unknown as ServerResponse;
-  assert.equal(await handleM3Assets(request, response, lookup, store), true);
+  assert.equal(
+    await handleM3Assets(request, response, lookup, store, metadata),
+    true,
+  );
   return { status, body: content ? JSON.parse(content) : undefined };
 }
 
@@ -218,6 +226,132 @@ test("M3.6 cue/fade status is read-only, disabled, and station-scoped", async ()
     store,
     undefined,
     sessions(["station-b"]),
+  );
+  assert.deepEqual(outOfScope, { status: 404, body: { error: "not_found" } });
+  assert.equal(store.processingCalls, 0);
+  assert.doesNotMatch(
+    store.calls.join(" "),
+    /worker|process|playout|encoder|relay|icecast/i,
+  );
+});
+
+test("M3.7 metadata status, candidate visibility, and resolution stay local-only", async () => {
+  const store = new M3Fake();
+  const boundary = new DisabledMetadataEnrichmentBoundary([
+    {
+      id: "job:0001",
+      stationId: "station-a",
+      importRequestId: "request-a",
+      assetId: "asset:0001",
+      assetRevisionId: "revision:0001",
+      sourceReferenceId: "source:0001",
+      lifecycleState: "approved_for_processing",
+      assetRevisionState: "approved",
+      sourceValidationState: "valid",
+      declaredInputBytes: 1024,
+      formatCategory: "audio/mpeg",
+      retryAttempt: 0,
+    },
+  ]);
+  const candidateId = boundary.preview({
+    id: "metadata:0001",
+    stationId: "station-a",
+    idempotencyKey: "metadata-key:0001",
+    processingJob: {
+      id: "job:0001",
+      stationId: "station-a",
+      importRequestId: "request-a",
+      assetId: "asset:0001",
+      assetRevisionId: "revision:0001",
+      sourceReferenceId: "source:0001",
+      lifecycleState: "approved_for_processing",
+      assetRevisionState: "approved",
+      sourceValidationState: "valid",
+      declaredInputBytes: 1024,
+      formatCategory: "audio/mpeg",
+      retryAttempt: 0,
+    },
+    assetRevisionId: "revision:0001",
+    profile: "metadata-fixture-v1",
+    providerCategory: "deterministic_fixture",
+    providerVersion: "metadata-fixture-v1",
+    analysisVersion: "metadata-fixture-v1",
+    retryAttempt: 0,
+    requestedAt: "2026-08-04T00:00:00.000Z",
+  }).candidateIds[0]!;
+  const status = await invoke(
+    "/api/v1/stations/station-a/media-imports/request-a/metadata-enrichment",
+    "GET",
+    store,
+  );
+  assert.deepEqual(status, {
+    status: 200,
+    body: {
+      stationId: "station-a",
+      requestId: "request-a",
+      metadata: "disabled",
+      analysis: "fixture_only",
+    },
+  });
+  const visible = await invoke(
+    `/api/v1/stations/station-a/metadata-candidates/${candidateId}`,
+    "GET",
+    store,
+    undefined,
+    sessions(),
+    boundary,
+  );
+  assert.equal(
+    (visible.body as { candidate: { resolutionState: string } }).candidate
+      .resolutionState,
+    "pending",
+  );
+  const csrfRejected = await invoke(
+    `/api/v1/stations/station-a/metadata-candidates/${candidateId}/resolution`,
+    "POST",
+    store,
+    {
+      id: "resolution:0001",
+      idempotencyKey: "resolution-key:0001",
+      resolutionState: "approved",
+    },
+    sessions(),
+    boundary,
+    false,
+  );
+  assert.deepEqual(csrfRejected, {
+    status: 403,
+    body: { error: "csrf_rejected" },
+  });
+  assert.equal(boundary.readResolution("station-a", candidateId), undefined);
+  const resolved = await invoke(
+    `/api/v1/stations/station-a/metadata-candidates/${candidateId}/resolution`,
+    "POST",
+    store,
+    {
+      id: "resolution:0001",
+      idempotencyKey: "resolution-key:0001",
+      resolutionState: "approved",
+    },
+    sessions(),
+    boundary,
+  );
+  assert.equal(
+    (resolved.body as { resolution: { resolutionState: string } }).resolution
+      .resolutionState,
+    "approved",
+  );
+  assert.equal(
+    boundary.readCandidate("station-a", candidateId).resolutionState,
+    "pending",
+  );
+  const outOfScope = await invoke(
+    `/api/v1/stations/station-b/metadata-candidates/${candidateId}`,
+    "GET",
+    store,
+    undefined,
+    sessions(["station-b"]),
+    boundary,
   );
   assert.deepEqual(outOfScope, { status: 404, body: { error: "not_found" } });
   assert.equal(store.processingCalls, 0);

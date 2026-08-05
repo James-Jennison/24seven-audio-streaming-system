@@ -1,69 +1,71 @@
 # 24Seven Audio Streaming System
 
-A Linux-first, web-administered audio automation and streaming platform for the five 24Seven.FM stations:
+24Seven.FM is a Linux-first, web-administered audio-automation and streaming
+system for five station-scoped services: StreamingSoundtracks, 1980s.FM,
+Adagio.FM, Death.FM, and Entranced.FM.
 
-- StreamingSoundtracks
-- 1980s.FM
-- Adagio.FM
-- Death.FM
-- Entranced.FM
+## Current status
 
-## Status
+M1 is complete as a local-only Programming Control Plane milestone. M2 is
+accepted for isolated, non-public PostgreSQL staging persistence and disaster-
+recovery readiness; the M2.5 decision packet grants no standing operational
+authority. M3.1–M3.7 are complete as local-only, non-executing contracts:
+asset lifecycle, persistence design, source/quarantine, disabled processing,
+normalization, cue/fade, and metadata-candidate/operator-resolution boundaries.
 
-M1 is formally complete as a local-only programming-control-plane milestone.
-M2 is formally accepted for isolated staging persistence and disaster-recovery
-readiness. PostgreSQL is the sole live persistence store; active staging is
-non-public and loopback-only. The finalized M2.5 decision-only packet creates
-no standing authorization for future staging work. The M3 local-only
-control-plane foundation is committed; its acceptance and operational
-activation remain separately gated. Audio runtime, media import, output
-services, and public listeners remain deliberately unavailable.
+M3.7 uses deterministic fixture candidates only. It performs no provider call,
+media-tag extraction, or stream-metadata publication. **M3.8 — operator
+preview, review, and authorization behavior** is the next unstarted roadmap
+item and requires a separate explicit approval. Completion of any milestone or
+sub-milestone does not authorize the next one.
 
-Any future staging connection, Compose/service action, migration, validation,
-backup, restore, topology change, opaque-reference use, worker activation, or
-deployment requires a new, separately scoped explicit owner authorization.
+## Architecture and safety boundary
 
-The current UI makes this explicit: every station reports that the audio runtime is not implemented. No mocked audio path is presented as working.
+The system keeps four independently deployable planes separate:
 
-## Architecture direction
+- Programming Control Plane
+- Playout & Automation Runtime
+- Source Encoder Layer
+- Listener-Facing Icecast Layer
 
-The project separates a durable control plane from a supervised audio runtime. The control plane owns configuration, scheduling, permissions, and audit history. A future Liquidsoap-based runtime will own real-time playout, transitions, encoding, and runtime-originated health/playback observations; FFmpeg is planned for media analysis and fallback jobs. See [the architecture](docs/ARCHITECTURE.md) and [ADR 0001](docs/ADRs/0001-control-plane-and-audio-runtime.md).
+The current implementation belongs only to the non-executing control plane. No
+API or UI action can directly initiate ingestion, processing, scheduling,
+playout, DSP, encoding, relay, mount, dynamic stream metadata, or listener-
+facing change. Asset readiness is not schedule publication, runtime execution,
+encoding readiness, or listener availability.
 
-## Historical local-development example — not current staging authorization
+PostgreSQL is the sole live persistence target. Icecast 2.x is the sole future
+listener-facing platform direction. Every entity and reference is scoped by
+`id + station_id`; cross-station references fail as
+`station_reference_forbidden`, while missing or out-of-scope resources return
+`not_found`. Audit and evidence records are content-free: they contain only
+safe action, opaque entity ID, station ID, state/category, timing, and count
+fields—never media content, names, tags, paths, credentials, tokens, CSRF
+values, provider payloads, or raw SQL.
 
-The following is historical/local development guidance for the M1 Compose and
-migration boundary. It is **not** authorization to connect to staging, start
-Docker or Compose, run a migration, or operate any service. Before any future
-staging use, follow the approval-gated M2 plans for [staging
-activation](docs/M2.1_STAGING_ACTIVATION_PLAN.md), [migration
-execution](docs/M2.2_STAGING_MIGRATION_PREFLIGHT_AND_RUN_PLAN.md), [topology
-validation](docs/M2.3_STAGING_TOPOLOGY_VALIDATION_PLAN.md), and
-[backup/restore rehearsal](docs/M2.4_STAGING_BACKUP_RESTORE_DR_REHEARSAL_PLAN.md).
+Real media ingestion/analysis, worker or persistence activation, provider
+integration, playout, encoding, Icecast, deployment, and production action are
+not implemented or authorized by these local contracts. Each requires its own
+approved plan and evidence.
 
-It requires Node 22.5–22.x and Docker Compose when separately authorized.
+## Authoritative records and checks
 
-```bash
-npm install
-cp .env.example .env # replace placeholders locally; never commit .env
-docker compose up -d postgres
-npm run migrate      # migration authority only; not the application runtime role
-npm run dev
-```
-
-The server listens only on `127.0.0.1:3100` by default. Visit `http://127.0.0.1:3100/`. API endpoints are `/healthz`, `/readyz`, `/api/v1/version`, and `/api/v1/stations`.
-
-`DATABASE_RUNTIME_URL` and `DATABASE_MIGRATOR_URL` are deliberately separate. The application refuses to use SQLite as an M1 fallback. `.env.example` contains placeholders only and no default account/password exists.
-
-## Checks
+The sequential authority and detailed gates are in
+[the roadmap](docs/ROADMAP.md); the verified posture is in
+[current state](docs/CURRENT_STATE.md). M3 decisions and boundaries are in the
+dedicated `docs/M3.*` records.
 
 ```bash
 npm run check
 ```
 
-This runs formatting, linting, strict type checking, unit/API/UI tests, dependency auditing, and tracked-file hygiene checks. Detailed validation evidence is maintained in [CURRENT_STATE.md](docs/CURRENT_STATE.md).
+This runs formatting, linting, strict type checks, tests, dependency audit, and
+repository hygiene. It does not start a service, migration, worker, or media
+tool.
 
-## Licensing and non-affiliation
+## License and non-affiliation
 
-Licensed under [Apache-2.0](LICENSE). Apache-2.0 was chosen as a permissive license with an explicit patent grant; no concrete compatibility reason currently warrants a different permissive license.
-
-This project is independent and is not affiliated with, endorsed by, or sponsored by Spatial Audio or SAM Broadcaster / Streaming Audio Manager. Those names may be trademarks of their respective owners and are used only to describe interoperability and replacement goals.
+Licensed under [Apache-2.0](LICENSE). This project is independent and not
+affiliated with, endorsed by, or sponsored by Spatial Audio, SAM Broadcaster,
+or Streaming Audio Manager. Those names may be trademarks of their respective
+owners and are used only as isolated historical or interoperability context.

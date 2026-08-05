@@ -25,6 +25,11 @@ The completed local-only [M3.6 cue and fade analysis contract](M3.6_CUE_AND_FADE
 adds disabled, deterministic fixture-preview cue/intro/outro/fade
 recommendation validation only; it does not detect media cues or apply playout
 settings and authorizes no M3.7-or-later work or operational action.
+The completed local-only [M3.7 metadata enrichment and operator resolution contract](M3.7_METADATA_ENRICHMENT_AND_OPERATOR_RESOLUTION_CONTRACT.md)
+adds disabled, deterministic fixture-candidate and append-only operator-
+resolution validation only; it does not call providers, read tags, or publish
+runtime/stream metadata and authorizes no M3.8-or-later work or operational
+action.
 It adds a station-scoped, non-executing control-plane foundation for opaque
 import requests/jobs; immutable asset revisions, provenance, analysis,
 metadata-candidate, resolution, and failure records; deterministic EBU R128

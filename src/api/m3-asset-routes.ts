@@ -1,6 +1,10 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 
 import { assertAuthorized } from "../app/authorization.js";
+import {
+  type DisabledMetadataEnrichmentBoundary,
+  type MetadataResolutionRecord,
+} from "../app/m3-metadata-boundary.js";
 import type { ApplicationRole } from "../domain/programming.js";
 import {
   validateImportRequestInput,
@@ -51,8 +55,92 @@ export async function handleM3Assets(
   response: ServerResponse,
   sessions: SessionLookup,
   store: M3AssetPersistence,
+  metadata?: DisabledMetadataEnrichmentBoundary,
 ): Promise<boolean> {
   const url = new URL(request.url ?? "/", "http://localhost");
+  const metadataCandidate = url.pathname.match(
+    /^\/api\/v1\/stations\/([^/]+)\/metadata-candidates\/([^/]+)(?:\/(resolution))?$/,
+  );
+  if (metadataCandidate) {
+    let principal: SessionContext | undefined;
+    try {
+      principal = await authenticate(sessions, request.headers.cookie);
+      if (request.method === "GET") {
+        if (metadataCandidate[3]) return method(response);
+        authorize(principal, metadataCandidate[1]!, "read");
+        if (!metadata) throw new Error("not_found");
+        const candidate = metadata.readCandidate(
+          metadataCandidate[1]!,
+          metadataCandidate[2]!,
+        );
+        json(response, 200, {
+          candidate,
+          resolution: metadata.readResolution(
+            metadataCandidate[1]!,
+            metadataCandidate[2]!,
+          ),
+        });
+        return true;
+      }
+      if (request.method !== "POST" || !metadataCandidate[3])
+        return method(response);
+      await authorizeMutation(
+        request,
+        sessions,
+        principal,
+        metadataCandidate[1]!,
+      );
+      if (!metadata) throw new Error("not_found");
+      const record = metadataResolutionInput(
+        await body(request),
+        metadataCandidate[1]!,
+        metadataCandidate[2]!,
+        `operator:${principal.userId}`,
+      );
+      json(response, 200, { resolution: metadata.resolve(record) });
+    } catch (error) {
+      await rejectionAudit(
+        store,
+        principal,
+        metadataCandidate[1]!,
+        metadataCandidate[2]!,
+      );
+      const safe = safeError(error);
+      json(response, safe.status, { error: safe.error });
+    }
+    return true;
+  }
+  const metadataStatus = url.pathname.match(
+    /^\/api\/v1\/stations\/([^/]+)\/media-imports\/([^/]+)\/metadata-enrichment$/,
+  );
+  if (metadataStatus) {
+    if (request.method !== "GET") return method(response);
+    let principal: SessionContext | undefined;
+    try {
+      principal = await authenticate(sessions, request.headers.cookie);
+      authorize(principal, metadataStatus[1]!, "read");
+      const intake = await store.readImportRequest(
+        metadataStatus[1]!,
+        metadataStatus[2]!,
+      );
+      json(response, 200, {
+        stationId: intake.stationId,
+        requestId: intake.id,
+        metadata: "disabled",
+        analysis: "fixture_only",
+      });
+    } catch (error) {
+      await rejectionAudit(
+        store,
+        principal,
+        metadataStatus[1]!,
+        metadataStatus[2]!,
+      );
+      const safe = safeError(error);
+      json(response, safe.status, { error: safe.error });
+    }
+    return true;
+  }
   const cueFadeStatus = url.pathname.match(
     /^\/api\/v1\/stations\/([^/]+)\/media-imports\/([^/]+)\/cue-fade-analysis$/,
   );
@@ -269,6 +357,35 @@ function importInput(bodyValue: Record<string, unknown>): {
   };
   validateImportRequestInput(input);
   return input;
+}
+
+function metadataResolutionInput(
+  bodyValue: Record<string, unknown>,
+  stationId: string,
+  candidateId: string,
+  operatorId: string,
+): MetadataResolutionRecord {
+  if (
+    typeof bodyValue.id !== "string" ||
+    typeof bodyValue.idempotencyKey !== "string" ||
+    !["approved", "rejected", "superseded"].includes(
+      bodyValue.resolutionState as string,
+    )
+  )
+    throw new Error("validation_error");
+  return {
+    id: bodyValue.id,
+    stationId,
+    candidateId,
+    idempotencyKey: bodyValue.idempotencyKey,
+    operatorId,
+    priorState: "pending",
+    resolutionState: bodyValue.resolutionState as
+      | "approved"
+      | "rejected"
+      | "superseded",
+    recordedAt: new Date().toISOString(),
+  };
 }
 
 async function authorizeMutation(

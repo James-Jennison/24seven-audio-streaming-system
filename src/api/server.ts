@@ -6,6 +6,7 @@ import {
 } from "node:http";
 
 import type { ApplicationVersion } from "../app/version.js";
+import { DisabledMetadataEnrichmentBoundary } from "../app/m3-metadata-boundary.js";
 import { renderDashboard } from "../ui/dashboard.js";
 import { handleM1Auth } from "./m1-routes.js";
 import type { AuthPersistence } from "./m1-auth.js";
@@ -34,6 +35,7 @@ export function createControlPlaneServer(
   sessions?: SessionLookup,
   programming?: ProgrammingPersistence,
   m3Assets?: M3AssetPersistence,
+  m3Metadata = new DisabledMetadataEnrichmentBoundary([]),
 ): ControlPlaneServer {
   let ready = false;
 
@@ -48,6 +50,7 @@ export function createControlPlaneServer(
       sessions,
       programming,
       m3Assets,
+      m3Metadata,
     ).catch(() => sendJson(response, 500, { error: "internal_error" }));
   });
   ready = true;
@@ -64,6 +67,7 @@ async function handleRequest(
   sessions?: SessionLookup,
   programming?: ProgrammingPersistence,
   m3Assets?: M3AssetPersistence,
+  m3Metadata?: DisabledMetadataEnrichmentBoundary,
 ): Promise<void> {
   const method = request.method ?? "GET";
   const url = new URL(request.url ?? "/", "http://localhost");
@@ -77,7 +81,7 @@ async function handleRequest(
   if (
     sessions &&
     m3Assets &&
-    (await handleM3Assets(request, response, sessions, m3Assets))
+    (await handleM3Assets(request, response, sessions, m3Assets, m3Metadata))
   )
     return;
   if (sessions && method === "GET" && url.pathname === "/api/v1/session") {

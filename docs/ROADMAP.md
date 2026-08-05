@@ -264,6 +264,9 @@ action without a new human approval.
 
 #### M3.7 — Provider-neutral metadata-candidate boundary
 
+- **Authoritative record:**
+  [M3.7 metadata enrichment and operator resolution contract](M3.7_METADATA_ENRICHMENT_AND_OPERATOR_RESOLUTION_CONTRACT.md)
+  is the implementation and evidence record for this local-only sub-milestone.
 - **Purpose / planes / mode / prerequisites:** Define a Control Plane
   candidate/provenance interface compatible with a future MusicBrainz adapter;
   local-only, dependent on M3.3–M3.6.
