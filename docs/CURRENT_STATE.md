@@ -38,6 +38,13 @@ fixture candidate, audit event, or live operational-health data; its playout,
 encoder, and listener-facing views are explicitly unavailable. It adds no
 operational command path and authorizes no M3.9-or-later work or operational
 action.
+The completed local-only [M3.9 isolation, idempotency, failure, and recovery
+validation](M3.9_ISOLATION_IDEMPOTENCY_FAILURE_AND_RECOVERY_VALIDATION.md)
+adds focused cross-contract proof for station isolation, duplicate handling,
+illegal transitions, immutable outcomes, explicit recovery, content-free
+evidence, static route non-dispatch, and accessible unavailable fixture
+status. It adds no operational capability and authorizes no M3.10-or-later
+work or operational action.
 It adds a station-scoped, non-executing control-plane foundation for opaque
 import requests/jobs; immutable asset revisions, provenance, analysis,
 metadata-candidate, resolution, and failure records; deterministic EBU R128
@@ -69,8 +76,8 @@ commit/migration identity, least-privilege role scope, station isolation,
 empty/non-production input boundary, sandbox limits, inactive runtime/encoder/
 Icecast planes, rollback/stop conditions, and content-free verification. See
 [the M3 implementation and authorization record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md).
-The next unstarted item is separately approval-gated **M3.9 — isolation,
-idempotency, failure, and recovery validation**.
+The next unstarted item is separately approval-gated **M3.10 — separately
+authorized staging activation/rehearsal proposal**.
 
 ## M1 complete — 2026-08-04 UTC
 

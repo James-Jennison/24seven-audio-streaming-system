@@ -304,6 +304,10 @@ action without a new human approval.
 
 #### M3.9 — Isolation, idempotency, failure, and recovery validation
 
+- **Authoritative record:** [M3.9 isolation, idempotency, failure, and
+  recovery validation](M3.9_ISOLATION_IDEMPOTENCY_FAILURE_AND_RECOVERY_VALIDATION.md)
+  is the implementation and acceptance record for this local-only
+  sub-milestone.
 - **Purpose / planes / mode / prerequisites:** Consolidate local contract
   validation across the Control Plane and disabled worker boundary; dependent
   on M3.1–M3.8.
