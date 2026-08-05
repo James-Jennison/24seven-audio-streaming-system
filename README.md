@@ -9,34 +9,18 @@ Adagio.FM, Death.FM, and Entranced.FM.
 M1 is complete as a local-only Programming Control Plane milestone. M2 is
 accepted for isolated, non-public PostgreSQL staging persistence and disaster-
 recovery readiness; the M2.5 decision packet grants no standing operational
-authority. M3.1–M3.11 are complete as local-only, non-executing contracts:
-asset lifecycle, persistence design, source/quarantine, disabled processing,
-normalization, cue/fade, metadata-candidate/operator-resolution, and a visual
-Operator Dashboard shell, consolidated isolation/idempotency/failure/recovery
-validation, a non-executable staging activation/rehearsal proposal, and an M3
-acceptance/handoff decision.
+authority. M3.1–M3.12 are complete and accepted. They establish a
+station-scoped asset lifecycle and isolated deterministic-double rehearsal
+boundary while retaining the four-plane non-dispatch separation.
 
-M3.8 is a responsive, station-scoped visual shell for contract status only. It
-labels its Media Workspace as fixture/example status and makes the playout,
-encoder, and listener-facing planes explicitly unavailable. It performs no
-provider call, media-tag extraction, stream-metadata publication, or live
-station-data lookup. M3.9 adds focused local proof of station isolation,
-idempotency, immutable recovery records, content-free evidence, disabled
-non-dispatch, and accessible unavailable states. M3.10 adds a review-only
-future-rehearsal proposal: it requires an isolated empty target classification,
-least-privilege authority categories, declared sandbox limits, inactive later
-planes, and owner-only stop decisions, while making execution unavailable.
-M3.11 accepts only the local M3 contract boundary: it records content-free
-evidence, station-isolation results, owned open risks, and input-only
-M4/M5/M7 handoffs while keeping asset readiness distinct from publication and
-execution. **M3.12 — Operational Staging Activation Authorization and Isolated
-Media-Lifecycle Rehearsal** is the sole approved post-acceptance exception path.
-Its non-executable Phase 1 readiness plan is accepted; Phase 2 remains
-unstarted and requires separate one-action human approvals. It does not revoke
-M3’s completed local-only scope or create standing authorization. **M4.1 —
-Schedule-domain and versioning contract** remains deferred until M3.12
-execution is completed and accepted. This documentation change authorizes no
-staging or media operation.
+M3.8 remains a responsive, station-scoped visual shell for contract status
+only. It labels its Media Workspace as fixture/example status and keeps the
+playout, encoder, and listener-facing planes explicitly unavailable. M3.12
+completed as a content-free, deterministic-double rehearsal; it did not
+activate production, listener-facing, runtime, encoder, relay, Icecast, DNS,
+or deployment capability. **M4.1 — Schedule-domain and versioning contract**
+is complete as a local planning contract. It defines no M4 code, migration,
+publication, or runtime effect, and **M4.2 remains separately approval-gated**.
 
 The future post-M9 delivery target is a bootable, customized Ubuntu Server
 appliance with secure first-boot enrollment and LAN Operator Dashboard access.

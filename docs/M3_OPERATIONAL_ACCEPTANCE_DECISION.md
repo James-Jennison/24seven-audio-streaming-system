@@ -43,9 +43,11 @@ double.
 Consistent with M3.11's requirement for at least one owned open risk, two
 remain open at M3 acceptance:
 
-- **Later-milestone approval is required.** M4.1 remains deferred and
-  requires its own new, separate human approval before any work begins.
-  Owner: repository owner (codeframe@gmail.com).
+- **Later-milestone approval is required.** At M3 acceptance, M4.1 was
+  deferred pending its own new, separate human approval. That approval has
+  since been received and M4.1 is now accepted as local planning only; M4.2
+  and later work remain separately approval-gated. Owner: repository owner
+  (codeframe@gmail.com).
 - **Operational authority beyond this isolated rehearsal has not been
   granted.** Nothing in M3 authorizes real PostgreSQL activation, real media
   intake, or any production/staging action beyond the deterministic-double
@@ -53,9 +55,8 @@ remain open at M3 acceptance:
 
 ## Next milestone
 
-M4.1 — Schedule-domain and versioning contract is now unblocked in sequence
-but **not started and not authorized by this decision.** It requires its own
-explicit human approval, per [the roadmap's approval and completion
-policy](ROADMAP.md#approval-and-completion-policy): "Completion of a
-milestone or internal work package never authorizes the next one, deployment,
-infrastructure activity, or runtime execution."
+M4.1 — Schedule-domain and versioning contract was unblocked in sequence but
+not authorized by this decision. Its separate owner approval has since been
+received and M4.1 is now accepted as local planning only. This decision still
+does not authorize M4.2, deployment, infrastructure activity, or runtime
+execution.

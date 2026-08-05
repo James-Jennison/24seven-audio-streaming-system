@@ -104,18 +104,18 @@ alter the M2 staging boundary.
 
 ## 4. Master Milestone Timeline
 
-| Milestone | Focus Area                  | Focused Effort |               Elapsed Duration               |    Indicative Window     | Key Gate / Dependency                                           |
-| :-------: | :-------------------------- | :------------: | :------------------------------------------: | :----------------------: | :-------------------------------------------------------------- |
-|  **M1**   | Control Plane & Security    |    Complete    |                   Complete                   | **Completed 2026-08-04** | Formal M1 Local Acceptance                                      |
-|  **M2**   | Staging, Migration & DR     |    Complete    |                   Complete                   | **Completed 2026-08-04** | M2 Acceptance Decision                                          |
-|  **M3**   | Ingestion & Asset Lifecycle |    Complete    | Isolated deterministic-double rehearsal only | **Completed 2026-08-05** | M3 Operational Acceptance Decision (M4.1 requires new approval) |
-|  **M4**   | Advanced Scheduling         |    7–12 wks    |                  10–20 wks                   |   Jul 2027 – Mar 2028    | Immutable Asset Handles                                         |
-|  **M5**   | Playout Runtime & DSP       |   16–28 wks    |                  28–52 wks                   |   Feb 2028 – May 2029    | Published Schedule Artifacts                                    |
-|  **M6**   | Requests & Moderation       |    5–9 wks     |                   8–18 wks                   |   May 2029 – Oct 2029    | Public Threat Model Approval                                    |
-|  **M7**   | Encoders & Icecast          |   10–18 wks    |                  18–36 wks                   |   Oct 2029 – Jul 2030    | Private Infrastructure Approval                                 |
-|  **M8**   | Shadow Testing & Parity     |    8–14 wks    |                  16–32 wks                   |   Aug 2030 – May 2031    | Parallel Listening & Failover Drills                            |
-|  **M9**   | Cutover & Decommissioning   |    6–12 wks    |                  12–28 wks                   |   Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off                              |
-|  **M10**  | Ubuntu Appliance Delivery   |  Post-M9 only  |                 Not started                  | After M9 acceptance only | M3–M9 accepted + explicit M10 approval                          |
+| Milestone | Focus Area                  | Focused Effort |               Elapsed Duration               |    Indicative Window     | Key Gate / Dependency                                             |
+| :-------: | :-------------------------- | :------------: | :------------------------------------------: | :----------------------: | :---------------------------------------------------------------- |
+|  **M1**   | Control Plane & Security    |    Complete    |                   Complete                   | **Completed 2026-08-04** | Formal M1 Local Acceptance                                        |
+|  **M2**   | Staging, Migration & DR     |    Complete    |                   Complete                   | **Completed 2026-08-04** | M2 Acceptance Decision                                            |
+|  **M3**   | Ingestion & Asset Lifecycle |    Complete    | Isolated deterministic-double rehearsal only | **Completed 2026-08-05** | M3 Operational Acceptance Decision (M4.1 owner approval received) |
+|  **M4**   | Advanced Scheduling         |    7–12 wks    |                  10–20 wks                   |   Jul 2027 – Mar 2028    | Immutable Asset Handles                                           |
+|  **M5**   | Playout Runtime & DSP       |   16–28 wks    |                  28–52 wks                   |   Feb 2028 – May 2029    | Published Schedule Artifacts                                      |
+|  **M6**   | Requests & Moderation       |    5–9 wks     |                   8–18 wks                   |   May 2029 – Oct 2029    | Public Threat Model Approval                                      |
+|  **M7**   | Encoders & Icecast          |   10–18 wks    |                  18–36 wks                   |   Oct 2029 – Jul 2030    | Private Infrastructure Approval                                   |
+|  **M8**   | Shadow Testing & Parity     |    8–14 wks    |                  16–32 wks                   |   Aug 2030 – May 2031    | Parallel Listening & Failover Drills                              |
+|  **M9**   | Cutover & Decommissioning   |    6–12 wks    |                  12–28 wks                   |   Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off                                |
+|  **M10**  | Ubuntu Appliance Delivery   |  Post-M9 only  |                 Not started                  | After M9 acceptance only | M3–M9 accepted + explicit M10 approval                            |
 
 ---
 
@@ -165,8 +165,9 @@ record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md), the [M3.11 acceptance
 and handoff boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md), and the
 [M3.12 operational staging activation authorization and isolated
 media-lifecycle rehearsal](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md).
-**M4.1 remains unstarted and requires its own new, separate human approval**;
-M3 completion does not grant it.
+M3 completion did not grant M4.1. Its separate owner approval has since been
+received; M4.1 is active as the current local planning sub-milestone and does
+not authorize M4.2.
 
 Every M3 sub-milestone remains station-scoped by `id + station_id`, uses
 `station_reference_forbidden` for cross-station references and `not_found` for
@@ -414,8 +415,9 @@ action without a new human approval.
   1](M3.12_PHASE_2_ACTION_1_TARGET_VALIDATION_AUTHORIZATION.md) through
   [Action 8](M3.12_PHASE_2_ACTION_8_RECOVERY_DECISION.md) and the [M3
   operational acceptance decision](M3_OPERATIONAL_ACCEPTANCE_DECISION.md).
-  M4.1 remains deferred until its own new, separate human approval is
-  granted; M3.12 completion does not itself grant it.
+  M3.12 completion did not itself grant M4.1; its separate owner approval has
+  since been received. M4.1 remains local planning only and does not authorize
+  M4.2.
 - **Dependencies / stop:** Preserve strict plane separation and stop on target
   ambiguity, unapproved media, authority/scope gaps, protected evidence,
   cross-station mismatch, or any plane activation. Only the named recovery
@@ -425,24 +427,25 @@ action without a new human approval.
 
 **Objective:** Build a deterministic 24-hour planning engine that produces
 immutable, station-scoped schedule artifacts. Publication is never runtime
-execution. All M4 work is unstarted and requires a new approval.
+execution. M4.1 is active as a local documentation/planning contract under
+owner approval; every later M4 sub-milestone requires its own approval.
 
 #### M4.1 — Schedule-domain and versioning contract
 
 - **Authoritative record:**
   [M4.1 schedule-domain and versioning contract](M4.1_SCHEDULE_DOMAIN_AND_VERSIONING_CONTRACT.md)
-  is the decision-oriented planning record for this sub-milestone. It is
-  documentation/planning only; no M4.1 code, migration, or operational action
-  exists.
+  and its [acceptance decision](M4.1_SCHEDULE_DOMAIN_AND_VERSIONING_ACCEPTANCE_DECISION.md)
+  complete this decision-oriented planning sub-milestone. No M4.1 code,
+  migration, or operational action exists.
 - **Purpose / planes / mode / prerequisites:** Define Control Plane schedule,
   proposal, approval, publication, version, compatibility, and rollback
   contracts; local-only, dependent on accepted M1 and an explicit M4 approval.
 - **Scope / exclusions:** Preserve `Proposed/Preview → Approved → Published`
   and immutable version identity. Exclude runtime queue mutation, playout,
   encoders, relays, and listener changes.
-- **Controls / evidence / gate:** Validate station-scoped IDs, legal state
-  transitions, content-free audit vocabulary, and rollback semantics. Owner
-  approval is required before M4.2.
+- **Controls / evidence / gate:** The accepted local review validates
+  station-scoped IDs, legal state transitions, content-free audit vocabulary,
+  and rollback semantics. Owner approval is required before M4.2.
 - **Dependencies / stop:** Establishes all M4 interfaces and M5 consumption
   boundary; stop on any contract that treats publication as execution.
 

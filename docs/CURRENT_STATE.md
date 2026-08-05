@@ -1,128 +1,34 @@
 # Current State
 
-## M4.1 scoping — decision-only planning contract; no M4 work authorized
+## M4.1 planning — complete, decision-only, and non-operational
 
-M4 was unblocked in sequence by M3 acceptance but remained unstarted and
-unapproved. With a new, separate owner approval (2026-08-05) to draft its
-scoping document only, the [M4.1 schedule-domain and versioning
-contract](M4.1_SCHEDULE_DOMAIN_AND_VERSIONING_CONTRACT.md) now defines the
-Programming Control Plane's schedule proposal, approval, publication,
-version, compatibility, and rollback boundary. It is documentation/planning
-only: no schema, migration, code, or operational action exists for M4, and
-this contract authorizes no M4.2-or-later work. Publication is explicitly
-never runtime execution; M5 remains a separate, unapproved milestone.
+M3 acceptance unblocked M4 in sequence. With the owner authorization to begin
+M4, the [M4.1 schedule-domain and versioning
+contract](M4.1_SCHEDULE_DOMAIN_AND_VERSIONING_CONTRACT.md) defines the
+Programming Control Plane's schedule proposal, approval, publication, version,
+compatibility, and rollback boundary. It is documentation/planning only: no
+schema, migration, code, publication, or operational action exists for M4.
+The [M4.1 acceptance decision](M4.1_SCHEDULE_DOMAIN_AND_VERSIONING_ACCEPTANCE_DECISION.md)
+records review of state separation, station isolation, content-free evidence,
+immutable rollback, and four-plane non-dispatch. It authorizes no M4.2-or-later
+work. Publication is explicitly never runtime execution; M5 remains a
+separate, unapproved milestone.
 
-## M3 local-only foundation — complete and committed; operational activation pending
+## M3 local-only foundation — complete and accepted
 
-M3 is implemented locally under the explicit M3 approval and committed on the
-authoritative branch. The [M3.1 media intake and immutable asset-lifecycle
-contract](M3.1_MEDIA_INTAKE_AND_IMMUTABLE_ASSET_LIFECYCLE_CONTRACT.md)
-established the planning boundary and [M3.2 additive PostgreSQL persistence and
-migration design](M3.2_ADDITIVE_POSTGRESQL_PERSISTENCE_AND_MIGRATION_DESIGN.md)
-remains decision-only. The completed local-only [M3.3 safe source-reference
-and quarantine boundary](M3.3_SAFE_SOURCE_REFERENCE_AND_QUARANTINE_BOUNDARY.md)
-adds deterministic opaque-reference validation outcomes, quarantine/rejection
-records, and explicit no-dispatch retry visibility. It authorizes no M3.4-or-
-later work or operational action at its completion.
-The completed local-only [M3.4 disabled async processing boundary](M3.4_DISABLED_ASYNC_PROCESSING_BOUNDARY.md)
-adds station-scoped future-worker eligibility, resource-limit, idempotency,
-failure/retry, and content-free evidence contracts. Its default dispatcher is
-disabled and no M3.5-or-later work or operational action was authorized at its
-completion.
-The completed local-only [M3.5 EBU R128 normalization analysis contract](M3.5_EBU_R128_NORMALIZATION_ANALYSIS_CONTRACT.md)
-adds disabled, deterministic fixture-preview request/result validation only; it
-does not perform media measurement or gain application and authorizes no M3.6-
-or-later work or operational action.
-The completed local-only [M3.6 cue and fade analysis contract](M3.6_CUE_AND_FADE_ANALYSIS_CONTRACT.md)
-adds disabled, deterministic fixture-preview cue/intro/outro/fade
-recommendation validation only; it does not detect media cues or apply playout
-settings and authorizes no M3.7-or-later work or operational action.
-The completed local-only [M3.7 metadata enrichment and operator resolution contract](M3.7_METADATA_ENRICHMENT_AND_OPERATOR_RESOLUTION_CONTRACT.md)
-adds disabled, deterministic fixture-candidate and append-only operator-
-resolution validation only; it does not call providers, read tags, or publish
-runtime/stream metadata and authorizes no M3.8-or-later work or operational
-action.
-The completed local-only [M3.8 visual Operator Dashboard shell](M3.8_VISUAL_OPERATOR_DASHBOARD_SHELL.md)
-adds an accessible, responsive, station-context visual workspace for the four
-planes, M3 lifecycle contract labels, fixture-only analysis/metadata status,
-and the content-free evidence shape. It loads no media, source reference,
-fixture candidate, audit event, or live operational-health data; its playout,
-encoder, and listener-facing views are explicitly unavailable. It adds no
-operational command path and authorizes no M3.9-or-later work or operational
-action.
-The completed local-only [M3.9 isolation, idempotency, failure, and recovery
-validation](M3.9_ISOLATION_IDEMPOTENCY_FAILURE_AND_RECOVERY_VALIDATION.md)
-adds focused cross-contract proof for station isolation, duplicate handling,
-illegal transitions, immutable outcomes, explicit recovery, content-free
-evidence, static route non-dispatch, and accessible unavailable fixture
-status. It adds no operational capability and authorizes no M3.10-or-later
-work or operational action.
-The completed local-only [M3.10 staging activation/rehearsal
-proposal](M3.10_STAGING_ACTIVATION_REHEARSAL_PROPOSAL.md) adds a station-scoped,
-review-only future-rehearsal contract. It requires a reviewed identity,
-isolated empty target classification, separate authority categories, declared
-sandbox limits, inactive M4/M5/M7 planes, and owner-only recovery decisions;
-its sole outcome is `execution: unavailable`. It adds no staging action and
-authorizes no M3.11-or-later work or operational action.
-The completed local-only [M3.11 M3 acceptance and handoff
-boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md) records the decision-only
-acceptance of M3.1–M3.10 local contract evidence. It requires content-free
-evidence, station-isolation results, owned open risks, and input-only M4/M5/M7
-handoffs while rejecting operational authority. It confirms that
-`ready_for_schedule_use` is neither publication nor execution, adds no
-dashboard/API control, and authorizes no M4-or-later work or operational
-action.
-The [M3.12 operational staging activation authorization and isolated
-media-lifecycle rehearsal](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md)
-is the sole narrowly bounded post-acceptance exception path. Its non-executable
-Phase 1 readiness and authorization plan is accepted by the separate
-[Phase 1 acceptance decision](M3.12_PHASE_1_READINESS_PLAN_ACCEPTANCE_DECISION.md).
-Its Phase 2 isolated non-production rehearsal remains unstarted and requires
-separate one-action human approvals. It preserves completed M3.1–M3.11
-local-only acceptance, creates no standing authorization, and this
-documentation change authorizes no staging or media operation.
-The proposed [M3.12 Phase 2 staging-target safe-classification
-decision](M3.12_PHASE_2_STAGING_TARGET_SAFE_CLASSIFICATION_DECISION.md) records
-one existing opaque candidate as `safely_classified` from accepted M2 and M3
-governance evidence only. It awaits explicit approval and commit, performs no
-target/service validation, and creates no operational authority.
-It adds a station-scoped, non-executing control-plane foundation for opaque
-import requests/jobs; immutable asset revisions, provenance, analysis,
-metadata-candidate, resolution, and failure records; deterministic EBU R128
-and cue/fade contracts; and a provider-neutral, MusicBrainz-compatible
-metadata boundary. The lifecycle is bounded:
+M3.1–M3.12 are complete and accepted. They establish a station-scoped asset
+lifecycle in the Programming Control Plane and an isolated deterministic-double
+rehearsal boundary. `ready_for_schedule_use` remains an eligibility state only:
+it does not publish a schedule, make an asset runtime-available, or authorize
+M4, M5, M7, deployment, or production work.
 
-`proposed → validated → approved_for_processing → processing → analyzed → metadata_pending → ready_for_schedule_use`
-
-with `rejected`, `quarantined`, `failed`, and `superseded` branches. Readiness
-does not publish a schedule, make an asset runtime-available, or authorize M4
-or M5. Underlying M3 APIs retain their scoped, non-dispatching validation and
-authorization contracts; the M3.8 dashboard shell itself visualizes only
-content-free contract status and never starts a worker.
-
-`003_m3_asset_lifecycle.sql` is an additive PostgreSQL migration registered in
-the existing ordered migration runner but has **not** been executed. It uses
-same-station composite foreign keys, lifecycle triggers, idempotency keys, and
-append-only revision/result/candidate/resolution records. The only processing
-implementation is an injectable deterministic fixture boundary: it has no
-filesystem, subprocess, network, media-tool, schedule, runtime, encoder,
-relay, or Icecast capability. No media/title/artist/path/tag/payload/provider
-data is logged or audited.
-
-No migration, database connection, container, application process, worker,
-media ingestion, external provider call, playout, encoder, relay, stream, or
-deployment was performed for M3. Staging activation of the M3 schema or any
-future worker requires a new explicit owner approval and evidence for reviewed
-commit/migration identity, least-privilege role scope, station isolation,
-empty/non-production input boundary, sandbox limits, inactive runtime/encoder/
-Icecast planes, rollback/stop conditions, and content-free verification. See
-[the M3 implementation and authorization record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md).
-After the proposed classification decision is approved and committed, the next
-unstarted roadmap step is a future, separately approved **M3.12 target/service-
-level validation authorization**, not a new M3.13 milestone. **M4.1 — Schedule-
-domain and versioning contract** remains deferred until M3.12 execution is
-completed and accepted. Neither Phase 1 acceptance nor prior M3 acceptance
-authorizes an operational action.
+M3 preserves `id + station_id` isolation, `not_found` and
+`station_reference_forbidden` failure behavior, and content-free audit/evidence
+throughout. The M3.8 dashboard remains fixture/example-only and keeps playout,
+encoder, and listener-facing planes unavailable. The M3.12 execution
+acceptance records deterministic-double rehearsal evidence only and creates no
+standing authority for production, listener-facing, runtime, encoder, relay,
+Icecast, DNS, or deployment activity.
 
 ## M1 complete — 2026-08-04 UTC
 
