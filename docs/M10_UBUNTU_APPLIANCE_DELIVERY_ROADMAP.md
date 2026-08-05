@@ -85,6 +85,6 @@ scope, rollback or forward-fix owner, and content-free evidence boundary.
 Until that approval, this record authorizes no ISO build, package/image build,
 service activation, network exposure, media import, deployment, infrastructure
 change, or production operation. It does not alter the current next milestone:
-**M4.3 — Deterministic 24-hour clock and template model** is next after the
-accepted M4.2 catalog boundary and remains separately approval-gated
+**M4.4 — Separation-policy model and evaluation engine** is next after the
+accepted M4.3 clock/template model and remains separately approval-gated
 implementation work.

@@ -472,14 +472,20 @@ station_id`, `not_found`, `station_reference_forbidden`, immutable
 
 #### M4.3 — Deterministic 24-hour clock and template model
 
+- **Authoritative record:** The [M4.3 deterministic 24-hour clock and template
+  model](M4.3_DETERMINISTIC_24_HOUR_CLOCK_AND_TEMPLATE_MODEL.md) and its
+  [acceptance decision](M4.3_DETERMINISTIC_24_HOUR_CLOCK_AND_TEMPLATE_MODEL_ACCEPTANCE_DECISION.md)
+  complete this local-only Control Plane sub-milestone. It introduces no live
+  clock, persistence, schedule generation, or operational action.
 - **Purpose / planes / mode / prerequisites:** Specify station-local clock
   templates, slots, timezone handling, and 24-hour planning input; local-only,
   dependent on M4.1–M4.2.
 - **Scope / exclusions:** Define data and deterministic ordering only. Exclude
   live wall-clock control, queue mutation, media analysis, and runtime timing.
-- **Controls / evidence / gate:** Require repeatable fixtures, timezone/DST
-  cases, station isolation, and content-free plan summaries. Owner approval is
-  required before M4.4.
+- **Controls / evidence / gate:** The accepted local boundary proves repeatable
+  fixtures, civil-time timezone/DST cases, station isolation, content-free plan
+  summaries, immutable input snapshots, and no operational adapter. Owner
+  approval is required before M4.4.
 - **Dependencies / stop:** Supplies M4.4–M4.5; stop on nondeterminism or a
   timezone ambiguity, with planning owner responsible for forward-fix.
 

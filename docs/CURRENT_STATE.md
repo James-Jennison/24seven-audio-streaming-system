@@ -1,6 +1,6 @@
 # Current State
 
-## M4.2 catalog eligibility — complete, local-only, and non-operational
+## M4.3 clock templates — complete, local-only, and non-operational
 
 M3 acceptance unblocked M4 in sequence. With the owner authorization to begin
 M4, the [M4.1 schedule-domain and versioning
@@ -9,10 +9,12 @@ decision established the schedule-state, versioning, rollback, and
 non-execution contract. M4.2 now completes the local-only
 [catalog and asset-eligibility boundary](M4.2_CATALOG_AND_ASSET_ELIGIBILITY_BOUNDARY.md):
 it projects only same-station, immutable M3 revisions whose lifecycle is
-`ready_for_schedule_use` into opaque catalog candidates. It does not access
-media or metadata, mutate M3 state, use persistence, generate a schedule, or
-publish anything. **M4.3 remains separately approval-gated**; publication is
-explicitly never runtime execution, and M5 remains unapproved.
+`ready_for_schedule_use` into opaque catalog candidates. M4.3 now completes
+the [deterministic 24-hour clock and template model](M4.3_DETERMINISTIC_24_HOUR_CLOCK_AND_TEMPLATE_MODEL.md):
+it derives repeatable station-local civil-day input from opaque template slots
+without a live clock, instant conversion, schedule generation, media access,
+persistence, or publication. **M4.4 remains separately approval-gated**;
+publication is explicitly never runtime execution, and M5 remains unapproved.
 
 ## M3 local-only foundation — complete and accepted
 
