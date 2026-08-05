@@ -52,6 +52,14 @@ isolated empty target classification, separate authority categories, declared
 sandbox limits, inactive M4/M5/M7 planes, and owner-only recovery decisions;
 its sole outcome is `execution: unavailable`. It adds no staging action and
 authorizes no M3.11-or-later work or operational action.
+The completed local-only [M3.11 M3 acceptance and handoff
+boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md) records the decision-only
+acceptance of M3.1–M3.10 local contract evidence. It requires content-free
+evidence, station-isolation results, owned open risks, and input-only M4/M5/M7
+handoffs while rejecting operational authority. It confirms that
+`ready_for_schedule_use` is neither publication nor execution, adds no
+dashboard/API control, and authorizes no M4-or-later work or operational
+action.
 It adds a station-scoped, non-executing control-plane foundation for opaque
 import requests/jobs; immutable asset revisions, provenance, analysis,
 metadata-candidate, resolution, and failure records; deterministic EBU R128
@@ -83,8 +91,9 @@ commit/migration identity, least-privilege role scope, station isolation,
 empty/non-production input boundary, sandbox limits, inactive runtime/encoder/
 Icecast planes, rollback/stop conditions, and content-free verification. See
 [the M3 implementation and authorization record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md).
-The next unstarted item is separately approval-gated **M3.11 — M3 acceptance
-and handoff boundary**.
+The next unstarted item is separately approval-gated **M4.1 — Schedule-domain
+and versioning contract**. M3 acceptance supplies only its documented input;
+it does not begin M4 or authorize an operational action.
 
 ## M1 complete — 2026-08-04 UTC
 

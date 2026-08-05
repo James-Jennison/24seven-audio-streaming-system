@@ -104,17 +104,17 @@ alter the M2 staging boundary.
 
 ## 4. Master Milestone Timeline
 
-| Milestone | Focus Area                  |                 Focused Effort                 |     Elapsed Duration      |    Indicative Window     | Key Gate / Dependency                 |
-| :-------: | :-------------------------- | :--------------------------------------------: | :-----------------------: | :----------------------: | :------------------------------------ |
-|  **M1**   | Control Plane & Security    |                    Complete                    |         Complete          | **Completed 2026-08-04** | Formal M1 Local Acceptance            |
-|  **M2**   | Staging, Migration & DR     |                    Complete                    |         Complete          | **Completed 2026-08-04** | M2 Acceptance Decision                |
-|  **M3**   | Ingestion & Asset Lifecycle | Local foundation implemented; activation gated | Not started operationally |    Pending acceptance    | Explicit staging/worker authorization |
-|  **M4**   | Advanced Scheduling         |                    7–12 wks                    |         10–20 wks         |   Jul 2027 – Mar 2028    | Immutable Asset Handles               |
-|  **M5**   | Playout Runtime & DSP       |                   16–28 wks                    |         28–52 wks         |   Feb 2028 – May 2029    | Published Schedule Artifacts          |
-|  **M6**   | Requests & Moderation       |                    5–9 wks                     |         8–18 wks          |   May 2029 – Oct 2029    | Public Threat Model Approval          |
-|  **M7**   | Encoders & Icecast          |                   10–18 wks                    |         18–36 wks         |   Oct 2029 – Jul 2030    | Private Infrastructure Approval       |
-|  **M8**   | Shadow Testing & Parity     |                    8–14 wks                    |         16–32 wks         |   Aug 2030 – May 2031    | Parallel Listening & Failover Drills  |
-|  **M9**   | Cutover & Decommissioning   |                    6–12 wks                    |         12–28 wks         |   Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off    |
+| Milestone | Focus Area                  |               Focused Effort                |     Elapsed Duration      |     Indicative Window     | Key Gate / Dependency                 |
+| :-------: | :-------------------------- | :-----------------------------------------: | :-----------------------: | :-----------------------: | :------------------------------------ |
+|  **M1**   | Control Plane & Security    |                  Complete                   |         Complete          | **Completed 2026-08-04**  | Formal M1 Local Acceptance            |
+|  **M2**   | Staging, Migration & DR     |                  Complete                   |         Complete          | **Completed 2026-08-04**  | M2 Acceptance Decision                |
+|  **M3**   | Ingestion & Asset Lifecycle | Local acceptance complete; activation gated | Not started operationally | Local acceptance complete | Explicit staging/worker authorization |
+|  **M4**   | Advanced Scheduling         |                  7–12 wks                   |         10–20 wks         |    Jul 2027 – Mar 2028    | Immutable Asset Handles               |
+|  **M5**   | Playout Runtime & DSP       |                  16–28 wks                  |         28–52 wks         |    Feb 2028 – May 2029    | Published Schedule Artifacts          |
+|  **M6**   | Requests & Moderation       |                   5–9 wks                   |         8–18 wks          |    May 2029 – Oct 2029    | Public Threat Model Approval          |
+|  **M7**   | Encoders & Icecast          |                  10–18 wks                  |         18–36 wks         |    Oct 2029 – Jul 2030    | Private Infrastructure Approval       |
+|  **M8**   | Shadow Testing & Parity     |                  8–14 wks                   |         16–32 wks         |    Aug 2030 – May 2031    | Parallel Listening & Failover Drills  |
+|  **M9**   | Cutover & Decommissioning   |                  6–12 wks                   |         12–28 wks         |    Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off    |
 
 ---
 
@@ -146,12 +146,13 @@ alter the M2 staging boundary.
 
 ### Phase 3: M3 — Media Ingestion, Metadata & Asset Lifecycle
 
-**Status:** The local-only M3 foundation is committed on `main`; no M3
+**Status:** The local-only M3 foundation is accepted on `main`; no M3
 migration, worker, media intake, provider connection, or operational
 activation has occurred. `ready_for_schedule_use` is an asset eligibility state
 only: it is neither M4 publication, M5 execution, M7 encoding readiness, nor
 listener availability. See [the M3 implementation and authorization
-record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md).
+record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md) and the [M3.11
+acceptance and handoff boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md).
 
 Every M3 sub-milestone remains station-scoped by `id + station_id`, uses
 `station_reference_forbidden` for cross-station references and `not_found` for
@@ -342,6 +343,9 @@ action without a new human approval.
 
 #### M3.11 — M3 acceptance and handoff boundary
 
+- **Authoritative record:** [M3.11 M3 acceptance and handoff
+  boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md) is the implementation
+  and acceptance record for this local-only, decision-only sub-milestone.
 - **Purpose / planes / mode / prerequisites:** Record a decision-only M3
   acceptance assessment for the Control Plane and disabled boundary; local-only
   or staging-evidence review only, dependent on all accepted prior M3 items.
