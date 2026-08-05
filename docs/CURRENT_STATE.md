@@ -1,6 +1,6 @@
 # Current State
 
-## M4.6 proposal approval — complete, local-only, and non-operational
+## M4 — complete, accepted, local-only, and non-operational
 
 M3 acceptance unblocked M4 in sequence. With the owner authorization to begin
 M4, the [M4.1 schedule-domain and versioning

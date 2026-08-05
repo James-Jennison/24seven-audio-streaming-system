@@ -166,8 +166,8 @@ and handoff boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md), and the
 [M3.12 operational staging activation authorization and isolated
 media-lifecycle rehearsal](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md).
 M3 completion did not grant M4.1. Separate owner approvals have since accepted
-M4.1–M4.7 as local-only Control Plane sub-milestones. M4.8 remains unstarted
-and separately approval-gated.
+M4.1–M4.10 as local-only Control Plane sub-milestones. M4 is complete and
+accepted; M5.1 remains separately approval-gated.
 
 Every M3 sub-milestone remains station-scoped by `id + station_id`, uses
 `station_reference_forbidden` for cross-station references and `not_found` for
@@ -427,8 +427,8 @@ action without a new human approval.
 
 **Objective:** Build a deterministic 24-hour planning engine that produces
 immutable, station-scoped schedule artifacts. Publication is never runtime
-execution. M4.1–M4.7 are accepted local Control Plane boundaries; every later
-M4 sub-milestone requires its own approval.
+execution. M4.1–M4.10 are accepted local Control Plane boundaries. M5 is the
+next separately approval-gated phase.
 
 #### M4.1 — Schedule-domain and versioning contract
 
@@ -590,21 +590,28 @@ station_id`, `not_found`, `station_reference_forbidden`, immutable
 
 #### M4.9 — Local validation and controlled staging rehearsal proposal
 
+- **Authoritative record:** [M4.9 local validation and controlled staging
+  rehearsal proposal](M4.9_LOCAL_VALIDATION_AND_CONTROLLED_STAGING_REHEARSAL_PROPOSAL.md)
+  and its [acceptance decision](M4.9_LOCAL_VALIDATION_AND_CONTROLLED_STAGING_REHEARSAL_PROPOSAL_ACCEPTANCE_DECISION.md)
+  complete local validation and proposal work only.
 - **Purpose / planes / mode / prerequisites:** Complete static/local validation
   and define a separately authorized staging-only publication rehearsal;
   dependent on M4.1–M4.8.
 - **Scope / exclusions:** Require reviewed artifact identity, isolated target,
   authority separation, rollback/cleanup, and inactive M5/M7 planes. Exclude
   runtime execution, audio output, public listeners, and production.
-- **Controls / evidence / gate:** Require deterministic fixtures, migration/
-  schema prerequisites where applicable, station isolation, publication/rollback
-  evidence, and content-free results. Completion requires an owner decision
+- **Controls / evidence / gate:** Accepted local evidence covers deterministic
+  fixtures, station isolation, publication/rollback modeling, content-free
+  results, and inactive later planes. Completion requires an owner decision
   before M4.10.
 - **Dependencies / stop:** Operational rehearsal owner stops for any unexpected
   runtime path or target ambiguity and owns rollback/approved forward-fix.
 
 #### M4.10 — M4 acceptance and M5 boundary
 
+- **Authoritative record:** [M4.10 M4 acceptance and M5
+  boundary](M4.10_M4_ACCEPTANCE_AND_M5_BOUNDARY.md) accepts all M4 Control
+  Plane work as local-only, non-operational artifacts.
 - **Purpose / planes / mode / prerequisites:** Record decision-only acceptance
   of M4 Control Plane artifacts and their versioned handoff; dependent on all
   accepted M4 sub-milestones.
