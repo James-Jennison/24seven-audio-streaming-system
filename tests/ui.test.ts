@@ -66,6 +66,8 @@ test("M3.8 dashboard labels fixtures and unavailable planes without operational 
     /Operational activation requires a separately approved milestone/,
   );
   assert.match(html, /Published \(Versioned\)/);
+  assert.match(html, /Schedule visibility/);
+  assert.match(html, /No schedule action is available from this dashboard/);
   assert.match(html, /Executed \(Runtime\)/);
   assert.match(html, /--background: #0b1118/);
   assert.match(html, /--primary: #91d4ff/);

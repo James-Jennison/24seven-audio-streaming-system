@@ -572,15 +572,19 @@ station_id`, `not_found`, `station_reference_forbidden`, immutable
 
 #### M4.8 — API/UI authorization and safe operator visibility
 
+- **Authoritative record:** [M4.8 API/UI authorization and safe operator
+  visibility](M4.8_API_UI_AUTHORIZATION_AND_SAFE_OPERATOR_VISIBILITY.md) and
+  its [acceptance decision](M4.8_API_UI_AUTHORIZATION_AND_SAFE_OPERATOR_VISIBILITY_ACCEPTANCE_DECISION.md)
+  complete this local-only visibility boundary.
 - **Purpose / planes / mode / prerequisites:** Provide station-scoped Control
   Plane views/actions for preview, review, approval, publication status, and
   rollback proposal; local-only, dependent on M4.1–M4.7.
 - **Scope / exclusions:** Preserve `not_found`, CSRF/RBAC, accessible pending/
   failed/unavailable states, and content-free audit. Exclude runtime/encoder/
   listener controls and direct schedule execution.
-- **Controls / evidence / gate:** Test each route and reference for isolation,
-  safe errors, non-dispatch, and audit redaction. Owner approval is required
-  before M4.9.
+- **Controls / evidence / gate:** The accepted boundary tests each route for
+  isolation, safe errors, CSRF/RBAC, non-dispatch, audit redaction, and
+  accessible unavailable status. Owner approval is required before M4.9.
 - **Dependencies / stop:** Feeds validation only; stop any UI/API path that can
   bypass proposed/approved/published state ownership.
 

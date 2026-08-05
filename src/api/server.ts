@@ -16,6 +16,10 @@ import {
   type ProgrammingPersistence,
 } from "./m1-programming-routes.js";
 import { handleM3Assets, type M3AssetPersistence } from "./m3-asset-routes.js";
+import {
+  handleM4Schedule,
+  type M4ScheduleAudit,
+} from "./m4-schedule-routes.js";
 
 export interface StationReader {
   list():
@@ -36,6 +40,7 @@ export function createControlPlaneServer(
   programming?: ProgrammingPersistence,
   m3Assets?: M3AssetPersistence,
   m3Metadata = new DisabledMetadataEnrichmentBoundary([]),
+  m4Schedule?: M4ScheduleAudit,
 ): ControlPlaneServer {
   let ready = false;
 
@@ -51,6 +56,7 @@ export function createControlPlaneServer(
       programming,
       m3Assets,
       m3Metadata,
+      m4Schedule,
     ).catch(() => sendJson(response, 500, { error: "internal_error" }));
   });
   ready = true;
@@ -68,6 +74,7 @@ async function handleRequest(
   programming?: ProgrammingPersistence,
   m3Assets?: M3AssetPersistence,
   m3Metadata?: DisabledMetadataEnrichmentBoundary,
+  m4Schedule?: M4ScheduleAudit,
 ): Promise<void> {
   const method = request.method ?? "GET";
   const url = new URL(request.url ?? "/", "http://localhost");
@@ -76,6 +83,12 @@ async function handleRequest(
     sessions &&
     programming &&
     (await handleProgramming(request, response, sessions, programming))
+  )
+    return;
+  if (
+    sessions &&
+    m4Schedule &&
+    (await handleM4Schedule(request, response, sessions, m4Schedule))
   )
     return;
   if (
