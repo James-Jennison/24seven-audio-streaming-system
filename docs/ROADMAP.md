@@ -104,18 +104,18 @@ alter the M2 staging boundary.
 
 ## 4. Master Milestone Timeline
 
-| Milestone | Focus Area                  |                         Focused Effort                         |     Elapsed Duration      |    Indicative Window     | Key Gate / Dependency                  |
-| :-------: | :-------------------------- | :------------------------------------------------------------: | :-----------------------: | :----------------------: | :------------------------------------- |
-|  **M1**   | Control Plane & Security    |                            Complete                            |         Complete          | **Completed 2026-08-04** | Formal M1 Local Acceptance             |
-|  **M2**   | Staging, Migration & DR     |                            Complete                            |         Complete          | **Completed 2026-08-04** | M2 Acceptance Decision                 |
-|  **M3**   | Ingestion & Asset Lifecycle | M3.1–M3.11 complete; M3.12 Phase 1 accepted, Phase 2 unstarted | Not started operationally | **Completed 2026-08-04** | M3.12 Phase 2 acceptance before M4.1   |
-|  **M4**   | Advanced Scheduling         |                            7–12 wks                            |         10–20 wks         |   Jul 2027 – Mar 2028    | Immutable Asset Handles                |
-|  **M5**   | Playout Runtime & DSP       |                           16–28 wks                            |         28–52 wks         |   Feb 2028 – May 2029    | Published Schedule Artifacts           |
-|  **M6**   | Requests & Moderation       |                            5–9 wks                             |         8–18 wks          |   May 2029 – Oct 2029    | Public Threat Model Approval           |
-|  **M7**   | Encoders & Icecast          |                           10–18 wks                            |         18–36 wks         |   Oct 2029 – Jul 2030    | Private Infrastructure Approval        |
-|  **M8**   | Shadow Testing & Parity     |                            8–14 wks                            |         16–32 wks         |   Aug 2030 – May 2031    | Parallel Listening & Failover Drills   |
-|  **M9**   | Cutover & Decommissioning   |                            6–12 wks                            |         12–28 wks         |   Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off     |
-|  **M10**  | Ubuntu Appliance Delivery   |                          Post-M9 only                          |        Not started        | After M9 acceptance only | M3–M9 accepted + explicit M10 approval |
+| Milestone | Focus Area                  |                             Focused Effort                              |     Elapsed Duration      |    Indicative Window     | Key Gate / Dependency                            |
+| :-------: | :-------------------------- | :---------------------------------------------------------------------: | :-----------------------: | :----------------------: | :----------------------------------------------- |
+|  **M1**   | Control Plane & Security    |                                Complete                                 |         Complete          | **Completed 2026-08-04** | Formal M1 Local Acceptance                       |
+|  **M2**   | Staging, Migration & DR     |                                Complete                                 |         Complete          | **Completed 2026-08-04** | M2 Acceptance Decision                           |
+|  **M3**   | Ingestion & Asset Lifecycle | M3.1–M3.11 complete; Phase 1 accepted, classification decision proposed | Not started operationally | **Completed 2026-08-04** | Target validation + M3.12 acceptance before M4.1 |
+|  **M4**   | Advanced Scheduling         |                                7–12 wks                                 |         10–20 wks         |   Jul 2027 – Mar 2028    | Immutable Asset Handles                          |
+|  **M5**   | Playout Runtime & DSP       |                                16–28 wks                                |         28–52 wks         |   Feb 2028 – May 2029    | Published Schedule Artifacts                     |
+|  **M6**   | Requests & Moderation       |                                 5–9 wks                                 |         8–18 wks          |   May 2029 – Oct 2029    | Public Threat Model Approval                     |
+|  **M7**   | Encoders & Icecast          |                                10–18 wks                                |         18–36 wks         |   Oct 2029 – Jul 2030    | Private Infrastructure Approval                  |
+|  **M8**   | Shadow Testing & Parity     |                                8–14 wks                                 |         16–32 wks         |   Aug 2030 – May 2031    | Parallel Listening & Failover Drills             |
+|  **M9**   | Cutover & Decommissioning   |                                6–12 wks                                 |         12–28 wks         |   Jun 2031 – Mar 2032    | Compliance Review & Final Sign-off               |
+|  **M10**  | Ubuntu Appliance Delivery   |                              Post-M9 only                               |        Not started        | After M9 acceptance only | M3–M9 accepted + explicit M10 approval           |
 
 ---
 
@@ -151,9 +151,10 @@ alter the M2 staging boundary.
 non-operational Control Plane milestone on `main`. The narrowly bounded M3.12
 post-acceptance exception is the sole approved path for a readiness plan and,
 after explicit human approvals, an isolated non-production rehearsal; it does
-not revoke that acceptance. Phase 1 is accepted; Phase 2 remains separately
-gated and unstarted: no M3 migration, worker, media intake, provider
-connection, or operational activation has occurred.
+not revoke that acceptance. Phase 1 is accepted and a content-free candidate
+classification decision is proposed; Phase 2 remains separately gated and
+unstarted: no M3 migration, worker, media intake, provider connection, or
+operational activation has occurred.
 `ready_for_schedule_use` is an asset eligibility state only: it is neither M4
 publication, M5 execution, M7 encoding readiness, nor listener availability.
 See [the M3 implementation and authorization
@@ -373,7 +374,10 @@ action without a new human approval.
   and isolated media-lifecycle rehearsal](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md)
   defines the sole narrowly bounded post-acceptance exception path; the
   [Phase 1 readiness-plan acceptance decision](M3.12_PHASE_1_READINESS_PLAN_ACCEPTANCE_DECISION.md)
-  accepts only its non-executable plan.
+  accepts only its non-executable plan. The proposed [Phase 2 staging-target
+  safe-classification decision](M3.12_PHASE_2_STAGING_TARGET_SAFE_CLASSIFICATION_DECISION.md)
+  records an opaque `safely_classified` candidate from accepted governance
+  evidence only.
 - **Purpose / planes / mode / prerequisites:** Define two strictly ordered
   phases: a non-executable readiness/authorization plan, then an isolated
   non-production rehearsal only after plan acceptance and explicit one-action
@@ -393,9 +397,10 @@ action without a new human approval.
   rollback/forward-fix ownership, inactive downstream planes, and distinct
   human approvals for target validation, media access, intake, processing,
   review, cleanup, evidence review, recovery, and M3 operational acceptance.
-  No approval creates standing authority. The next step is a future separately
-  approved M3.12 Phase 2 authorization, not a new M3.13 milestone. M4.1
-  remains deferred until M3.12 execution is completed and accepted.
+  No approval creates standing authority. After the classification decision is
+  approved and committed, the next step is a future separately approved M3.12
+  target/service-level validation authorization, not a new M3.13 milestone.
+  M4.1 remains deferred until M3.12 execution is completed and accepted.
 - **Dependencies / stop:** Preserve strict plane separation and stop on target
   ambiguity, unapproved media, authority/scope gaps, protected evidence,
   cross-station mismatch, or any plane activation. Only the named recovery

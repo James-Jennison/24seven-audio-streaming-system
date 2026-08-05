@@ -69,6 +69,11 @@ Its Phase 2 isolated non-production rehearsal remains unstarted and requires
 separate one-action human approvals. It preserves completed M3.1–M3.11
 local-only acceptance, creates no standing authorization, and this
 documentation change authorizes no staging or media operation.
+The proposed [M3.12 Phase 2 staging-target safe-classification
+decision](M3.12_PHASE_2_STAGING_TARGET_SAFE_CLASSIFICATION_DECISION.md) records
+one existing opaque candidate as `safely_classified` from accepted M2 and M3
+governance evidence only. It awaits explicit approval and commit, performs no
+target/service validation, and creates no operational authority.
 It adds a station-scoped, non-executing control-plane foundation for opaque
 import requests/jobs; immutable asset revisions, provenance, analysis,
 metadata-candidate, resolution, and failure records; deterministic EBU R128
@@ -100,11 +105,12 @@ commit/migration identity, least-privilege role scope, station isolation,
 empty/non-production input boundary, sandbox limits, inactive runtime/encoder/
 Icecast planes, rollback/stop conditions, and content-free verification. See
 [the M3 implementation and authorization record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md).
-The next unstarted roadmap step is a future, separately approved **M3.12 Phase
-2 authorization**, not a new M3.13 milestone. **M4.1 — Schedule-domain and
-versioning contract** remains deferred until M3.12 execution is completed and
-accepted. Neither Phase 1 acceptance nor prior M3 acceptance authorizes an
-operational action.
+After the proposed classification decision is approved and committed, the next
+unstarted roadmap step is a future, separately approved **M3.12 target/service-
+level validation authorization**, not a new M3.13 milestone. **M4.1 — Schedule-
+domain and versioning contract** remains deferred until M3.12 execution is
+completed and accepted. Neither Phase 1 acceptance nor prior M3 acceptance
+authorizes an operational action.
 
 ## M1 complete — 2026-08-04 UTC
 
