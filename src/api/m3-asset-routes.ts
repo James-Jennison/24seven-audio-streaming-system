@@ -53,6 +53,37 @@ export async function handleM3Assets(
   store: M3AssetPersistence,
 ): Promise<boolean> {
   const url = new URL(request.url ?? "/", "http://localhost");
+  const cueFadeStatus = url.pathname.match(
+    /^\/api\/v1\/stations\/([^/]+)\/media-imports\/([^/]+)\/cue-fade-analysis$/,
+  );
+  if (cueFadeStatus) {
+    if (request.method !== "GET") return method(response);
+    let principal: SessionContext | undefined;
+    try {
+      principal = await authenticate(sessions, request.headers.cookie);
+      authorize(principal, cueFadeStatus[1]!, "read");
+      const intake = await store.readImportRequest(
+        cueFadeStatus[1]!,
+        cueFadeStatus[2]!,
+      );
+      json(response, 200, {
+        stationId: intake.stationId,
+        requestId: intake.id,
+        cueFade: "disabled",
+        analysis: "fixture_only",
+      });
+    } catch (error) {
+      await rejectionAudit(
+        store,
+        principal,
+        cueFadeStatus[1]!,
+        cueFadeStatus[2]!,
+      );
+      const safe = safeError(error);
+      json(response, safe.status, { error: safe.error });
+    }
+    return true;
+  }
   const normalizationStatus = url.pathname.match(
     /^\/api\/v1\/stations\/([^/]+)\/media-imports\/([^/]+)\/normalization-analysis$/,
   );

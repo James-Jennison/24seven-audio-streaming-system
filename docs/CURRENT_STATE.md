@@ -21,6 +21,10 @@ The completed local-only [M3.5 EBU R128 normalization analysis contract](M3.5_EB
 adds disabled, deterministic fixture-preview request/result validation only; it
 does not perform media measurement or gain application and authorizes no M3.6-
 or-later work or operational action.
+The completed local-only [M3.6 cue and fade analysis contract](M3.6_CUE_AND_FADE_ANALYSIS_CONTRACT.md)
+adds disabled, deterministic fixture-preview cue/intro/outro/fade
+recommendation validation only; it does not detect media cues or apply playout
+settings and authorizes no M3.7-or-later work or operational action.
 It adds a station-scoped, non-executing control-plane foundation for opaque
 import requests/jobs; immutable asset revisions, provenance, analysis,
 metadata-candidate, resolution, and failure records; deterministic EBU R128

@@ -247,6 +247,9 @@ action without a new human approval.
 
 #### M3.6 — Cue, fade, duration, and quality-analysis contract
 
+- **Authoritative record:**
+  [M3.6 cue and fade analysis contract](M3.6_CUE_AND_FADE_ANALYSIS_CONTRACT.md)
+  is the implementation and evidence record for this local-only sub-milestone.
 - **Purpose / planes / mode / prerequisites:** Define deterministic Control
   Plane cue-in/out, fade-in/out, duration, confidence, quality, and analysis
   version contracts; local-only, dependent on M3.4–M3.5.
