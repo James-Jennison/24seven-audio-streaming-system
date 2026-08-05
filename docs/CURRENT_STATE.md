@@ -30,6 +30,14 @@ adds disabled, deterministic fixture-candidate and append-only operator-
 resolution validation only; it does not call providers, read tags, or publish
 runtime/stream metadata and authorizes no M3.8-or-later work or operational
 action.
+The completed local-only [M3.8 visual Operator Dashboard shell](M3.8_VISUAL_OPERATOR_DASHBOARD_SHELL.md)
+adds an accessible, responsive, station-context visual workspace for the four
+planes, M3 lifecycle contract labels, fixture-only analysis/metadata status,
+and the content-free evidence shape. It loads no media, source reference,
+fixture candidate, audit event, or live operational-health data; its playout,
+encoder, and listener-facing views are explicitly unavailable. It adds no
+operational command path and authorizes no M3.9-or-later work or operational
+action.
 It adds a station-scoped, non-executing control-plane foundation for opaque
 import requests/jobs; immutable asset revisions, provenance, analysis,
 metadata-candidate, resolution, and failure records; deterministic EBU R128
@@ -40,8 +48,9 @@ metadata boundary. The lifecycle is bounded:
 
 with `rejected`, `quarantined`, `failed`, and `superseded` branches. Readiness
 does not publish a schedule, make an asset runtime-available, or authorize M4
-or M5. The M3 UI/API can preview opaque request validation, show lifecycle,
-and record validation/approval/rejection; approval starts no worker.
+or M5. Underlying M3 APIs retain their scoped, non-dispatching validation and
+authorization contracts; the M3.8 dashboard shell itself visualizes only
+content-free contract status and never starts a worker.
 
 `003_m3_asset_lifecycle.sql` is an additive PostgreSQL migration registered in
 the existing ordered migration runner but has **not** been executed. It uses
@@ -60,6 +69,8 @@ commit/migration identity, least-privilege role scope, station isolation,
 empty/non-production input boundary, sandbox limits, inactive runtime/encoder/
 Icecast planes, rollback/stop conditions, and content-free verification. See
 [the M3 implementation and authorization record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md).
+The next unstarted item is separately approval-gated **M3.9 — isolation,
+idempotency, failure, and recovery validation**.
 
 ## M1 complete — 2026-08-04 UTC
 
@@ -70,9 +81,10 @@ Icecast planes, rollback/stop conditions, and content-free verification. See
 - Protected, PostgreSQL-backed programming routes for all seven M1 entity families, with scoped CRUD dispatch, CSRF/RBAC checks, safe errors, and content-free rejection/mutation audits.
 - Complete-state update validation for media, playlists, separation rules, rotations, clocks, program blocks, and scheduled events; retained and replacement references are checked in PostgreSQL against the selected station.
 - Loopback-only HTTP server with liveness, readiness, version, and station-read endpoints.
-- Role-aware browser operator UI with local bootstrap/login/logout, protected
-  station context, programming CRUD workflows, explicit safe UI states, and
-  deterministic read-only dry-run preview.
+- Role-aware browser local sign-in/out and protected station context. M3.8
+  presents the accepted M1/M3 boundaries through a read-only visual dashboard;
+  the existing protected programming CRUD routes and deterministic dry-run
+  contract remain separate from schedule publication or runtime execution.
 - Versioned domain contracts and explicit writer ownership for configuration versus future runtime observations.
 - Repository hygiene, dependency audit, formatting, lint, type, domain, API, and UI checks.
 

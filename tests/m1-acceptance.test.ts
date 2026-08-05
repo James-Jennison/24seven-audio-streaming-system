@@ -13,33 +13,29 @@ function source(relativePath: string): string {
   );
 }
 
-test("operator UI exposes the bounded M3 asset approval boundary without publication or execution", () => {
+test("operator UI keeps the accepted control-plane boundary in the M3.8 visual shell", () => {
   const html = renderDashboard(seededStations, {
     version: "acceptance-test",
     buildId: "acceptance-test",
   });
 
-  assert.match(html, /Proposed \/ Preview/);
+  assert.match(html, /Programming state remains Proposed\/Preview \(Dry-Run\)/);
   assert.match(
     html,
-    /M3 approval only permits a future sandbox boundary; it starts no worker/,
+    /M3 asset readiness is separate from publication and execution/,
   );
-  assert.match(html, /no published version is available/);
+  assert.match(html, /This M3\.8 dashboard shell is read-only/);
   assert.match(
     html,
-    /M5 runtime controls are unavailable and not rendered here/,
+    /No worker, subprocess, parser, or media-processing dispatch/,
   );
-  assert.match(html, /This read-only preview produces proposals only/);
-  assert.match(html, /window\.confirm\(/);
+  assert.match(
+    html,
+    /No encoder profile, relay, or source operation is reachable from this dashboard/,
+  );
   assert.doesNotMatch(html, /<input[^>]+type="file"/i);
-  assert.doesNotMatch(
-    html,
-    /\/api\/v1\/[^"']*\/(?:publish|execute|playout|encoder|relay|stream)/i,
-  );
-  assert.doesNotMatch(
-    html,
-    /<audio|<video|Icecast|SHOUTcast|Liquidsoap|FFmpeg/i,
-  );
+  assert.doesNotMatch(html, /\/api\/v1\/stations\//i);
+  assert.doesNotMatch(html, /<audio|<video|SHOUTcast|Liquidsoap|FFmpeg/i);
 });
 
 test("M1 live composition is PostgreSQL-only and has no runtime bridge", () => {

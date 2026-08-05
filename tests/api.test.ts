@@ -129,18 +129,21 @@ test("station API lists all seeded stations and explicit unavailable runtime", a
   });
 });
 
-test("operator root exposes only the programming-control UI shell", async (context) => {
+test("operator root exposes the local-only M3.8 visual dashboard shell", async (context) => {
   await withLoopbackOrSkip(context, async (baseUrl) => {
     const response = await fetch(`${baseUrl}/`);
     assert.equal(response.status, 200);
     const html = await response.text();
     assert.match(html, /id="operator-shell"/);
-    assert.match(html, /Programming control plane/);
-    assert.match(html, /Deterministic dry-run preview/);
+    assert.match(html, /24Seven\.FM Operator Dashboard/);
+    assert.match(html, /Media Workspace/);
+    assert.match(html, /Listener-Facing Icecast Layer/);
+    assert.match(html, /Fixture\/example status is never live station data/);
     assert.match(
       html,
-      /M5 runtime controls are unavailable and not rendered here/,
+      /No worker, subprocess, parser, or media-processing dispatch/,
     );
-    assert.doesNotMatch(html, /Icecast|SHOUTcast|Liquidsoap|FFmpeg/);
+    assert.doesNotMatch(html, /api\/v1\/stations\//);
+    assert.doesNotMatch(html, /SHOUTcast|Liquidsoap|FFmpeg/);
   });
 });

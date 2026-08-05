@@ -9,15 +9,19 @@ Adagio.FM, Death.FM, and Entranced.FM.
 M1 is complete as a local-only Programming Control Plane milestone. M2 is
 accepted for isolated, non-public PostgreSQL staging persistence and disaster-
 recovery readiness; the M2.5 decision packet grants no standing operational
-authority. M3.1–M3.7 are complete as local-only, non-executing contracts:
+authority. M3.1–M3.8 are complete as local-only, non-executing contracts:
 asset lifecycle, persistence design, source/quarantine, disabled processing,
-normalization, cue/fade, and metadata-candidate/operator-resolution boundaries.
+normalization, cue/fade, metadata-candidate/operator-resolution, and a visual
+Operator Dashboard shell.
 
-M3.7 uses deterministic fixture candidates only. It performs no provider call,
-media-tag extraction, or stream-metadata publication. **M3.8 — operator
-preview, review, and authorization behavior** is the next unstarted roadmap
-item and requires a separate explicit approval. Completion of any milestone or
-sub-milestone does not authorize the next one.
+M3.8 is a responsive, station-scoped visual shell for contract status only. It
+labels its Media Workspace as fixture/example status and makes the playout,
+encoder, and listener-facing planes explicitly unavailable. It performs no
+provider call, media-tag extraction, stream-metadata publication, or live
+station-data lookup. **M3.9 — isolation, idempotency, failure, and recovery
+validation** is the next unstarted roadmap item and requires a separate
+explicit approval. Completion of any milestone or sub-milestone does not
+authorize the next one.
 
 ## Architecture and safety boundary
 

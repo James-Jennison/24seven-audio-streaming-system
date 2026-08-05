@@ -279,20 +279,28 @@ action without a new human approval.
 - **Dependencies / stop:** Supports M3.8 review and future metadata work;
   provider owner stops on uncertain attribution rather than guessing or merging.
 
-#### M3.8 — Operator preview, review, and authorization behavior
+#### M3.8 — Visual Operator Dashboard shell
 
-- **Purpose / planes / mode / prerequisites:** Provide Control Plane-only
-  station-scoped preview, lifecycle status, validate/approve/reject actions,
-  and accessible pending/quarantined/failed states; local-only, dependent on
-  M3.1–M3.7.
-- **Scope / exclusions:** Preserve CSRF, RBAC, safe `not_found`, and explicit
-  approval semantics. Exclude upload, process start, schedule publication,
-  runtime execution, encoder, relay, and stream controls.
-- **Controls / evidence / gate:** Test authorization, out-of-scope IDs,
-  dry-run non-dispatch, accessible unavailable states, and content-free audit.
-  Owner approval is required before M3.9.
-- **Dependencies / stop:** Hands controlled records to M3.9 only; stop and
-  forward-fix under the Control Plane owner for any cross-plane control path.
+- **Authoritative record:** [M3.8 visual Operator Dashboard shell](M3.8_VISUAL_OPERATOR_DASHBOARD_SHELL.md)
+  is the implementation and evidence record for this local-only sub-milestone.
+- **Purpose / planes / mode / prerequisites:** Render a responsive,
+  keyboard-accessible, station-scoped Programming Control Plane workspace that
+  makes the four planes and the M3 fixture-only lifecycle contracts visible;
+  local-only, dependent on M3.1–M3.7.
+- **Scope / exclusions:** Provide system overview, Media Workspace,
+  content-free evidence shape, and clearly unavailable future-plane views.
+  Preserve session/RBAC station context, `not_found`, and
+  `station_reference_forbidden` behavior without presenting fixtures as live
+  data. Exclude uploads, media/source access, worker dispatch, M3 command
+  controls, schedule publication, runtime execution, encoder/relay/Icecast
+  control, provider lookup, persistence activation, and deployment.
+- **Controls / evidence / gate:** Test semantic navigation, keyboard focus,
+  station-context guard, fixture/unavailable labels, content-free output, and
+  absence of any M3 or cross-plane operational route. Owner approval is
+  required before M3.9.
+- **Dependencies / stop:** Hands only the visual boundary and its focused
+  evidence to M3.9. The Control Plane owner stops and forward-fixes any view
+  that could disclose out-of-scope data or imply/control another plane.
 
 #### M3.9 — Isolation, idempotency, failure, and recovery validation
 
