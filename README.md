@@ -19,8 +19,10 @@ playout, encoder, and listener-facing planes explicitly unavailable. M3.12
 completed as a content-free, deterministic-double rehearsal; it did not
 activate production, listener-facing, runtime, encoder, relay, Icecast, DNS,
 or deployment capability. **M4.1 — Schedule-domain and versioning contract**
-is complete as a local planning contract. It defines no M4 code, migration,
-publication, or runtime effect, and **M4.2 remains separately approval-gated**.
+is complete as a local planning contract. **M4.2 — Catalog and asset-eligibility
+boundary** is complete as a read-only, station-scoped Control Plane projection
+with no schedule, publication, or runtime effect. **M4.3 remains separately
+approval-gated**.
 
 The future post-M9 delivery target is a bootable, customized Ubuntu Server
 appliance with secure first-boot enrollment and LAN Operator Dashboard access.

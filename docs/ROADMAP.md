@@ -451,15 +451,22 @@ owner approval; every later M4 sub-milestone requires its own approval.
 
 #### M4.2 — Catalog and asset-eligibility boundary
 
+- **Authoritative record:** The [M4.2 catalog and asset-eligibility
+  boundary](M4.2_CATALOG_AND_ASSET_ELIGIBILITY_BOUNDARY.md) and its
+  [acceptance decision](M4.2_CATALOG_AND_ASSET_ELIGIBILITY_ACCEPTANCE_DECISION.md)
+  complete this local-only Control Plane sub-milestone. It introduces no
+  migration, persistence activation, schedule generation, or operational
+  action.
 - **Purpose / planes / mode / prerequisites:** Define the Control Plane query
   from M3 assets to M4 candidates; local-only, dependent on M4.1 and the M3
   handoff boundary.
 - **Scope / exclusions:** Accept only station-scoped, non-superseded,
   schedule-use-eligible asset references and immutable revisions. Exclude media
   acquisition, metadata overwrite, and any change to asset lifecycle.
-- **Controls / evidence / gate:** Test `id + station_id`, `not_found`,
-  `station_reference_forbidden`, and content-free rejection audit. Owner
-  approval is required before M4.3.
+- **Controls / evidence / gate:** The accepted local boundary tests `id +
+station_id`, `not_found`, `station_reference_forbidden`, immutable
+  projections, content-free rejection evidence, and no operational adapter.
+  Owner approval is required before M4.3.
 - **Dependencies / stop:** Feeds deterministic planning only; stop and
   forward-fix under catalog ownership for ambiguous eligibility/provenance.
 

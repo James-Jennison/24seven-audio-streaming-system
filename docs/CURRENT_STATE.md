@@ -1,18 +1,18 @@
 # Current State
 
-## M4.1 planning — complete, decision-only, and non-operational
+## M4.2 catalog eligibility — complete, local-only, and non-operational
 
 M3 acceptance unblocked M4 in sequence. With the owner authorization to begin
 M4, the [M4.1 schedule-domain and versioning
-contract](M4.1_SCHEDULE_DOMAIN_AND_VERSIONING_CONTRACT.md) defines the
-Programming Control Plane's schedule proposal, approval, publication, version,
-compatibility, and rollback boundary. It is documentation/planning only: no
-schema, migration, code, publication, or operational action exists for M4.
-The [M4.1 acceptance decision](M4.1_SCHEDULE_DOMAIN_AND_VERSIONING_ACCEPTANCE_DECISION.md)
-records review of state separation, station isolation, content-free evidence,
-immutable rollback, and four-plane non-dispatch. It authorizes no M4.2-or-later
-work. Publication is explicitly never runtime execution; M5 remains a
-separate, unapproved milestone.
+contract](M4.1_SCHEDULE_DOMAIN_AND_VERSIONING_CONTRACT.md) and its acceptance
+decision established the schedule-state, versioning, rollback, and
+non-execution contract. M4.2 now completes the local-only
+[catalog and asset-eligibility boundary](M4.2_CATALOG_AND_ASSET_ELIGIBILITY_BOUNDARY.md):
+it projects only same-station, immutable M3 revisions whose lifecycle is
+`ready_for_schedule_use` into opaque catalog candidates. It does not access
+media or metadata, mutate M3 state, use persistence, generate a schedule, or
+publish anything. **M4.3 remains separately approval-gated**; publication is
+explicitly never runtime execution, and M5 remains unapproved.
 
 ## M3 local-only foundation — complete and accepted
 
