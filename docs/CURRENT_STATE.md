@@ -15,7 +15,12 @@ later work or operational action at its completion.
 The completed local-only [M3.4 disabled async processing boundary](M3.4_DISABLED_ASYNC_PROCESSING_BOUNDARY.md)
 adds station-scoped future-worker eligibility, resource-limit, idempotency,
 failure/retry, and content-free evidence contracts. Its default dispatcher is
-disabled and no M3.5-or-later work or operational action is authorized.
+disabled and no M3.5-or-later work or operational action was authorized at its
+completion.
+The completed local-only [M3.5 EBU R128 normalization analysis contract](M3.5_EBU_R128_NORMALIZATION_ANALYSIS_CONTRACT.md)
+adds disabled, deterministic fixture-preview request/result validation only; it
+does not perform media measurement or gain application and authorizes no M3.6-
+or-later work or operational action.
 It adds a station-scoped, non-executing control-plane foundation for opaque
 import requests/jobs; immutable asset revisions, provenance, analysis,
 metadata-candidate, resolution, and failure records; deterministic EBU R128

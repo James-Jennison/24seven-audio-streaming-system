@@ -53,6 +53,37 @@ export async function handleM3Assets(
   store: M3AssetPersistence,
 ): Promise<boolean> {
   const url = new URL(request.url ?? "/", "http://localhost");
+  const normalizationStatus = url.pathname.match(
+    /^\/api\/v1\/stations\/([^/]+)\/media-imports\/([^/]+)\/normalization-analysis$/,
+  );
+  if (normalizationStatus) {
+    if (request.method !== "GET") return method(response);
+    let principal: SessionContext | undefined;
+    try {
+      principal = await authenticate(sessions, request.headers.cookie);
+      authorize(principal, normalizationStatus[1]!, "read");
+      const intake = await store.readImportRequest(
+        normalizationStatus[1]!,
+        normalizationStatus[2]!,
+      );
+      json(response, 200, {
+        stationId: intake.stationId,
+        requestId: intake.id,
+        normalization: "disabled",
+        analysis: "fixture_only",
+      });
+    } catch (error) {
+      await rejectionAudit(
+        store,
+        principal,
+        normalizationStatus[1]!,
+        normalizationStatus[2]!,
+      );
+      const safe = safeError(error);
+      json(response, safe.status, { error: safe.error });
+    }
+    return true;
+  }
   const processingStatus = url.pathname.match(
     /^\/api\/v1\/stations\/([^/]+)\/media-imports\/([^/]+)\/processing-boundary$/,
   );

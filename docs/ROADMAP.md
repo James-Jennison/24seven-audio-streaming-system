@@ -230,6 +230,9 @@ action without a new human approval.
 
 #### M3.5 — EBU R128 measurement and normalization recommendation contract
 
+- **Authoritative record:**
+  [M3.5 EBU R128 normalization analysis contract](M3.5_EBU_R128_NORMALIZATION_ANALYSIS_CONTRACT.md)
+  is the implementation and evidence record for this local-only sub-milestone.
 - **Purpose / planes / mode / prerequisites:** Define Control Plane records for
   integrated loudness, loudness range, true peak, analysis version, and a
   derived gain recommendation; local-only, dependent on M3.4.

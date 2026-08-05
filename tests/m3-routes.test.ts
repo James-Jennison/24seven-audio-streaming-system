@@ -169,6 +169,33 @@ test("M3.4 processing-boundary status is station-scoped, read-only, and disabled
   );
 });
 
+test("M3.5 normalization status is read-only, disabled, and station-scoped", async () => {
+  const store = new M3Fake();
+  const result = await invoke(
+    "/api/v1/stations/station-a/media-imports/request-a/normalization-analysis",
+    "GET",
+    store,
+  );
+  assert.deepEqual(result, {
+    status: 200,
+    body: {
+      stationId: "station-a",
+      requestId: "request-a",
+      normalization: "disabled",
+      analysis: "fixture_only",
+    },
+  });
+  const outOfScope = await invoke(
+    "/api/v1/stations/station-b/media-imports/request-a/normalization-analysis",
+    "GET",
+    store,
+    undefined,
+    sessions(["station-b"]),
+  );
+  assert.deepEqual(outOfScope, { status: 404, body: { error: "not_found" } });
+  assert.equal(store.processingCalls, 0);
+});
+
 test("M3 routes isolate stations, require CSRF for proposed approval flow, and do not expose runtime routes", async () => {
   const store = new M3Fake();
   const created = await invoke(
