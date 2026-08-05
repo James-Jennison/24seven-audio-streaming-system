@@ -62,11 +62,12 @@ dashboard/API control, and authorizes no M4-or-later work or operational
 action.
 The [M3.12 operational staging activation authorization and isolated
 media-lifecycle rehearsal](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md)
-is the sole narrowly bounded post-acceptance exception path. Its documented
-first phase is a non-executable readiness and authorization plan; its second,
-unstarted phase is an isolated non-production rehearsal that requires plan
-acceptance and separate one-action human approvals. It preserves completed
-M3.1–M3.11 local-only acceptance, creates no standing authorization, and this
+is the sole narrowly bounded post-acceptance exception path. Its non-executable
+Phase 1 readiness and authorization plan is accepted by the separate
+[Phase 1 acceptance decision](M3.12_PHASE_1_READINESS_PLAN_ACCEPTANCE_DECISION.md).
+Its Phase 2 isolated non-production rehearsal remains unstarted and requires
+separate one-action human approvals. It preserves completed M3.1–M3.11
+local-only acceptance, creates no standing authorization, and this
 documentation change authorizes no staging or media operation.
 It adds a station-scoped, non-executing control-plane foundation for opaque
 import requests/jobs; immutable asset revisions, provenance, analysis,
@@ -99,10 +100,10 @@ commit/migration identity, least-privilege role scope, station isolation,
 empty/non-production input boundary, sandbox limits, inactive runtime/encoder/
 Icecast planes, rollback/stop conditions, and content-free verification. See
 [the M3 implementation and authorization record](M3_IMPLEMENTATION_AND_AUTHORIZATION_RECORD.md).
-The next unstarted roadmap step is **M3.12 Phase 1 acceptance**, followed only
-by separately approved M3.12 Phase 2 execution. **M4.1 — Schedule-domain and
+The next unstarted roadmap step is a future, separately approved **M3.12 Phase
+2 authorization**, not a new M3.13 milestone. **M4.1 — Schedule-domain and
 versioning contract** remains deferred until M3.12 execution is completed and
-accepted. Neither M3.12 documentation nor prior M3 acceptance authorizes an
+accepted. Neither Phase 1 acceptance nor prior M3 acceptance authorizes an
 operational action.
 
 ## M1 complete — 2026-08-04 UTC
