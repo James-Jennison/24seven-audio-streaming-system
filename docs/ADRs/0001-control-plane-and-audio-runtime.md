@@ -1,6 +1,6 @@
 # ADR 0001: Separate durable control plane from supervised audio runtime
 
-- Status: accepted for M0
+- Status: accepted for M0; output-adapter wording superseded by the current roadmap
 - Date: 2026-08-03
 
 ## Context
@@ -9,7 +9,7 @@ The platform needs durable programming, admin, audit, and station-management cap
 
 ## Decision
 
-Use a layered architecture. A database-backed control plane owns configuration, schedules, permissions, and audit history. A separately supervised audio runtime will be evaluated around Liquidsoap as the preferred Linux playout/transition/encoding engine. FFmpeg will be available for import analysis and bounded fallback jobs. Output adapters are explicit: Icecast first, SHOUTcast compatibility later.
+Use a layered architecture. A database-backed control plane owns configuration, schedules, permissions, and audit history. A separately supervised audio runtime will be evaluated around Liquidsoap as the preferred Linux playout/transition/encoding engine. FFmpeg will be available for import analysis and bounded fallback jobs. The current authoritative roadmap supersedes this M0-era output-adapter wording: Icecast 2.x is the sole future listener-facing platform, and legacy SHOUTcast is excluded.
 
 M0 implements neither Liquidsoap nor FFmpeg execution, nor an output service. The control-plane/runtime boundary is represented by versioned domain contracts and writer ownership only.
 

@@ -85,5 +85,5 @@ scope, rollback or forward-fix owner, and content-free evidence boundary.
 Until that approval, this record authorizes no ISO build, package/image build,
 service activation, network exposure, media import, deployment, infrastructure
 change, or production operation. It does not alter the current next milestone:
-**M5.1 — Runtime architecture, authority, and control-plane boundary** is next
-after accepted M4 and remains separately approval-gated implementation work.
+**M5.2 — Published-schedule consumption contract** is next after accepted
+M5.1 and remains separately approval-gated implementation work.

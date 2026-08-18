@@ -29,9 +29,27 @@ rejection for only a frozen complete preview. It exposes no API/UI route and
 never publishes or executes a schedule. M4.7 now completes the [immutable
 versioned publication and atomic rollback design](M4.7_IMMUTABLE_VERSIONED_PUBLICATION_AND_ATOMIC_ROLLBACK_DESIGN.md):
 it creates only frozen, opaque in-memory artifacts and changes only the active
-pointer after compatibility validation; rollback is non-destructive. **M4.8
-remains separately approval-gated**; publication is explicitly never runtime
-execution, and M5 remains unapproved.
+pointer after compatibility validation; rollback is non-destructive. M4.8 safe
+API/UI visibility and M4.9 local-validation proposal are also accepted; M4 is
+complete. Publication is explicitly never runtime execution.
+
+## M5.1 — complete, local-only, and non-operational
+
+M5.1 now completes the [runtime architecture, authority, and Control Plane
+boundary](M5.1_RUNTIME_ARCHITECTURE_AUTHORITY_AND_CONTROL_PLANE_BOUNDARY.md).
+Its [acceptance decision](M5.1_RUNTIME_ARCHITECTURE_AUTHORITY_AND_CONTROL_PLANE_BOUNDARY_ACCEPTANCE_DECISION.md)
+records the bounded local evidence.
+It defines a fixed four-plane writer matrix and a versioned, station-scoped,
+content-free Runtime unavailable/safe-stop observation shape. The in-memory
+boundary has no route, process, persistence, network, service, output, or
+dispatch adapter. It cannot start or control playout, DSP, encoder, relay,
+Icecast, listener, DNS, deployment, or production activity.
+
+M5.2 — Published-schedule consumption contract is the next unstarted item. It
+is paused by the owner while the [AzuraCast product evaluation
+ADR](ADRs/0003-azuracast-product-evaluation.md) remains deferred, and it has
+no owner approval to begin. `Published (Versioned)` remains distinct from
+`Executed (Runtime)`.
 
 ## M3 local-only foundation — complete and accepted
 

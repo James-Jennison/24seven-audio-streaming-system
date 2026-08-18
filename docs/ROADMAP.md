@@ -167,7 +167,8 @@ and handoff boundary](M3.11_M3_ACCEPTANCE_AND_HANDOFF_BOUNDARY.md), and the
 media-lifecycle rehearsal](M3.12_OPERATIONAL_STAGING_ACTIVATION_READINESS_AND_AUTHORIZATION_PLAN.md).
 M3 completion did not grant M4.1. Separate owner approvals have since accepted
 M4.1–M4.10 as local-only Control Plane sub-milestones. M4 is complete and
-accepted; M5.1 remains separately approval-gated.
+accepted. M5.1 has since completed as a local-only, unavailable-only runtime
+authority boundary; M5.2 remains separately approval-gated.
 
 Every M3 sub-milestone remains station-scoped by `id + station_id`, uses
 `station_reference_forbidden` for cross-station references and `not_found` for
@@ -626,25 +627,34 @@ station_id`, `not_found`, `station_reference_forbidden`, immutable
 ### Phase 5: M5 — Playout Runtime, DSP & Automation
 
 **Objective:** Validate a supervised, separately deployable shadow runtime that
-consumes only approved, published M4 artifacts. M5 is unstarted; no M5 item
-authorizes source encoding or listener-facing streaming.
+consumes only approved, published M4 artifacts. M5.1 is complete as a
+local-only, unavailable-only authority contract; no M5 item authorizes source
+encoding or listener-facing streaming.
 
 #### M5.1 — Runtime architecture, authority, and control-plane boundary
 
+- **Status / authoritative record:** Complete as a local-only, non-operational
+  boundary. [M5.1 runtime architecture, authority, and Control Plane
+  boundary](M5.1_RUNTIME_ARCHITECTURE_AUTHORITY_AND_CONTROL_PLANE_BOUNDARY.md)
+  and its [acceptance decision](M5.1_RUNTIME_ARCHITECTURE_AUTHORITY_AND_CONTROL_PLANE_BOUNDARY_ACCEPTANCE_DECISION.md)
+  are authoritative.
 - **Purpose / planes / mode / prerequisites:** Define Playout & Automation
   Runtime ownership, supervisor/worker roles, and one-way Control Plane
   contracts; local-only, dependent on M4.10 and explicit M5 approval.
 - **Scope / exclusions:** Control Plane writes programming; runtime writes
   playback/health observations through a versioned contract. Exclude direct
   HTTP/UI device/process/encoder/Icecast control and legacy runtime dependencies.
-- **Controls / evidence / gate:** Validate authority matrix, station isolation,
-  content-free telemetry/audit, and safe unavailable state. Owner approval is
-  required before M5.2.
+- **Controls / evidence / gate:** The accepted local coverage validates the
+  authority matrix, station isolation, content-free telemetry/audit, and safe
+  unavailable state. Owner approval is required before M5.2.
 - **Dependencies / stop:** Bounds every M5 sub-milestone; stop on shared writer
   authority or a cross-plane command path and assign runtime owner forward-fix.
 
 #### M5.2 — Published-schedule consumption contract
 
+- **Status:** Unstarted and paused by the owner while [ADR 0003's AzuraCast
+  product evaluation](ADRs/0003-azuracast-product-evaluation.md) remains
+  deferred. This creates no approval to begin M5.2.
 - **Purpose / planes / mode / prerequisites:** Define Runtime retrieval and
   verification of an approved M4 Published version only; local/static,
   dependent on M4.10 and M5.1.

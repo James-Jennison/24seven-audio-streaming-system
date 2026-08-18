@@ -13,23 +13,42 @@ loopback by default.
 ```text
 Browser admin UI
        │ local HTTP / future authenticated API
-Control plane ─── PostgreSQL (sole live persistence store)
-       │ versioned commands and observations
-Supervised audio runtime (future Liquidsoap process)
-       ├── FFmpeg analysis/fallback jobs (future)
-       ├── Icecast adapter (future first target)
-       └── SHOUTcast adapter (future)
+Programming Control Plane ─── PostgreSQL (sole live persistence store)
+       │ versioned, one-way desired-state and observation contracts
+Playout & Automation Runtime (future, separately supervised)
+       │ independently deployable output boundary
+Source Encoder Layer (future)
+       │ independently deployable source boundary
+Listener-Facing Icecast 2.x Layer (future)
 ```
 
 ### Control plane
 
 The control plane owns station configuration, media metadata, programming configuration, schedules, users/roles, and audit events. It emits desired-state commands but must not fabricate runtime observations.
 
-### Audio runtime
+### Playout & Automation Runtime
 
-The future runtime is a separately supervised process. It owns the authoritative playback state and output health observations it creates, including handoff state. Liquidsoap is the preferred evaluated engine for source selection, transitions, encoding, and output. FFmpeg remains available for import analysis and bounded fallback work, not as a replacement for durable scheduling.
+The future Runtime is separately supervised and deployable. It owns only the
+authoritative playback state and health observations it creates, including
+handoff state. The Control Plane owns programming state and can read, but never
+write or infer, runtime observations. The Runtime has no authority to mutate
+programming state. No current runtime process, supervisor, or transport exists.
 
-The contract must include a schema version, stable station ID, UTC observation timestamp, runtime instance ID, freshness/sequence fields, and an explicit unavailable/degraded state. The control plane persists received observations as history but must preserve their writer identity.
+The future observation contract must include a schema version, stable station
+ID, UTC observation timestamp, runtime instance ID, freshness/sequence fields,
+and an explicit unavailable/degraded state. The Control Plane may persist
+received observations as history only through a separately approved future
+boundary and must preserve their writer identity. M5.1 presently models only a
+content-free `unavailable` / `safe_stop` observation in memory.
+
+## Product-evaluation boundary
+
+The current architecture is a bespoke, decoupled system, not an integration
+shell for a turnkey radio suite. [ADR 0003](ADRs/0003-azuracast-product-evaluation.md)
+records the product evaluation of AzuraCast and requires an explicit owner
+selection before M5.2. Unless a replacement decision is accepted, no external
+radio-management product may share the Control Plane database, media paths,
+credentials, or operational API authority.
 
 ### Data and isolation
 
